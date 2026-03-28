@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FintelliOps™ — The Intelligence Layer for Cloud Spend</title>
+<meta name="description" content="AI-native multi-cloud FinOps platform with 11 patent-pending innovations. Sub-1% cost attribution error. 80% analyst time saved. Built for $10M+ cloud spend."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#05070F;--bg1:#080C18;--bg2:#0D1225;--bg3:#121830;
+  --border:#1C2540;--border-b:#2A3A6A;
+  --cyan:#00D4FF;--teal:#00FFCC;--purple:#A855F7;
+  --amber:#FFB020;--red:#FF3B5C;--green:#00FF88;
+  --white:#E8EDF8;--dim:#4A5578;--dimmer:#2A3050;
+  --mono:'Space Mono',monospace;
+  --sans:'Barlow',sans-serif;
+  --display:'Raleway',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg0);color:var(--white);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+
+/* Noise grain overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(800%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes borderAnim{0%,100%{border-color:rgba(0,212,255,.3)}50%{border-color:rgba(168,85,247,.5)}}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ── NAV ── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 48px;
+  background:rgba(5,7,15,.82);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:background .3s}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:30px;height:30px;border-radius:6px;
+  background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(168,85,247,.12));
+  border:1px solid rgba(0,212,255,.25);display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cyan)}
+.logo-name{font-family:var(--mono);font-size:13px;font-weight:600;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:-1px}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:13px;color:var(--dim);transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-btns{display:flex;gap:8px;align-items:center}
+.btn-ghost{padding:6px 16px;font-size:11px;font-family:var(--mono);
+  background:transparent;border:1px solid var(--border-b);color:var(--dim);
+  border-radius:5px;transition:all .2s}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-cta{padding:7px 18px;font-size:11px;font-family:var(--mono);font-weight:600;
+  background:linear-gradient(135deg,var(--cyan),var(--teal));color:var(--bg0);
+  border-radius:5px;box-shadow:0 0 20px rgba(0,212,255,.2);transition:all .2s}
+.btn-cta:hover{box-shadow:0 0 32px rgba(0,212,255,.4);transform:translateY(-1px)}
+
+/* ── TICKER ── */
+#ticker-wrap{height:30px;background:var(--bg1);border-bottom:1px solid var(--border);
+  overflow:hidden;display:flex;align-items:center;position:relative;margin-top:60px}
+.ticker-tag{position:absolute;left:0;top:0;bottom:0;width:72px;z-index:2;
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:8px;color:var(--cyan);letter-spacing:.14em}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker 55s linear infinite;margin-left:72px}
+.t-item{padding:0 36px;font-family:var(--mono);font-size:9px;color:var(--dim);border-right:1px solid var(--border)}
+.tc{color:var(--cyan)}.tg{color:var(--green)}.ta{color:var(--amber)}.tr{color:var(--red)}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:80px 48px 60px;
+  position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,212,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,212,255,.035) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 75% 75% at 50% 50%,black 20%,transparent 100%)}
+.hero-glow{position:absolute;top:30%;left:50%;transform:translateX(-50%);
+  width:900px;height:500px;
+  background:radial-gradient(ellipse,rgba(0,212,255,.07) 0%,transparent 70%);pointer-events:none}
+.hero-glow2{position:absolute;top:50%;left:15%;
+  width:350px;height:350px;
+  background:radial-gradient(ellipse,rgba(168,85,247,.05) 0%,transparent 70%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;
+  padding:5px 14px;border-radius:20px;margin-bottom:24px;
+  background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.18);
+  font-family:var(--mono);font-size:9px;color:var(--cyan);letter-spacing:.14em;
+  animation:fadeUp .5s ease both}
+.hero-pill::before{content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--cyan);animation:pulse 2s ease infinite}
+h1{font-family:var(--display);font-size:clamp(42px,6.5vw,84px);font-weight:800;
+  line-height:1.04;letter-spacing:-.03em;margin-bottom:10px;
+  animation:fadeUp .6s ease .1s both}
+.h1a{color:var(--white)}
+.h1b{background:linear-gradient(95deg,var(--cyan) 0%,var(--purple) 50%,var(--teal) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-desc{font-size:17px;color:var(--dim);max-width:560px;line-height:1.75;
+  margin-bottom:36px;animation:fadeUp .6s ease .2s both}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:60px;animation:fadeUp .6s ease .3s both}
+.btn-hero{padding:13px 30px;font-size:13px;font-family:var(--mono);font-weight:600;
+  background:linear-gradient(135deg,var(--cyan),var(--teal));color:var(--bg0);
+  border-radius:6px;box-shadow:0 0 28px rgba(0,212,255,.28);
+  letter-spacing:.04em;transition:all .25s}
+.btn-hero:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(0,212,255,.44)}
+.btn-hero-out{padding:13px 30px;font-size:13px;font-family:var(--mono);
+  background:rgba(255,255,255,.04);border:1px solid var(--border-b);
+  color:var(--white);border-radius:6px;letter-spacing:.04em;transition:all .25s}
+.btn-hero-out:hover{background:rgba(255,255,255,.08);border-color:var(--cyan)}
+.hero-stats{display:flex;border:1px solid var(--border);border-radius:10px;
+  background:rgba(8,12,24,.75);backdrop-filter:blur(10px);overflow:hidden;
+  animation:fadeUp .6s ease .4s both}
+.hs{padding:18px 28px;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;gap:3px}
+.hs:last-child{border-right:none}
+.hs-v{font-family:var(--mono);font-size:26px;font-weight:700;
+  background:linear-gradient(90deg,var(--cyan),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hs-l{font-family:var(--mono);font-size:8px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
+
+/* ── SHARED SECTION ── */
+section{position:relative;z-index:1}
+.si{max-width:1180px;margin:0 auto;padding:96px 48px}
+.sec-tag{display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:9px;color:var(--cyan);
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+.sec-tag::before{content:'';width:18px;height:1px;background:var(--cyan)}
+h2{font-family:var(--display);font-size:clamp(28px,4vw,52px);font-weight:800;
+  line-height:1.1;letter-spacing:-.025em;margin-bottom:14px}
+.sec-sub{font-size:16px;color:var(--dim);max-width:520px;line-height:1.72;margin-bottom:52px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+
+/* ── CARDS ── */
+.card{padding:26px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;position:relative;overflow:hidden;transition:all .3s}
+.card:hover{border-color:rgba(0,212,255,.25);transform:translateY(-3px);
+  box-shadow:0 0 32px rgba(0,212,255,.08)}
+.card-accent{position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cyan),transparent)}
+.card-accent.purple{background:linear-gradient(90deg,var(--purple),transparent)}
+.card-accent.amber{background:linear-gradient(90deg,var(--amber),transparent)}
+.card-accent.green{background:linear-gradient(90deg,var(--green),transparent)}
+.card-tag{font-family:var(--mono);font-size:8px;color:var(--cyan);
+  letter-spacing:.14em;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.card-tag::before{content:'';width:12px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent)}
+.card h3{font-family:var(--display);font-size:16px;font-weight:700;margin-bottom:8px}
+.card p{font-size:12px;color:var(--dim);line-height:1.65;margin-bottom:14px}
+.card-stat{font-family:var(--mono);font-size:11px;color:var(--teal);
+  background:rgba(0,255,204,.06);border:1px solid rgba(0,255,204,.14);
+  border-radius:4px;padding:3px 9px;display:inline-block}
+.card-stat.amber{color:var(--amber);background:rgba(255,176,32,.06);border-color:rgba(255,176,32,.14)}
+.card-stat.red{color:var(--red);background:rgba(255,59,92,.06);border-color:rgba(255,59,92,.14)}
+
+/* ── PROBLEM ── */
+#problem{background:linear-gradient(180deg,var(--bg0),var(--bg1))}
+.prob-card{padding:26px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;transition:border-color .3s}
+.prob-card:hover{border-color:rgba(255,59,92,.3)}
+.prob-card::before{content:'';display:block;height:2px;
+  background:linear-gradient(90deg,var(--red),transparent);margin:-26px -26px 20px;width:calc(100% + 52px)}
+.prob-icon{font-size:22px;margin-bottom:10px}
+.prob-card h3{font-family:var(--display);font-size:15px;font-weight:700;margin-bottom:7px}
+.prob-card p{font-size:12px;color:var(--dim);line-height:1.65}
+.prob-num{margin-top:14px;font-family:var(--mono);font-size:22px;font-weight:700;color:var(--red)}
+.prob-num span{font-size:10px;color:var(--dim);display:block;margin-top:1px}
+
+/* ── COMPETITIVE TABLE ── */
+.ctable{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.ctable th{padding:12px 18px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);text-align:left;
+  background:var(--bg1);border-bottom:1px solid var(--border)}
+.ctable td{padding:12px 18px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.ctable tr:last-child td{border-bottom:none}
+.ctable .hi td{background:rgba(0,212,255,.04)}
+.ctable .hi td:first-child{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--cyan)}
+.cy{color:var(--green);font-size:13px}.cp{color:var(--amber);font-family:var(--mono);font-size:10px}
+.cn{color:var(--dimmer);font-family:var(--mono);font-size:10px}
+.cf{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cyan);
+  background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.18);border-radius:3px;padding:2px 7px}
+
+/* ── PIPELINE ── */
+.pipe{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.pipe-step{flex:1;padding:24px 20px;background:var(--bg2);border-right:1px solid var(--border);
+  position:relative;transition:background .25s}
+.pipe-step:last-child{border-right:none}
+.pipe-step:hover{background:var(--bg3)}
+.pipe-n{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.1em;margin-bottom:10px}
+.pipe-icon{width:34px;height:34px;border-radius:7px;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:center;font-size:15px}
+.pipe-step h4{font-family:var(--display);font-size:14px;font-weight:700;margin-bottom:5px}
+.pipe-step p{font-size:11px;color:var(--dim);line-height:1.5}
+.pipe-arr{position:absolute;right:-12px;top:50%;transform:translateY(-50%);z-index:2;
+  width:24px;height:24px;border-radius:50%;background:var(--bg0);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:9px;color:var(--cyan)}
+
+/* ── DEPLOY ── */
+.dc{padding:28px;border-radius:10px;border:1px solid var(--border);transition:all .3s}
+.dc:hover{transform:translateY(-4px)}
+.dc.saas{background:linear-gradient(135deg,rgba(0,212,255,.05),rgba(0,255,204,.02))}
+.dc.saas:hover{border-color:var(--cyan);box-shadow:0 0 32px rgba(0,212,255,.1)}
+.dc.vpc{background:linear-gradient(135deg,rgba(168,85,247,.05),rgba(0,212,255,.02))}
+.dc.vpc:hover{border-color:var(--purple);box-shadow:0 0 32px rgba(168,85,247,.08)}
+.dc.ag{background:linear-gradient(135deg,rgba(255,176,32,.05),rgba(168,85,247,.02))}
+.dc.ag:hover{border-color:var(--amber)}
+.dc-icon{font-size:26px;margin-bottom:14px}
+.dc h3{font-family:var(--display);font-size:20px;font-weight:800;margin-bottom:4px}
+.dc .dc-sub{font-size:12px;color:var(--dim);margin-bottom:14px}
+.dc ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.dc ul li{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:6px}
+.dc ul li::before{content:'✓';font-family:var(--mono);font-size:9px;color:var(--green);flex-shrink:0}
+.dc-price{margin-top:18px;padding-top:14px;border-top:1px solid var(--border);
+  font-family:var(--mono);font-size:10px;color:var(--cyan)}
+
+/* ── PARTNERS ── */
+.partner-row{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+.pi{flex:1;min-width:100px;padding:20px 16px;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;gap:5px;transition:background .2s}
+.pi:last-child{border-right:none}
+.pi:hover{background:var(--bg1)}
+.pi-name{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--dim)}
+.pi-type{font-family:var(--mono);font-size:8px;color:var(--dimmer);letter-spacing:.08em}
+
+/* ── PATENTS ── */
+.pat{padding:20px;background:var(--bg1);border:1px solid var(--border);
+  border-radius:8px;transition:all .3s;position:relative;overflow:hidden}
+.pat:hover{border-color:rgba(168,85,247,.35);box-shadow:0 0 28px rgba(168,85,247,.08)}
+.pat-badge{display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:8px;color:var(--purple);
+  background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.18);
+  border-radius:3px;padding:2px 6px;margin-bottom:8px;letter-spacing:.08em}
+.pat-num{font-family:var(--mono);font-size:9px;color:var(--dim);margin-bottom:5px}
+.pat h4{font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:5px;line-height:1.35}
+.pat p{font-size:11px;color:var(--dim);line-height:1.5}
+.pat-pri{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;
+  background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:8px;color:var(--purple);font-weight:700}
+
+/* ── PRICING ── */
+.pc{padding:30px;border-radius:12px;border:1px solid var(--border);
+  position:relative;overflow:hidden;transition:all .3s}
+.pc:hover{transform:translateY(-3px)}
+.pc.std{background:var(--bg2)}
+.pc.ent{background:linear-gradient(135deg,rgba(0,212,255,.05),rgba(168,85,247,.03));border-color:rgba(0,212,255,.25)}
+.pc.ent:hover{box-shadow:0 0 32px rgba(0,212,255,.1)}
+.pc.gsi{background:var(--bg2)}
+.pc-pop{position:absolute;top:0;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:8px;color:var(--bg0);font-weight:700;
+  background:linear-gradient(90deg,var(--cyan),var(--teal));
+  padding:3px 14px;border-radius:0 0 7px 7px;letter-spacing:.1em}
+.pc-tier{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
+.pc h3{font-family:var(--display);font-size:21px;font-weight:800;margin-bottom:4px}
+.pc-range{font-family:var(--mono);font-size:12px;color:var(--cyan);margin-bottom:4px}
+.pc-basis{font-size:11px;color:var(--dim);margin-bottom:20px}
+.pc ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:24px}
+.pc ul li{font-size:12px;color:var(--dim);display:flex;align-items:flex-start;gap:7px}
+.pc ul li::before{content:'◈';font-family:var(--mono);font-size:8px;color:var(--cyan);flex-shrink:0;margin-top:3px}
+.pc-btn{width:100%;padding:10px;font-size:11px;font-family:var(--mono);font-weight:600;
+  border-radius:6px;letter-spacing:.04em;transition:all .2s}
+.pc-btn.p{background:linear-gradient(135deg,var(--cyan),var(--teal));color:var(--bg0)}
+.pc-btn.p:hover{box-shadow:0 0 20px rgba(0,212,255,.3);transform:translateY(-1px)}
+.pc-btn.s{background:transparent;border:1px solid var(--border-b);color:var(--dim)}
+.pc-btn.s:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* ── CTA ── */
+#cta{background:var(--bg0);padding:110px 48px;text-align:center;position:relative;overflow:hidden}
+#cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:700px;height:350px;
+  background:radial-gradient(ellipse,rgba(0,212,255,.07) 0%,transparent 70%);pointer-events:none}
+#cta h2{max-width:680px;margin:0 auto 14px}
+#cta p{font-size:16px;color:var(--dim);max-width:480px;margin:0 auto 36px;line-height:1.72}
+.cta-form{display:flex;gap:8px;justify-content:center;max-width:460px;margin:0 auto 14px;flex-wrap:wrap}
+.cta-in{flex:1;min-width:190px;padding:11px 14px;font-size:12px;font-family:var(--mono);
+  background:var(--bg1);border:1px solid var(--border-b);color:var(--white);
+  border-radius:6px;outline:none;transition:border-color .2s}
+.cta-in::placeholder{color:var(--dim)}
+.cta-in:focus{border-color:var(--cyan)}
+.cta-note{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.06em}
+.cta-metrics{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap}
+.cm{text-align:center}
+.cm-v{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--cyan)}
+.cm-l{font-family:var(--mono);font-size:8px;color:var(--dim);letter-spacing:.12em;margin-top:2px}
+
+/* ── FOOTER ── */
+footer{background:var(--bg1);border-top:1px solid var(--border)}
+.ft{max-width:1180px;margin:0 auto;padding:44px 48px;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px}
+.fb h4{font-family:var(--mono);font-size:13px;font-weight:600;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.fb p{font-size:12px;color:var(--dim);line-height:1.6;max-width:240px;margin-bottom:12px}
+.fb-s{font-family:var(--mono);font-size:8px;color:var(--dim);letter-spacing:.1em}
+.fc h5{font-family:var(--mono);font-size:9px;color:var(--dim);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.fc a{display:block;font-size:12px;color:var(--dim);margin-bottom:7px;transition:color .2s}
+.fc a:hover{color:var(--white)}
+.ft-bot{border-top:1px solid var(--border);padding:20px 48px;max-width:1180px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center}
+.ft-bot p{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.05em}
+
+/* PREVIEW */
+.pv-frame{border-radius:12px;overflow:hidden;border:1px solid var(--border);
+  box-shadow:0 32px 80px rgba(0,0,0,.55),0 0 60px rgba(0,212,255,.05)}
+.pv-bar{height:34px;background:var(--bg1);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 14px;gap:7px}
+.pv-dot{width:9px;height:9px;border-radius:50%}
+.pv-url{flex:1;margin:0 10px;height:18px;background:var(--bg2);border-radius:3px;
+  display:flex;align-items:center;padding:0 8px;
+  font-family:var(--mono);font-size:8px;color:var(--dim)}
+.pv-body{background:var(--bg0);padding:14px;position:relative;overflow:hidden}
+.scan{position:absolute;top:0;left:0;right:0;height:28px;
+  background:linear-gradient(transparent,rgba(0,212,255,.025),transparent);
+  animation:scanline 5s linear infinite;pointer-events:none}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.g3,.g4{grid-template-columns:repeat(2,1fr)}.ft{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){
+  #nav{padding:0 20px}.nav-links,.btn-ghost{display:none}
+  #hero{padding:80px 20px 40px}
+  .hero-stats{flex-direction:column}.hs{border-right:none;border-bottom:1px solid var(--border)}
+  .si{padding:60px 20px}.g2,.g3,.g4{grid-template-columns:1fr}
+  .pipe{flex-direction:column}.pipe-step{border-right:none;border-bottom:1px solid var(--border)}
+  .partner-row{flex-direction:column}.pi{border-right:none;border-bottom:1px solid var(--border)}
+  .ft{grid-template-columns:1fr;padding:32px 20px}
+  .ft-bot{flex-direction:column;gap:8px;text-align:center;padding:16px 20px}
+  #cta{padding:64px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">
+    <div class="logo-mark">F</div>
+    <div>
+      <div class="logo-name">FintelliOps™</div>
+      <div class="logo-sub">by Venture Vertex LLC</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#platform">Platform</a>
+    <a href="#patents">Innovation</a>
+    <a href="#competitive">Why Us</a>
+    <a href="#deployment">Deploy</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#partners">Partners</a>
+  </div>
+  <div class="nav-btns">
+    <button class="btn-ghost" onclick="scrollTo('#cta')">Sign In</button>
+    <button class="btn-cta" onclick="scrollTo('#cta')">Request Demo →</button>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div id="ticker-wrap">
+  <div class="ticker-tag">◈ LIVE</div>
+  <div class="ticker-inner">
+    <div class="t-item">AWS <span class="tc">$74,200</span> MTD · +9.1% MoM</div>
+    <div class="t-item">Azure <span class="tc">$44,100</span> MTD · +3.1% MoM</div>
+    <div class="t-item">GCP <span class="tc">$22,800</span> MTD · <span class="tg">-1.4% MoM</span></div>
+    <div class="t-item">CNRE: <span class="tc">880K</span> noise records filtered · Sanity score <span class="tg">96.2</span></div>
+    <div class="t-item">ANOMALY: AmazonRDS spike <span class="tr">+$8,420</span> · BCFE confidence 94%</div>
+    <div class="t-item">Savings: <span class="tg">$94,200/yr</span> across 14+ recs</div>
+    <div class="t-item">Tag compliance <span class="tc">78%</span> · ↑7 pts · RTPM active</div>
+    <div class="t-item">Forecast 30d: <span class="tc">$162,000</span> · Ensemble MAPE <span class="tg">4.1%</span></div>
+    <div class="t-item">SBTi Pathway: <span class="tg">On Track</span> · -43% vs 2022</div>
+    <div class="t-item">FPRE: <span class="ta">7 active policies</span> · $33,731 cost protected</div>
+    <!-- duplicate for loop -->
+    <div class="t-item">AWS <span class="tc">$74,200</span> MTD · +9.1% MoM</div>
+    <div class="t-item">Azure <span class="tc">$44,100</span> MTD · +3.1% MoM</div>
+    <div class="t-item">GCP <span class="tc">$22,800</span> MTD · <span class="tg">-1.4% MoM</span></div>
+    <div class="t-item">CNRE: <span class="tc">880K</span> noise records filtered · Sanity score <span class="tg">96.2</span></div>
+    <div class="t-item">ANOMALY: AmazonRDS spike <span class="tr">+$8,420</span> · BCFE confidence 94%</div>
+    <div class="t-item">Savings: <span class="tg">$94,200/yr</span> across 14+ recs</div>
+    <div class="t-item">Tag compliance <span class="tc">78%</span> · ↑7 pts · RTPM active</div>
+    <div class="t-item">Forecast 30d: <span class="tc">$162,000</span> · Ensemble MAPE <span class="tg">4.1%</span></div>
+    <div class="t-item">SBTi Pathway: <span class="tg">On Track</span> · -43% vs 2022</div>
+    <div class="t-item">FPRE: <span class="ta">7 active policies</span> · $33,731 cost protected</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-pill">11 Patent-Pending Innovations · Venture Vertex LLC</div>
+    <h1><div class="h1a">The Intelligence Layer</div><div class="h1b">for Cloud Spend</div></h1>
+    <p class="hero-desc">AI-native multi-cloud FinOps. Sub-1% cost attribution error. 80% analyst time saved. Built for enterprises managing $10M+ annual cloud spend across AWS, Azure, GCP, and OCI.</p>
+    <div class="hero-btns">
+      <button class="btn-hero" onclick="scrollTo('#cta')">Request Demo →</button>
+      <button class="btn-hero-out" onclick="scrollTo('#platform')">Explore Platform</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-v">$148K</div><div class="hs-l">Cloud Spend Managed MTD</div></div>
+      <div class="hs"><div class="hs-v">96.2</div><div class="hs-l">Data Sanity Score</div></div>
+      <div class="hs"><div class="hs-v">$94.2K</div><div class="hs-l">Annual Savings Available</div></div>
+      <div class="hs"><div class="hs-v">&lt;60s</div><div class="hs-l">RTPM Tag SLA</div></div>
+      <div class="hs"><div class="hs-v">4.1%</div><div class="hs-l">Forecast MAPE</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<div style="background:var(--bg0);padding:80px 48px">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:36px">
+      <div class="sec-tag reveal" style="justify-content:center">Live Platform</div>
+      <h2 class="reveal">See every dollar. In real time.</h2>
+      <p class="reveal d1" style="color:var(--dim);font-size:15px;max-width:460px;margin:0 auto">14 panels. 16 AI-powered modules. Full drill-down from enterprise to individual resource.</p>
+    </div>
+    <div class="pv-frame reveal d2">
+      <div class="pv-bar">
+        <div class="pv-dot" style="background:#FF5F57"></div>
+        <div class="pv-dot" style="background:#FEBC2E"></div>
+        <div class="pv-dot" style="background:#28C840"></div>
+        <div class="pv-url"><span style="color:var(--cyan);margin-right:6px">🔒</span>app.fintelliops.com — Command Center</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--amber)">● DEMO</div>
+      </div>
+      <!-- mini nav -->
+      <div style="background:var(--bg1);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 10px">
+        <div style="padding:7px 10px;border-bottom:2px solid var(--cyan);font-family:var(--mono);font-size:8px;color:var(--cyan);white-space:nowrap">⬡ Command Center</div>
+        <div style="padding:7px 10px;border-bottom:2px solid transparent;font-family:var(--mono);font-size:8px;color:var(--dim);white-space:nowrap">◈ Intelligence</div>
+        <div style="padding:7px 10px;border-bottom:2px solid transparent;font-family:var(--mono);font-size:8px;color:var(--dim);white-space:nowrap">◎ Forecast</div>
+        <div style="padding:7px 10px;border-bottom:2px solid transparent;font-family:var(--mono);font-size:8px;color:var(--dim);white-space:nowrap">◉ Actions</div>
+        <div style="padding:7px 10px;border-bottom:2px solid transparent;font-family:var(--mono);font-size:8px;color:var(--dim);white-space:nowrap">◌ GreenOps</div>
+        <div style="padding:7px 10px;border-bottom:2px solid transparent;font-family:var(--mono);font-size:8px;color:var(--dim);white-space:nowrap">◈ Tag Gov.</div>
+        <div style="padding:7px 10px;font-family:var(--mono);font-size:8px;color:var(--amber);white-space:nowrap">+ 8 panels</div>
+      </div>
+      <div class="pv-body">
+        <div class="scan"></div>
+        <!-- KPI row -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px">
+          <div style="padding:9px 11px;background:var(--bg1);border:1px solid var(--border);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:3px">CLOUD SPEND MTD</div>
+            <div style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--cyan)">$148,400</div>
+            <div style="font-size:8px;color:var(--dim)">5 providers</div>
+          </div>
+          <div style="padding:9px 11px;background:var(--bg1);border:1px solid var(--border);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:3px">ANNUAL SAVINGS AVAIL</div>
+            <div style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green)">$94,200</div>
+            <div style="font-size:8px;color:var(--dim)">14+ recommendations</div>
+          </div>
+          <div style="padding:9px 11px;background:var(--bg1);border:1px solid var(--border);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:3px">FINOPS EFFICIENCY</div>
+            <div style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--amber)">72 / 100</div>
+            <div style="font-size:8px;color:var(--dim)">GOOD · ▲4 pts MoM</div>
+          </div>
+          <div style="padding:9px 11px;background:var(--bg1);border:1px solid var(--border);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:3px">TAG COMPLIANCE</div>
+            <div style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--purple)">78%</div>
+            <div style="font-size:8px;color:var(--dim)">↑7 pts this month</div>
+          </div>
+        </div>
+        <!-- Chart row -->
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="padding:10px;background:var(--bg1);border:1px solid var(--border);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:6px">90-DAY MULTI-CLOUD SPEND</div>
+            <svg width="100%" height="48" viewBox="0 0 400 48" preserveAspectRatio="none">
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00D4FF" stop-opacity=".25"/><stop offset="100%" stop-color="#00D4FF" stop-opacity=".01"/></linearGradient></defs>
+              <path d="M0,44 C60,40 120,36 180,32 C240,28 280,25 330,22 C360,20 385,18 400,16 L400,48 L0,48Z" fill="url(#g1)"/>
+              <path d="M0,44 C60,40 120,36 180,32 C240,28 280,25 330,22 C360,20 385,18 400,16" fill="none" stroke="#00D4FF" stroke-width="1.5" style="filter:drop-shadow(0 0 3px #00D4FF)"/>
+              <path d="M0,46 C80,44 160,42 240,41 C320,40 370,39 400,38" fill="none" stroke="#0078D4" stroke-width="1" opacity=".5"/>
+              <path d="M0,47 C100,46 200,45.5 300,45 C370,44.5 390,44 400,44" fill="none" stroke="#00D4FF" stroke-width=".8" opacity=".35"/>
+            </svg>
+          </div>
+          <div style="padding:10px;background:var(--bg1);border:1px solid var(--border);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:7px">PROVIDER ALLOCATION</div>
+            <div style="margin-bottom:5px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-family:var(--mono);font-size:8px;color:#FF9900">AWS</span><span style="font-family:var(--mono);font-size:8px;color:#FF9900">50%</span></div>
+              <div style="height:3px;background:var(--bg3);border-radius:1px;overflow:hidden"><div style="width:50%;height:100%;background:#FF9900;border-radius:1px"></div></div>
+            </div>
+            <div style="margin-bottom:5px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-family:var(--mono);font-size:8px;color:#0078D4">Azure</span><span style="font-family:var(--mono);font-size:8px;color:#0078D4">30%</span></div>
+              <div style="height:3px;background:var(--bg3);border-radius:1px;overflow:hidden"><div style="width:30%;height:100%;background:#0078D4;border-radius:1px"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-family:var(--mono);font-size:8px;color:var(--cyan)">GCP</span><span style="font-family:var(--mono);font-size:8px;color:var(--cyan)">15%</span></div>
+              <div style="height:3px;background:var(--bg3);border-radius:1px;overflow:hidden"><div style="width:15%;height:100%;background:var(--cyan);border-radius:1px"></div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Bottom row -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div style="padding:9px 10px;background:var(--bg1);border:1px solid rgba(255,59,92,.2);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:6px">BCFE ANOMALIES</div>
+            <div style="padding:4px 6px;background:rgba(255,59,92,.1);border-radius:3px;margin-bottom:4px">
+              <div style="font-family:var(--mono);font-size:7px;color:var(--red)">CRITICAL · AmazonRDS +$8,420</div>
+            </div>
+            <div style="padding:4px 6px;background:rgba(255,176,32,.08);border-radius:3px">
+              <div style="font-family:var(--mono);font-size:7px;color:var(--amber)">HIGH · EC2 Auto-scale +$3,800</div>
+            </div>
+          </div>
+          <div style="padding:9px 10px;background:var(--bg1);border:1px solid var(--border);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:6px">CNRE NOISE PIPELINE</div>
+            <div style="margin-bottom:4px"><div style="display:flex;justify-content:space-between;margin-bottom:1px"><span style="font-family:var(--mono);font-size:7px;color:var(--dim)">Raw</span><span style="font-family:var(--mono);font-size:7px">10.0M</span></div><div style="height:3px;background:var(--bg3);border-radius:1px"><div style="width:100%;height:100%;background:var(--dim);border-radius:1px"></div></div></div>
+            <div style="margin-bottom:4px"><div style="display:flex;justify-content:space-between;margin-bottom:1px"><span style="font-family:var(--mono);font-size:7px;color:var(--teal)">Clean</span><span style="font-family:var(--mono);font-size:7px;color:var(--teal)">8.94M</span></div><div style="height:3px;background:var(--bg3);border-radius:1px"><div style="width:89%;height:100%;background:var(--teal);border-radius:1px"></div></div></div>
+            <div style="font-family:var(--mono);font-size:7px;color:var(--amber)">880K filtered · $8,840 saved</div>
+          </div>
+          <div style="padding:9px 10px;background:var(--bg1);border:1px solid var(--border);border-radius:5px">
+            <div style="font-family:var(--mono);font-size:6px;color:var(--dim);letter-spacing:.1em;margin-bottom:6px">PLATFORM HEALTH</div>
+            <div style="display:flex;flex-wrap:wrap;gap:3px">
+              <span style="font-family:var(--mono);font-size:7px;color:var(--green);background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.15);border-radius:2px;padding:1px 4px">CNRE ✓</span>
+              <span style="font-family:var(--mono);font-size:7px;color:var(--green);background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.15);border-radius:2px;padding:1px 4px">DSVF ✓</span>
+              <span style="font-family:var(--mono);font-size:7px;color:var(--amber);background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.15);border-radius:2px;padding:1px 4px">RTPM 78%</span>
+              <span style="font-family:var(--mono);font-size:7px;color:var(--red);background:rgba(255,59,92,.08);border:1px solid rgba(255,59,92,.15);border-radius:2px;padding:1px 4px">BCFE ⚠</span>
+              <span style="font-family:var(--mono);font-size:7px;color:var(--green);background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.15);border-radius:2px;padding:1px 4px">ACIE ✓</span>
+              <span style="font-family:var(--mono);font-size:7px;color:var(--green);background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.15);border-radius:2px;padding:1px 4px">FPRE ✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section id="problem" style="background:linear-gradient(180deg,var(--bg0),var(--bg1))">
+  <div class="si">
+    <div class="sec-tag reveal">The Problem</div>
+    <h2 class="reveal">Every incumbent fails at fundamentals</h2>
+    <p class="sec-sub reveal d1">All existing FinOps tools require manual intervention for routine operations. None address root causes.</p>
+    <div class="g3">
+      <div class="prob-card reveal d1"><div class="prob-icon">🔊</div><h3>Unfiltered Data Noise</h3><p>Raw billing feeds contain rounding artifacts, retroactive credits, and cross-region double-counting. No tool filters it automatically.</p><div class="prob-num">8.1%<span>of billing records are noise</span></div></div>
+      <div class="prob-card reveal d2"><div class="prob-icon">🔄</div><h3>Schema Changes Break Pipelines</h3><p>Every new cloud provider service requires a manual platform release to update taxonomy. Weeks of lag every time AWS or Azure ships something new.</p><div class="prob-num">24h<span>FintelliOps SLA vs weeks for competitors</span></div></div>
+      <div class="prob-card reveal d3"><div class="prob-icon">🏷️</div><h3>Tags Drift Within Minutes</h3><p>Auto-scaled instances, Lambda invocations, ephemeral containers — all born untagged. By the time you notice, millions are unallocated.</p><div class="prob-num">78%<span>industry average tag compliance rate</span></div></div>
+      <div class="prob-card reveal d1"><div class="prob-icon">🔗</div><h3>No Causal Attribution</h3><p>Every tool shows you the spike. None trace it back to the specific deployment event, auto-scaling trigger, or config change that caused it.</p><div class="prob-num">0<span>commercial products with causal DAG — until now</span></div></div>
+      <div class="prob-card reveal d2"><div class="prob-icon">☁️</div><h3>Multi-Cloud Still Manual</h3><p>Comparing EC2 to Azure VMs to Compute Engine requires bespoke scripting. No platform offers AI-driven semantic equivalence across all providers.</p><div class="prob-num">3×<span>more analyst time on cross-cloud work</span></div></div>
+      <div class="prob-card reveal d3"><div class="prob-icon">🌱</div><h3>Carbon + Cost Never Together</h3><p>Sustainability and FinOps live in separate tools, separate teams, separate reports. No commercial product co-optimizes both simultaneously.</p><div class="prob-num">93%<span>carbon savings from scheduling — uncaptured</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM -->
+<section id="platform" style="background:var(--bg1)">
+  <div class="si">
+    <div class="sec-tag reveal">14-Module Platform</div>
+    <h2 class="reveal">Every FinOps capability. Unified.</h2>
+    <p class="sec-sub reveal d1">14 loosely coupled modules, each independently deployable, communicating via an internal event bus.</p>
+    <div class="g3">
+      <div class="card reveal d1"><div class="card-accent"></div><div class="card-tag">M2 · Patent Pending</div><h3>CNRE — Noise Reduction</h3><p>3-stage pipeline: 140+ rule filters → Bayesian estimation → RL adapter. Removes all known noise categories before data reaches analysts.</p><div class="card-stat">880K records filtered · 96.2 sanity score</div></div>
+      <div class="card reveal d2"><div class="card-accent purple"></div><div class="card-tag">M13 · Patent Pending</div><h3>BCFE — Behavioral Fingerprinting</h3><p>512-dimensional Cost Fingerprint Vectors per cost center. Transformer-based temporal embeddings. &lt;5% false positive anomaly rate.</p><div class="card-stat">2 anomalies active · Cosine distance 0.41</div></div>
+      <div class="card reveal d3"><div class="card-accent green"></div><div class="card-tag">M4 · Patent Pending</div><h3>CSNL — Semantic Normalization</h3><p>GraphSAGE ontology engine creates equivalence mappings across all hyperscalers. Daily re-embedding as cloud pricing changes.</p><div class="card-stat">184 services mapped · 91.4% confidence</div></div>
+      <div class="card reveal d1"><div class="card-accent amber"></div><div class="card-tag">M7 · Patent Pending</div><h3>RTPM — Tag Propagation</h3><p>Sub-60s tag enforcement via event-driven inheritance graphs. Account → VPC → Instance. Priority-weighted conflict resolution.</p><div class="card-stat">2,841 propagated today · &lt;60s SLA</div></div>
+      <div class="card reveal d2"><div class="card-accent"></div><div class="card-tag">M10 · Patent Pending</div><h3>FPRE — Policy Engine</h3><p>FinOpsLang™ DSL evaluated at Terraform plan time. BLOCK · WARN · ESCALATE · REMEDIATE. &lt;3s IaC gate evaluation SLA.</p><div class="card-stat">7 active policies · $33,731 protected</div></div>
+      <div class="card reveal d3"><div class="card-accent green"></div><div class="card-tag">M11 · Patent Pending</div><h3>CCPO — Carbon+Cost Pareto</h3><p>First FinOps platform to co-optimize carbon and cost. NSGA-III multi-objective algorithm. SBTi 1.5°C trajectory tracking.</p><div class="card-stat">On Track SBTi · -43% vs 2022 baseline</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PATENTS -->
+<section id="patents" style="background:linear-gradient(180deg,var(--bg1),var(--bg2))">
+  <div class="si">
+    <div class="sec-tag reveal">IP Portfolio</div>
+    <h2 class="reveal">11 patent-pending innovations</h2>
+    <p class="sec-sub reveal d1">Novel algorithms, data structures, and architectures not present in any known commercial or open-source FinOps product as of Q1 2026.</p>
+    <div class="g4">
+      <div class="pat reveal d1"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 1 · Utility + Provisional</div><h4>Dynamic Cloud Schema Evolution Engine</h4><p>Autonomous NLP-driven detection and zero-downtime hot-reload of provider schema changes.</p><div class="pat-pri">1</div></div>
+      <div class="pat reveal d2"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 2 · Utility + Provisional</div><h4>Multi-Dimensional Cost Noise Reduction</h4><p>3-stage statistical pipeline combining rule engine, Bayesian priors, and RL threshold adaptation.</p><div class="pat-pri">2</div></div>
+      <div class="pat reveal d3"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 3 · Utility</div><h4>Behavioral Cost Fingerprinting Engine</h4><p>512-dimensional CFVs for cloud cost consumption units enabling behavioral anomaly detection.</p><div class="pat-pri">3</div></div>
+      <div class="pat reveal d4"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 4 · Utility</div><h4>Causal Cost Attribution Graph</h4><p>DAG engine tracing cost anomalies to root infrastructure events via counterfactual simulation.</p><div class="pat-pri">4</div></div>
+      <div class="pat reveal d1"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 5 · Utility</div><h4>Cross-Cloud Semantic Normalization</h4><p>AI-driven equivalence graphs across heterogeneous cloud service catalogs with performance-adjusted pricing.</p><div class="pat-pri">5</div></div>
+      <div class="pat reveal d2"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 6 · Utility</div><h4>Predictive Commitment Portfolio Optimizer</h4><p>Modern Portfolio Theory applied to multi-cloud RI/SP selection with 10,000-scenario Monte Carlo.</p><div class="pat-pri">6</div></div>
+      <div class="pat reveal d3"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 7 · Utility</div><h4>Real-Time Tag Propagation Mesh</h4><p>Event-driven tag inheritance with sub-minute SLAs and priority-weighted conflict resolution.</p><div class="pat-pri">7</div></div>
+      <div class="pat reveal d4"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 8 · Utility</div><h4>FinOps Policy Runtime + FinOpsLang™</h4><p>Purpose-built DSL for cost governance evaluated at IaC provisioning time.</p><div class="pat-pri">8</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px">
+      <div class="pat reveal d1"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 9 · Utility</div><h4>Adaptive Cost Indexing Engine</h4><p>Query-pattern-driven partition evolution enabling &lt;500ms queries on 10B+ billing records via Apache Iceberg.</p><div class="pat-pri">9</div></div>
+      <div class="pat reveal d2"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 10 · Utility</div><h4>Carbon-Cost Pareto Optimizer</h4><p>Pareto frontier of financial vs. environmental trade-offs with real-time grid intensity integration.</p><div class="pat-pri">10</div></div>
+      <div class="pat reveal d3"><div class="pat-badge">🔒 PATENT PENDING</div><div class="pat-num">Priority 11 · Utility</div><h4>Data Sanity Validation Framework</h4><p>4-layer validation gate: schema, referential integrity, temporal coherence, statistical outlier detection.</p><div class="pat-pri">11</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITIVE -->
+<section id="competitive" style="background:var(--bg2)">
+  <div class="si">
+    <div class="sec-tag reveal">Competitive Analysis</div>
+    <h2 class="reveal">No incumbent comes close</h2>
+    <p class="sec-sub reveal d1">A direct comparison on the capabilities that define next-generation enterprise FinOps.</p>
+    <div style="overflow-x:auto" class="reveal d2">
+      <table class="ctable">
+        <thead><tr>
+          <th>Platform</th><th>ML Noise Reduction</th><th>Autonomous Schema</th><th>Cross-Cloud AI</th>
+          <th>Causal Attribution</th><th>Carbon+Cost</th><th>Policy DSL</th><th>Behavioral AI</th>
+        </tr></thead>
+        <tbody>
+          <tr class="hi"><td>FintelliOps™ (Venture Vertex)</td><td><span class="cf">Full ML</span></td><td><span class="cf">Autonomous</span></td><td><span class="cf">Semantic AI</span></td><td><span class="cf">Full DAG</span></td><td><span class="cf">Pareto+SBTi</span></td><td><span class="cf">FinOpsLang™</span></td><td><span class="cf">512-dim CFV</span></td></tr>
+          <tr><td>CloudHealth (VMware)</td><td><span class="cp">Partial</span></td><td><span class="cn">Manual</span></td><td><span class="cn">Basic</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td></tr>
+          <tr><td>Apptio Cloudability</td><td><span class="cp">Partial</span></td><td><span class="cn">Manual</span></td><td><span class="cp">Moderate</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td></tr>
+          <tr><td>Harness CCM</td><td><span class="cp">Basic</span></td><td><span class="cp">Partial</span></td><td><span class="cp">Moderate</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cp">Basic</span></td><td><span class="cn">None</span></td></tr>
+          <tr><td>Spot.io (NetApp)</td><td><span class="cn">None</span></td><td><span class="cn">Manual</span></td><td><span class="cp">AWS Only</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td></tr>
+          <tr><td>Vantage</td><td><span class="cn">None</span></td><td><span class="cn">Manual</span></td><td><span class="cp">Moderate</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td><td><span class="cn">None</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background:var(--bg1)">
+  <div class="si">
+    <div class="sec-tag reveal">Architecture</div>
+    <h2 class="reveal">From raw billing data to governed intelligence</h2>
+    <p class="sec-sub reveal d1">Five stages transform noisy multi-cloud billing feeds into actionable, governed, real-time intelligence.</p>
+    <div class="pipe reveal d2">
+      <div class="pipe-step">
+        <div class="pipe-n">01</div>
+        <div class="pipe-icon" style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.18)">📥</div>
+        <h4>Multi-Cloud Ingestion</h4>
+        <p>AWS CUR 2.0, Azure Cost Mgmt, GCP BQ Export, OCI, SaaS connectors. &lt;15min SLA.</p>
+        <div class="pipe-arr">→</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-n">02</div>
+        <div class="pipe-icon" style="background:rgba(0,255,204,.06);border:1px solid rgba(0,255,204,.15)">🔬</div>
+        <h4>CNRE + DSVF</h4>
+        <p>140+ noise filters, Bayesian priors, RL adaptation. 4-layer sanity validation.</p>
+        <div class="pipe-arr">→</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-n">03</div>
+        <div class="pipe-icon" style="background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.15)">🧠</div>
+        <h4>CSNL Normalization</h4>
+        <p>GraphSAGE semantic equivalence mapping across 184 services, daily re-embedded.</p>
+        <div class="pipe-arr">→</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-n">04</div>
+        <div class="pipe-icon" style="background:rgba(255,176,32,.06);border:1px solid rgba(255,176,32,.15)">⚡</div>
+        <h4>ACIE Indexing</h4>
+        <p>Apache Iceberg. Adaptive partitioning. &lt;500ms P95 queries on 8.94B records.</p>
+        <div class="pipe-arr">→</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-n">05</div>
+        <div class="pipe-icon" style="background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15)">📊</div>
+        <h4>Intelligence + Action</h4>
+        <p>BCFE anomalies, CCAG causal graphs, FPRE governance, PCPO optimization, CCPO carbon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPLOYMENT -->
+<section id="deployment" style="background:linear-gradient(180deg,var(--bg1),var(--bg2))">
+  <div class="si">
+    <div class="sec-tag reveal">Deployment Models</div>
+    <h2 class="reveal">Deploy anywhere. Data stays yours.</h2>
+    <p class="sec-sub reveal d1">Three deployment models built for enterprise data residency, compliance, and sovereignty requirements.</p>
+    <div class="g3">
+      <div class="dc saas reveal d1">
+        <div class="dc-icon">☁️</div><h3>SaaS</h3>
+        <p class="dc-sub">Connect and go. SOC 2 Type II certified.</p>
+        <ul>
+          <li>Multi-tenant on AWS (us-east-1, eu-west-1, ap-southeast-1)</li>
+          <li>Data residency in your designated region</li>
+          <li>99.95% availability SLA · 15-min RTO / 5-min RPO</li>
+          <li>SOC 2 Type II · ISO 27001 · GDPR</li>
+          <li>Zero infrastructure to manage</li>
+        </ul>
+        <div class="dc-price">From $250K ARR / enterprise</div>
+      </div>
+      <div class="dc vpc reveal d2">
+        <div class="dc-icon">🏢</div><h3>Private Cloud VPC</h3>
+        <p class="dc-sub">Your cloud perimeter. Our platform.</p>
+        <ul>
+          <li>Helm chart into your AWS, Azure, or GCP VPC</li>
+          <li>Billing data never leaves your perimeter</li>
+          <li>Customer-managed encryption keys (CMEK)</li>
+          <li>Integrates with your existing IAM / SSO</li>
+          <li>EKS / AKS / GKE with Karpenter autoscaling</li>
+        </ul>
+        <div class="dc-price">From $500K ARR / enterprise</div>
+      </div>
+      <div class="dc ag reveal d3">
+        <div class="dc-icon">🔐</div><h3>Air-Gapped</h3>
+        <p class="dc-sub">Offline-capable. FedRAMP-ready.</p>
+        <ul>
+          <li>Fully offline-capable deployment</li>
+          <li>Classified government environments</li>
+          <li>Regulated financial institutions</li>
+          <li>FedRAMP Moderate (Year 2 roadmap)</li>
+          <li>HIPAA BAA · PCI DSS Level 1 (Year 2)</li>
+        </ul>
+        <div class="dc-price">Custom pricing · Contact us</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section id="partners" style="background:var(--bg0)">
+  <div class="si">
+    <div class="sec-tag reveal">GSI Ecosystem</div>
+    <h2 class="reveal">Built for the GSI channel</h2>
+    <p class="sec-sub reveal d1">White-label SKU, SDK-certified connectors, and co-branded deployment capabilities for Tier-1 GSI partners.</p>
+    <div class="partner-row reveal d2">
+      <div class="pi"><div class="pi-name">Accenture</div><div class="pi-type">GSI · SDK Certified</div></div>
+      <div class="pi"><div class="pi-name">Infosys</div><div class="pi-type">GSI · SDK Certified</div></div>
+      <div class="pi"><div class="pi-name">Wipro</div><div class="pi-type">GSI · In Review</div></div>
+      <div class="pi"><div class="pi-name">TCS</div><div class="pi-type">GSI · In Review</div></div>
+      <div class="pi"><div class="pi-name">Cognizant</div><div class="pi-type">GSI Partner</div></div>
+      <div class="pi"><div class="pi-name">NTT DATA</div><div class="pi-type">Cloud Partner</div></div>
+    </div>
+    <div class="partner-row reveal d3" style="margin-top:14px">
+      <div class="pi"><div class="pi-name" style="color:#FF9900">Amazon Web Services</div><div class="pi-type">Cloud Provider</div></div>
+      <div class="pi"><div class="pi-name" style="color:#0078D4">Microsoft Azure</div><div class="pi-type">Cloud Provider</div></div>
+      <div class="pi"><div class="pi-name" style="color:var(--cyan)">Google Cloud</div><div class="pi-type">Cloud Provider</div></div>
+      <div class="pi"><div class="pi-name" style="color:var(--purple)">Oracle Cloud</div><div class="pi-type">Cloud Provider</div></div>
+      <div class="pi"><div class="pi-name">ServiceNow</div><div class="pi-type">ITSM Integration</div></div>
+      <div class="pi"><div class="pi-name">SAP</div><div class="pi-type">ERP Chargeback</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:linear-gradient(180deg,var(--bg1),var(--bg0))">
+  <div class="si">
+    <div class="sec-tag reveal">Pricing</div>
+    <h2 class="reveal">Aligned with value delivered</h2>
+    <p class="sec-sub reveal d1">Target ARR $250K–$1.5M based on cloud spend under management. We only win when you save.</p>
+    <div class="g3">
+      <div class="pc std reveal d1">
+        <div class="pc-tier">Growth</div><h3>Foundation</h3>
+        <div class="pc-range">$250K–$500K / yr</div>
+        <div class="pc-basis">$10M–$50M cloud spend under management</div>
+        <ul>
+          <li>Multi-cloud ingestion (AWS · Azure · GCP · OCI)</li>
+          <li>CNRE + DSVF data quality pipeline</li>
+          <li>CSNL cross-cloud normalization</li>
+          <li>Forecasting · Budget alerts · Scenario Builder</li>
+          <li>RTPM tag governance · Untagged queue</li>
+          <li>14+ optimization recommendations</li>
+          <li>SaaS deployment · SOC 2 Type II</li>
+        </ul>
+        <button class="pc-btn s" onclick="scrollTo('#cta')">Contact Sales →</button>
+      </div>
+      <div class="pc ent reveal d2">
+        <div class="pc-pop">MOST POPULAR</div>
+        <div class="pc-tier">Enterprise</div><h3>Intelligence</h3>
+        <div class="pc-range">$500K–$1M / yr</div>
+        <div class="pc-basis">$50M–$200M cloud spend under management</div>
+        <ul>
+          <li>Everything in Foundation</li>
+          <li>BCFE behavioral fingerprinting engine</li>
+          <li>CCAG causal cost attribution graph</li>
+          <li>FPRE + FinOpsLang™ policy runtime</li>
+          <li>PCPO commitment portfolio optimizer</li>
+          <li>CCPO carbon-cost Pareto optimizer + SBTi</li>
+          <li>ERP chargeback (SAP · Oracle Financials)</li>
+          <li>ACIE sub-500ms query engine</li>
+          <li>VPC or SaaS · Dedicated success engineer</li>
+        </ul>
+        <button class="pc-btn p" onclick="scrollTo('#cta')">Request Demo →</button>
+      </div>
+      <div class="pc gsi reveal d3">
+        <div class="pc-tier">Partner</div><h3>GSI White-Label</h3>
+        <div class="pc-range">$1M–$1.5M / yr</div>
+        <div class="pc-basis">$200M+ cloud spend · GSI-mediated</div>
+        <ul>
+          <li>Everything in Intelligence</li>
+          <li>Full white-label capability</li>
+          <li>GSI partner SDK + certification program</li>
+          <li>Air-gapped deployment option</li>
+          <li>Co-branded FinOps practice enablement</li>
+          <li>FedRAMP Moderate (Year 2 roadmap)</li>
+          <li>HIPAA BAA · PCI DSS Level 1</li>
+          <li>Custom SLA commitments · Dedicated pod</li>
+        </ul>
+        <button class="pc-btn s" onclick="scrollTo('#cta')">Partner Program →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div style="position:relative;z-index:1">
+    <div class="sec-tag reveal" style="justify-content:center">Get Started</div>
+    <h2 class="reveal" style="text-align:center;max-width:660px;margin:0 auto 14px">
+      See FintelliOps in action.<br/>
+      <span style="background:linear-gradient(90deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Your cloud data. Live.</span>
+    </h2>
+    <p class="reveal d1">Book a 45-minute technical demo. We'll connect to your cloud environment and show you exactly what FintelliOps finds — live — against your real spend.</p>
+    <div class="cta-form reveal d2">
+      <input class="cta-in" type="email" placeholder="work@company.com"/>
+      <button class="btn-hero" style="white-space:nowrap">Request Demo →</button>
+    </div>
+    <div class="cta-note reveal d3">No credit card · 45-min live demo · Connect your cloud in minutes</div>
+    <div class="cta-metrics reveal d4">
+      <div class="cm"><div class="cm-v">&lt;1%</div><div class="cm-l">Attribution Error</div></div>
+      <div class="cm"><div class="cm-v" style="color:var(--green)">80%</div><div class="cm-l">Analyst Time Saved</div></div>
+      <div class="cm"><div class="cm-v" style="color:var(--purple)">11</div><div class="cm-l">Patents Pending</div></div>
+      <div class="cm"><div class="cm-v" style="color:var(--amber)">90d</div><div class="cm-l">To &lt;1% Error</div></div>
+      <div class="cm"><div class="cm-v" style="color:var(--teal)">$6.2B</div><div class="cm-l">TAM (2025)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div class="fb">
+      <h4>FintelliOps™</h4>
+      <p>The Intelligence Layer for Cloud Spend. AI-native multi-cloud FinOps with 11 patent-pending innovations by Venture Vertex LLC.</p>
+      <div class="fb-s">© 2026 Venture Vertex LLC · All Rights Reserved</div>
+      <div class="fb-s" style="margin-top:3px">vyasa.murthy@venture-vertex.com</div>
+    </div>
+    <div class="fc">
+      <h5>Platform</h5>
+      <a href="#platform">14 Modules</a>
+      <a href="#patents">11 Patents</a>
+      <a href="#how">Architecture</a>
+      <a href="#competitive">Why FintelliOps</a>
+      <a href="#deployment">Deployment</a>
+    </div>
+    <div class="fc">
+      <h5>Company</h5>
+      <a href="#">About Venture Vertex</a>
+      <a href="#">Leadership</a>
+      <a href="#">Careers</a>
+      <a href="#">Press</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="fc">
+      <h5>Resources</h5>
+      <a href="#pricing">Pricing</a>
+      <a href="#partners">GSI Partners</a>
+      <a href="#">API Documentation</a>
+      <a href="#">Security & Compliance</a>
+      <a href="#cta">Request Demo</a>
+    </div>
+    <div class="ft-bot">
+      <p>FintelliOps™ · fintelliops.com · Confidential & Proprietary · March 2026</p>
+      <p>Privacy Policy · Terms of Service · SOC 2 Type II</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').style.background =
+    window.scrollY > 40 ? 'rgba(5,7,15,.97)' : '';
+});
+
+// Smooth scroll helper
+function scrollTo(sel) {
+  document.querySelector(sel)?.scrollIntoView({ behavior: 'smooth' });
+}
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => { e.preventDefault(); scrollTo(a.getAttribute('href')); });
+});
+</script>
+</body>
+</html>
