@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FintelliOps™ — Interactive Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg0: #040810;
+  --bg1: #070d1c;
+  --bg2: #0a1228;
+  --bg3: #0e1735;
+  --border: #162040;
+  --border2: #1e2d55;
+  --cyan: #00d4ff;
+  --cyan2: #00a8cc;
+  --teal: #00ffcc;
+  --green: #00ff88;
+  --amber: #ffb020;
+  --red: #ff3b5c;
+  --purple: #a855f7;
+  --white: #e8edf8;
+  --dim: #3d4f7a;
+  --dimmer: #1e2d55;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Inter', sans-serif;
+  --head: 'Syne', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg0);
+  color: var(--white);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glow orbs */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-1 { width: 600px; height: 600px; background: rgba(0,212,255,0.06); top: -200px; right: -100px; }
+.orb-2 { width: 400px; height: 400px; background: rgba(168,85,247,0.05); bottom: 100px; left: -100px; }
+
+/* ── HEADER ── */
+.header {
+  position: relative; z-index: 10;
+  padding: 20px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(4,8,16,0.8);
+  backdrop-filter: blur(20px);
+}
+.logo { display: flex; align-items: baseline; gap: 4px; }
+.logo-text { font-family: var(--head); font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+.logo-tm { font-size: 11px; color: var(--cyan); font-family: var(--mono); font-weight: 500; }
+.logo-sub { font-family: var(--mono); font-size: 9px; color: var(--dim); letter-spacing: 0.1em; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.ntt-badge {
+  padding: 4px 12px; border-radius: 20px;
+  background: rgba(255,176,32,0.1); border: 1px solid rgba(255,176,32,0.3);
+  font-family: var(--mono); font-size: 9px; color: var(--amber); letter-spacing: 0.08em;
+}
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease infinite;
+}
+.live-label { font-family: var(--mono); font-size: 9px; color: var(--green); display: flex; align-items: center; gap: 6px; }
+
+/* ── HERO ── */
+.hero {
+  position: relative; z-index: 5;
+  padding: 48px 40px 32px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 9px; color: var(--cyan);
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--cyan); }
+.hero-title { font-family: var(--head); font-size: 36px; font-weight: 800; line-height: 1.1; margin-bottom: 12px; }
+.hero-title span { color: var(--cyan); }
+.hero-desc { font-size: 13px; color: #6b7fa8; max-width: 620px; line-height: 1.7; margin-bottom: 24px; }
+.kpi-strip {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+.kpi { }
+.kpi-val { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--cyan); }
+.kpi-lab { font-size: 10px; color: var(--dim); margin-top: 2px; letter-spacing: 0.05em; }
+
+/* ── NAV TABS ── */
+.demo-nav {
+  position: relative; z-index: 5;
+  display: flex; gap: 0;
+  border-bottom: 1px solid var(--border);
+  background: rgba(7,13,28,0.9);
+  backdrop-filter: blur(10px);
+  padding: 0 40px;
+  overflow-x: auto;
+}
+.demo-tab {
+  padding: 14px 20px; cursor: pointer;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em;
+  color: var(--dim); border: none; background: transparent;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s; white-space: nowrap;
+  display: flex; align-items: center; gap: 7px;
+}
+.demo-tab:hover { color: var(--white); }
+.demo-tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+.tab-badge {
+  font-size: 7px; padding: 1px 5px; border-radius: 3px;
+  font-family: var(--mono);
+}
+
+/* ── MAIN CONTENT ── */
+.demo-body {
+  position: relative; z-index: 5;
+  padding: 28px 40px;
+  min-height: calc(100vh - 280px);
+}
+.panel { display: none; }
+.panel.active { display: block; animation: fadeUp 0.2s ease-out; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes slideRight { from{width:0} to{width:100%} }
+
+/* Cards */
+.card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.card-title {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 6px;
+}
+.card-title .accent { color: var(--cyan); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+/* Metric chips */
+.metric {
+  padding: 10px 12px; border-radius: 6px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+.metric-val { font-family: var(--mono); font-size: 18px; font-weight: 500; }
+.metric-lab { font-size: 9px; color: var(--dim); margin-top: 3px; }
+
+/* Buttons */
+.btn {
+  padding: 8px 16px; border-radius: 6px; cursor: pointer;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  transition: all 0.15s; border: 1px solid;
+}
+.btn-cyan { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.35); color: var(--cyan); }
+.btn-cyan:hover { background: rgba(0,212,255,0.18); }
+.btn-green { background: rgba(0,255,136,0.1); border-color: rgba(0,255,136,0.3); color: var(--green); }
+.btn-purple { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.35); color: var(--purple); }
+.btn-amber { background: rgba(255,176,32,0.1); border-color: rgba(255,176,32,0.3); color: var(--amber); }
+.btn-ghost { background: var(--bg2); border-color: var(--border); color: var(--dim); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+
+/* Tags */
+.tag {
+  display: inline-block; padding: 2px 7px; border-radius: 4px;
+  font-family: var(--mono); font-size: 8px; border: 1px solid;
+}
+
+/* Range slider */
+input[type="range"] { accent-color: var(--cyan); width: 100%; cursor: pointer; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--bg0); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════
+   PANEL 1 — FINOPS COPILOT
+═══════════════════════════════════════════ */
+.copilot-wrap {
+  display: grid; grid-template-columns: 1fr 360px; gap: 12px;
+  height: calc(100vh - 340px); min-height: 480px;
+}
+.copilot-context {
+  display: flex; flex-direction: column; gap: 10px; overflow-y: auto;
+}
+.copilot-chat {
+  display: flex; flex-direction: column;
+  background: var(--bg1); border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+}
+.chat-header {
+  padding: 12px 16px;
+  background: rgba(168,85,247,0.08);
+  border-bottom: 1px solid rgba(168,85,247,0.2);
+  display: flex; align-items: center; gap: 10px;
+}
+.chat-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: rgba(168,85,247,0.18); border: 1px solid rgba(168,85,247,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: var(--purple);
+}
+.chat-messages {
+  flex: 1; padding: 14px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 10px;
+  min-height: 200px; max-height: 320px;
+}
+.msg {
+  max-width: 88%;
+  padding: 9px 12px; border-radius: 8px;
+  font-size: 11px; line-height: 1.65;
+}
+.msg-user {
+  align-self: flex-end;
+  background: rgba(168,85,247,0.18); border: 1px solid rgba(168,85,247,0.35);
+  color: var(--white); font-family: var(--mono);
+}
+.msg-ai {
+  align-self: flex-start;
+  background: var(--bg2); border: 1px solid var(--border);
+  color: var(--white); font-family: var(--sans);
+}
+.msg-ai .source {
+  margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border);
+  font-family: var(--mono); font-size: 9px; color: var(--dim);
+}
+.typing-dots { display: flex; gap: 4px; align-items: center; }
+.typing-dots span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--purple); animation: bounce 1s ease infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+.chat-suggested {
+  padding: 10px 14px; border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 5px;
+}
+.sugg-label { font-family: var(--mono); font-size: 8px; color: var(--dim); margin-bottom: 2px; }
+.sugg-btn {
+  padding: 6px 10px; border-radius: 5px;
+  background: var(--bg2); border: 1px solid var(--border);
+  color: var(--dim); font-family: var(--mono); font-size: 9px;
+  cursor: pointer; text-align: left; transition: all 0.1s;
+}
+.sugg-btn:hover { border-color: var(--purple); color: var(--purple); background: rgba(168,85,247,0.06); }
+.chat-input-row {
+  padding: 10px 12px; border-top: 1px solid var(--border);
+  display: flex; gap: 7px;
+}
+.chat-input {
+  flex: 1; padding: 7px 10px;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 5px;
+  color: var(--white); font-family: var(--mono); font-size: 10px;
+  outline: none; transition: border-color 0.15s;
+}
+.chat-input:focus { border-color: var(--purple); }
+
+/* Context cards */
+.ctx-card {
+  background: var(--bg1); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px;
+}
+.ctx-title {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em;
+  color: var(--dim); text-transform: uppercase; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+.ctx-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 10px;
+}
+.ctx-row:last-child { border-bottom: none; }
+.ctx-key { color: var(--dim); font-family: var(--mono); font-size: 9px; }
+.ctx-val { font-family: var(--mono); font-size: 10px; font-weight: 500; }
+
+/* ═══════════════════════════════════════════
+   PANEL 2 — ANOMALY EXPLAINER
+═══════════════════════════════════════════ */
+.anomaly-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.anomaly-card {
+  background: var(--bg1); border-radius: 8px; padding: 14px 16px;
+  cursor: pointer; transition: all 0.15s;
+}
+.anomaly-card:hover { border-color: var(--cyan); }
+.anomaly-card.critical { border: 1px solid rgba(255,59,92,0.4); }
+.anomaly-card.high { border: 1px solid rgba(255,176,32,0.35); }
+.anomaly-card.info { border: 1px solid var(--border); }
+.anom-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.sev-badge {
+  font-family: var(--mono); font-size: 7px; padding: 2px 6px;
+  border-radius: 3px; border: 1px solid;
+}
+.sev-critical { color: var(--red); background: rgba(255,59,92,0.1); border-color: rgba(255,59,92,0.3); }
+.sev-high { color: var(--amber); background: rgba(255,176,32,0.1); border-color: rgba(255,176,32,0.3); }
+.sev-info { color: var(--cyan); background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.25); }
+.anom-svc { font-family: var(--mono); font-size: 13px; color: var(--white); font-weight: 500; margin-bottom: 4px; }
+.anom-cause { font-size: 10px; color: var(--dim); margin-bottom: 8px; }
+.anom-meta { display: flex; justify-content: space-between; }
+.explain-result {
+  margin-top: 12px; padding: 14px 16px;
+  background: rgba(168,85,247,0.07); border: 1px solid rgba(168,85,247,0.25);
+  border-radius: 8px; animation: fadeUp 0.2s ease-out;
+}
+.explain-label { font-family: var(--mono); font-size: 8px; color: var(--purple); margin-bottom: 8px; letter-spacing: 0.1em; }
+.explain-text { font-size: 11px; color: var(--white); line-height: 1.75; font-style: italic; }
+.explain-cursor {
+  display: inline-block; width: 7px; height: 13px;
+  background: var(--purple); margin-left: 2px;
+  vertical-align: middle; border-radius: 1px;
+  animation: blink 1s step-end infinite;
+}
+.explain-actions { display: flex; gap: 7px; margin-top: 10px; }
+.conf-bar { margin-top: 10px; }
+.conf-label { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.conf-track { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.conf-fill { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
+
+/* ═══════════════════════════════════════════
+   PANEL 3 — EFFICIENT FRONTIER
+═══════════════════════════════════════════ */
+.frontier-wrap { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; }
+.frontier-chart-wrap {
+  background: var(--bg1); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px 20px;
+}
+.risk-slider-wrap { margin: 16px 0 8px; }
+.risk-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+.risk-label { font-family: var(--mono); font-size: 8px; color: var(--dimmer); }
+.frontier-svg { width: 100%; border-radius: 6px; background: var(--bg0); overflow: visible; }
+.portfolio-side { display: flex; flex-direction: column; gap: 10px; }
+.instrument {
+  padding: 10px 12px; border-radius: 6px;
+  background: var(--bg2); border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.instrument.active {
+  border-color: rgba(0,212,255,0.35); background: rgba(0,212,255,0.05);
+}
+.instrument.inactive { opacity: 0.35; }
+.inst-header { display: flex; justify-content: space-between; margin-bottom: 3px; }
+.inst-name { font-family: var(--mono); font-size: 10px; color: var(--white); font-weight: 500; }
+.inst-saving { font-family: var(--mono); font-size: 10px; color: var(--green); font-weight: 500; }
+.inst-meta { font-family: var(--mono); font-size: 8px; color: var(--dim); }
+.savings-total {
+  padding: 12px 14px; border-radius: 7px;
+  background: rgba(0,255,136,0.07); border: 1px solid rgba(0,255,136,0.2);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.savings-big { font-family: var(--mono); font-size: 24px; color: var(--green); font-weight: 500; }
+
+/* ═══════════════════════════════════════════
+   PANEL 4 — TIME MACHINE
+═══════════════════════════════════════════ */
+.tm-wrap { display: grid; grid-template-columns: 1fr 1.4fr; gap: 12px; }
+.missed-big {
+  text-align: center; padding: 24px 0;
+  border-bottom: 1px solid var(--border); margin-bottom: 14px;
+}
+.missed-label { font-family: var(--mono); font-size: 8px; color: var(--dim); letter-spacing: 0.12em; margin-bottom: 6px; }
+.missed-val { font-family: var(--mono); font-size: 44px; color: var(--red); font-weight: 500; line-height: 1; }
+.missed-sub { font-size: 10px; color: var(--dim); margin-top: 6px; }
+.tm-chart { width: 100%; height: 100px; }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- HEADER -->
+<header class="header">
+  <div>
+    <div class="logo">
+      <span class="logo-text">FintelliOps</span>
+      <span class="logo-tm">™</span>
+    </div>
+    <div class="logo-sub">AI-NATIVE MULTI-CLOUD FINOPS · VENTURE VERTEX LLC</div>
+  </div>
+  <div class="header-right">
+    <span class="ntt-badge">NTT DATA — CONFIDENTIAL DEMO</span>
+    <div class="live-label"><div class="live-dot"></div>LIVE DEMO</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Interactive Platform Preview</div>
+  <h1 class="hero-title">The FinOps platform that<br><span>explains</span> cost behavior.</h1>
+  <p class="hero-desc">Four capabilities shown here represent what no other platform offers today — and directly address the 5-tool consolidation opportunity for your enterprise clients.</p>
+  <div class="kpi-strip">
+    <div class="kpi"><div class="kpi-val">$148,400</div><div class="kpi-lab">MTD CLOUD SPEND</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--green)">$94,200</div><div class="kpi-lab">ANNUAL SAVINGS AVAILABLE</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--amber)">2 ACTIVE</div><div class="kpi-lab">CAUSAL ANOMALIES</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--purple)">72/100</div><div class="kpi-lab">FINOPS EFFICIENCY</div></div>
+  </div>
+</section>
+
+<!-- NAV TABS -->
+<nav class="demo-nav">
+  <button class="demo-tab active" onclick="switchTab('copilot',this)">
+    <span>✦</span> FinOps Copilot
+    <span class="tab-badge" style="background:rgba(168,85,247,0.15);color:var(--purple);border:1px solid rgba(168,85,247,0.3)">LIVE AI</span>
+  </button>
+  <button class="demo-tab" onclick="switchTab('explainer',this)">
+    <span>◈</span> Causal Explainer
+    <span class="tab-badge" style="background:rgba(255,59,92,0.12);color:var(--red);border:1px solid rgba(255,59,92,0.3)">2 ANOMALIES</span>
+  </button>
+  <button class="demo-tab" onclick="switchTab('frontier',this)">
+    <span>📈</span> Efficient Frontier
+    <span class="tab-badge" style="background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.25)">OPTIMIZER</span>
+  </button>
+  <button class="demo-tab" onclick="switchTab('timemachine',this)">
+    <span>⏱</span> Time Machine
+    <span class="tab-badge" style="background:rgba(255,176,32,0.1);color:var(--amber);border:1px solid rgba(255,176,32,0.3)">COUNTERFACTUAL</span>
+  </button>
+</nav>
+
+<!-- DEMO BODY -->
+<main class="demo-body">
+
+<!-- ═══ PANEL 1: COPILOT ═══ -->
+<div id="panel-copilot" class="panel active">
+  <div class="copilot-wrap">
+    <!-- Context sidebar -->
+    <div class="copilot-context">
+      <div class="ctx-card">
+        <div class="ctx-title"><span style="color:var(--cyan)">◈</span> Live Platform Context</div>
+        <div class="ctx-row"><span class="ctx-key">MTD Spend</span><span class="ctx-val" style="color:var(--cyan)">$148,400</span></div>
+        <div class="ctx-row"><span class="ctx-key">Providers</span><span class="ctx-val">7 (AWS 50%, Azure 30%, GCP 15%)</span></div>
+        <div class="ctx-row"><span class="ctx-key">Active anomalies</span><span class="ctx-val" style="color:var(--red)">2 critical</span></div>
+        <div class="ctx-row"><span class="ctx-key">Savings available</span><span class="ctx-val" style="color:var(--green)">$94,200/yr</span></div>
+        <div class="ctx-row"><span class="ctx-key">Tag compliance</span><span class="ctx-val" style="color:var(--amber)">78% (187 untagged)</span></div>
+        <div class="ctx-row"><span class="ctx-key">Top risk</span><span class="ctx-val" style="color:var(--red)">Eng BU 110% of budget</span></div>
+      </div>
+      <div class="ctx-card">
+        <div class="ctx-title"><span style="color:var(--red)">⚠</span> Active Anomalies</div>
+        <div class="ctx-row">
+          <span class="ctx-key">AmazonRDS</span>
+          <span class="ctx-val" style="color:var(--red)">+$8,420/mo · RI expired</span>
+        </div>
+        <div class="ctx-row">
+          <span class="ctx-key">BigQuery ML jobs</span>
+          <span class="ctx-val" style="color:var(--amber)">+$3,200/mo · Usage spike</span>
+        </div>
+      </div>
+      <div class="ctx-card">
+        <div class="ctx-title"><span style="color:var(--green)">◉</span> Top Recommendations</div>
+        <div class="ctx-row"><span class="ctx-key">RDS RI renewal</span><span class="ctx-val" style="color:var(--green)">$14,688/yr</span></div>
+        <div class="ctx-row"><span class="ctx-key">EC2 Savings Plan</span><span class="ctx-val" style="color:var(--green)">$28,400/yr</span></div>
+        <div class="ctx-row"><span class="ctx-key">Dev ASG shutdown</span><span class="ctx-val" style="color:var(--green)">$29,736/yr</span></div>
+      </div>
+      <div style="padding:10px 14px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-radius:7px;font-size:10px;color:var(--dim);line-height:1.6;">
+        <span style="color:var(--purple);font-family:var(--mono);font-size:8px;">HOW IT WORKS</span><br>
+        The Copilot reads your live platform data as context — every answer is grounded in your actual numbers, not generic advice. Powered by Claude.
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <div class="copilot-chat">
+      <div class="chat-header">
+        <div class="chat-icon">✦</div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--purple);font-weight:500;">FinOps Copilot</div>
+          <div style="font-size:9px;color:var(--dim);">Context-aware · Live platform data</div>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:5px;">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;"></div>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--green);">LIVE</span>
+        </div>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--dim);text-align:center;padding:20px 0;">
+          Ask anything about your cloud costs ↓
+        </div>
+      </div>
+      <div class="chat-suggested" id="chat-suggested">
+        <div class="sugg-label">SUGGESTED QUESTIONS</div>
+        <button class="sugg-btn" onclick="sendSuggestion(this)">Why did my costs spike this week?</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this)">What's my single highest-impact action right now?</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this)">Which BUs are at risk of blowing their budget?</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this)">How do I improve my commitment coverage to 75%?</button>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" placeholder="Ask about your costs…"
+          onkeydown="if(event.key==='Enter')sendChat()"/>
+        <button class="btn btn-purple" onclick="sendChat()" id="send-btn">↑ Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PANEL 2: CAUSAL EXPLAINER ═══ -->
+<div id="panel-explainer" class="panel">
+  <div style="margin-bottom:12px;padding:10px 16px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:7px;font-size:10px;color:var(--dim);line-height:1.6;">
+    <span style="color:var(--cyan);font-family:var(--mono);font-size:8px;letter-spacing:0.1em;">◈ CCAG CAUSAL ENGINE v3</span><br>
+    BCFE detects anomalies. The Causal Explainer reads the anomaly, the causal dependency graph, and the action queue — then generates a root cause hypothesis with confidence score. Click <b style="color:var(--purple)">✦ Explain</b> on any anomaly.
+  </div>
+  <div class="anomaly-grid">
+    <!-- Anomaly 1 -->
+    <div>
+      <div class="anomaly-card critical" id="anom-card-1">
+        <div class="anom-header">
+          <span class="sev-badge sev-critical">CRITICAL</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">03-27 14:22 · conf 94%</span>
+        </div>
+        <div class="anom-svc">AmazonRDS</div>
+        <div class="anom-cause">Commitment expired — on-demand premium active</div>
+        <div class="anom-meta">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--red);font-weight:500;">+$8,420/mo</span>
+          <button class="btn btn-purple" onclick="explainAnomaly(1)" id="explain-btn-1">✦ Explain</button>
+        </div>
+      </div>
+      <div id="explain-result-1"></div>
+    </div>
+    <!-- Anomaly 2 -->
+    <div>
+      <div class="anomaly-card high" id="anom-card-2">
+        <div class="anom-header">
+          <span class="sev-badge sev-high">HIGH</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">03-25 09:15 · conf 87%</span>
+        </div>
+        <div class="anom-svc">BigQuery ML Pipeline</div>
+        <div class="anom-cause">Usage spike — batch job frequency increase</div>
+        <div class="anom-meta">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--amber);font-weight:500;">+$3,200/mo</span>
+          <button class="btn btn-amber" onclick="explainAnomaly(2)" id="explain-btn-2">✦ Explain</button>
+        </div>
+      </div>
+      <div id="explain-result-2"></div>
+    </div>
+  </div>
+
+  <!-- CCAG visualization -->
+  <div class="card" style="margin-top:12px;">
+    <div class="card-title">◈ Causal Dependency Graph · Payment API Service</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <div id="causal-nodes" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;flex:1;"></div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--dim);text-align:right;">Node size = monthly cost<br>→ direction = dependency</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PANEL 3: EFFICIENT FRONTIER ═══ -->
+<div id="panel-frontier" class="panel">
+  <div class="frontier-wrap">
+    <div class="frontier-chart-wrap">
+      <div class="card-title">Commitment Portfolio · Efficient Frontier <span class="accent">· Drag to rebalance</span></div>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:14px;">
+        Treats RI/SP purchasing as a Markowitz portfolio optimization problem. Each point = optimal instrument mix at that risk level.
+      </div>
+
+      <div class="risk-slider-wrap">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">Risk tolerance</span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--cyan);font-weight:500;" id="risk-pct-label">19% locked</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:1px 7px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);border-radius:3px;color:var(--cyan);" id="risk-tier-label">Moderate</span>
+        </div>
+        <input type="range" min="5" max="55" value="19" id="risk-slider" oninput="updateFrontier(this.value)">
+        <div class="risk-labels">
+          <span class="risk-label">Very Low</span>
+          <span class="risk-label">Moderate</span>
+          <span class="risk-label">Balanced</span>
+          <span class="risk-label">Aggressive</span>
+        </div>
+      </div>
+
+      <svg class="frontier-svg" viewBox="0 0 500 180" id="frontier-svg">
+        <!-- Grid lines -->
+        <line x1="50" y1="20" x2="50" y2="155" stroke="#162040" stroke-width="1"/>
+        <line x1="50" y1="155" x2="470" y2="155" stroke="#162040" stroke-width="1"/>
+        <line x1="50" y1="60" x2="470" y2="60" stroke="#162040" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.5"/>
+        <line x1="50" y1="100" x2="470" y2="100" stroke="#162040" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.5"/>
+        <!-- Y axis labels -->
+        <text x="44" y="63" text-anchor="end" font-size="8" fill="#3d4f7a" font-family="DM Mono, monospace">$80K</text>
+        <text x="44" y="103" text-anchor="end" font-size="8" fill="#3d4f7a" font-family="DM Mono, monospace">$40K</text>
+        <text x="44" y="158" text-anchor="end" font-size="8" fill="#3d4f7a" font-family="DM Mono, monospace">$0</text>
+        <!-- X axis label -->
+        <text x="260" y="175" text-anchor="middle" font-size="8" fill="#3d4f7a" font-family="DM Mono, monospace">Risk (% compute locked)</text>
+        <!-- Frontier area fill -->
+        <polygon id="frontier-area" fill="#00d4ff" fill-opacity="0.06"
+          points="57,143 117,123 193,97 277,79 369,55 453,30 453,155 57,155"/>
+        <!-- Frontier curve -->
+        <polyline id="frontier-curve" fill="none" stroke="#00d4ff" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round"
+          points="57,143 117,123 193,97 277,79 369,55 453,30"/>
+        <!-- Current selection line -->
+        <line id="risk-line" x1="193" y1="20" x2="193" y2="155" stroke="#ffb020" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+        <!-- Frontier dots -->
+        <g id="frontier-dots"></g>
+      </svg>
+
+      <!-- Current vs recommended -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+        <div style="padding:8px 10px;background:var(--bg2);border-radius:5px;">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--dim);margin-bottom:3px;">CURRENT POSITION</div>
+          <div style="font-family:var(--mono);font-size:14px;color:var(--dim);">$57,488/yr</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--dim);">60% coverage</div>
+        </div>
+        <div style="padding:8px 10px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);border-radius:5px;">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--green);margin-bottom:3px;">RECOMMENDED</div>
+          <div style="font-family:var(--mono);font-size:14px;color:var(--green);" id="rec-saving">$37,716/yr</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--dim);" id="rec-coverage">19% locked · 3 instruments</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portfolio composition -->
+    <div class="portfolio-side">
+      <div class="card" style="padding:14px 16px;">
+        <div class="card-title">Portfolio Composition</div>
+        <div id="instrument-list"></div>
+        <div class="savings-total" style="margin-top:10px;">
+          <div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--dim);">ANNUAL SAVINGS</div>
+            <div class="savings-big" id="total-saving">$37,716</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:var(--mono);font-size:8px;color:var(--dim);">vs current</div>
+            <div style="font-family:var(--mono);font-size:13px;color:var(--green);" id="delta-saving">+$0/yr</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:7px;font-size:10px;color:var(--dim);line-height:1.7;">
+        <span style="color:var(--cyan);font-family:var(--mono);font-size:8px;letter-spacing:0.1em;">WHY THIS MATTERS</span><br>
+        Every other FinOps platform gives you individual RI recommendations. FintelliOps treats your commitment portfolio as a financial instrument — the first to apply Markowitz portfolio theory to cloud purchasing.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PANEL 4: TIME MACHINE ═══ -->
+<div id="panel-timemachine" class="panel">
+  <div class="tm-wrap">
+    <!-- Controls -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="card">
+        <div class="card-title">⏱ <span class="accent">Select a Past Date</span></div>
+        <div style="font-size:10px;color:var(--dim);margin-bottom:14px;">Drag the slider back in time. See what your costs looked like then — and what you could have saved by acting sooner.</div>
+
+        <div style="margin-bottom:14px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">Jan 1, 2026</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--amber);font-weight:500;" id="tm-date-label">Mar 1, 2026</span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">Today</span>
+          </div>
+          <input type="range" min="0" max="6" value="4" id="tm-slider" oninput="updateTimeMachine(this.value)">
+        </div>
+
+        <div id="tm-snapshot" style="padding:12px;background:rgba(255,176,32,0.06);border:1px solid rgba(255,176,32,0.2);border-radius:6px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Which recommendation?</div>
+        <div id="tm-rec-list"></div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="card" style="border-color:rgba(255,59,92,0.3);">
+        <div class="missed-big">
+          <div class="missed-label">TOTAL MISSED SAVINGS</div>
+          <div class="missed-val" id="tm-missed">-$14,080</div>
+          <div class="missed-sub" id="tm-missed-sub">over 11 weeks of inaction</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+          <div class="metric">
+            <div class="metric-val" style="color:var(--red);font-size:14px;" id="tm-per-week">$283/wk</div>
+            <div class="metric-lab">PER WEEK COST</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val" style="color:var(--amber);font-size:14px;" id="tm-projection">$14,688/yr</div>
+            <div class="metric-lab">12-MO PROJECTION</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val" style="color:var(--green);font-size:14px;" id="tm-total-opp">$28,768</div>
+            <div class="metric-lab">TOTAL OPPORTUNITY</div>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div style="font-family:var(--mono);font-size:8px;color:var(--dim);margin-bottom:6px;">COST TRAJECTORY</div>
+        <svg id="tm-chart" class="tm-chart" viewBox="0 0 460 100" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="red-grad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#ff3b5c" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#ff3b5c" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:6px;">
+          <div style="display:flex;gap:4px;align-items:center;"><div style="width:12px;height:2px;background:var(--red);border-radius:1px;"></div><span style="font-family:var(--mono);font-size:8px;color:var(--dim);">Actual</span></div>
+          <div style="display:flex;gap:4px;align-items:center;"><div style="width:12px;height:2px;background:var(--green);border-radius:1px;border-top:1px dashed var(--green);"></div><span style="font-family:var(--mono);font-size:8px;color:var(--dim);">If acted then</span></div>
+        </div>
+
+        <!-- AI narrative -->
+        <div style="margin-top:12px;padding:12px 14px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-radius:6px;">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--purple);margin-bottom:6px;">✦ ANALYSIS</div>
+          <div id="tm-narrative" style="font-size:10px;color:var(--dim);line-height:1.7;font-style:italic;"></div>
+        </div>
+
+        <button class="btn btn-green" style="width:100%;margin-top:10px;padding:9px 0;font-size:10px;" id="tm-execute-btn">
+          Execute Now → Save $14,688/yr
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer style="position:relative;z-index:5;padding:16px 40px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(4,8,16,0.9);">
+  <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">FintelliOps™ · Venture Vertex LLC · Confidential — Prepared for NTT DATA</span>
+  <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">Demo data for illustrative purposes · Vyasa Murthy · vyasa.murthy@venture-vertex.com</span>
+</footer>
+
+<script>
+// ── COPILOT ──────────────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are the FintelliOps™ AI FinOps Copilot. You have access to live platform data for this NTT DATA demo environment.
+
+Platform data:
+- MTD Cloud Spend: $148,400 across 7 providers (AWS 50%, Azure 30%, GCP 15%)
+- Active anomalies: AmazonRDS +$8,420/mo (RI expired March 27, CRITICAL), BigQuery ML +$3,200/mo (usage spike)
+- Annual savings available: $94,200 across 14 recommendations
+- Tag compliance: 78% (187 untagged resources out of 847 total)
+- FinOps efficiency: 72/100
+- Commitment coverage: 60% (PCPO target 75%)
+- Engineering BU: $62,400 actual vs $65,000 budget, forecast $71,200 — HIGH RISK
+- ML Training BU: $14,200 actual vs $12,000 budget — OVER BUDGET
+- Top recommendation: RDS RI renewal $14,688/yr (confidence 99%, waiting approval)
+- EC2 Savings Plan: $28,400/yr, Dev ASG shutdown: $29,736/yr
+
+Respond in 3-4 sentences maximum. Be specific — use exact dollar figures. Be direct and actionable. No bullet points. No headers. Plain prose only.`;
+
+let chatHistory = [];
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function sendSuggestion(btn) {
+  document.getElementById('chat-input').value = btn.textContent;
+  document.getElementById('chat-suggested').style.display = 'none';
+  sendChat();
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  document.getElementById('send-btn').disabled = true;
+
+  const msgs = document.getElementById('chat-messages');
+
+  // User bubble
+  const userDiv = document.createElement('div');
+  userDiv.className = 'msg msg-user';
+  userDiv.textContent = text;
+  msgs.appendChild(userDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Typing indicator
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'msg msg-ai';
+  typingDiv.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  msgs.appendChild(typingDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  chatHistory.push({role:'user', content: text});
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 200,
+        stream: true,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory,
+      })
+    });
+
+    const aiDiv = document.createElement('div');
+    aiDiv.className = 'msg msg-ai';
+    msgs.replaceChild(aiDiv, typingDiv);
+
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let full = '';
+
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      for (const line of dec.decode(value).split('\n')) {
+        if (line.startsWith('data: ')) {
+          try {
+            const j = JSON.parse(line.slice(6));
+            if (j.type === 'content_block_delta' && j.delta && j.delta.text) {
+              full += j.delta.text;
+              aiDiv.innerHTML = '"' + full + '<span class="explain-cursor"></span>"';
+            }
+          } catch(e) {}
+        }
+      }
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    aiDiv.innerHTML = '"' + full + '"<div class="source">✦ FintelliOps Copilot · Claude · Live platform context</div>';
+    chatHistory.push({role:'assistant', content: full});
+
+  } catch(e) {
+    typingDiv.className = 'msg msg-ai';
+    typingDiv.style.color = 'var(--amber)';
+    typingDiv.textContent = 'API connection required — add your Anthropic API key to enable live responses.';
+  }
+
+  document.getElementById('send-btn').disabled = false;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ── CAUSAL EXPLAINER ─────────────────────────────────────────────
+const ANOMALY_DATA = {
+  1: {
+    svc: 'AmazonRDS', delta: 8420, sev: 'critical', conf: 0.94,
+    ts: '03-27 14:22', cause: 'Commitment expired',
+    context: `Anomaly: AmazonRDS cost +$8,420/mo (CRITICAL, confidence 94%)
+Timestamp: March 27, 14:22
+System cause: RI commitment expired March 27
+Causal graph: ec2-api → rds-main (3.2M queries/day), ecs-worker → rds-main (batch jobs ×240/day)
+Related actions available: RDS RI renewal 1yr db.r5.2xlarge ($14,688/yr savings, confidence 99%, ACT-0003)`
+  },
+  2: {
+    svc: 'BigQuery ML Pipeline', delta: 3200, sev: 'high', conf: 0.87,
+    ts: '03-25 09:15', cause: 'Usage spike — batch frequency increase',
+    context: `Anomaly: BigQuery ML Pipeline cost +$3,200/mo (HIGH, confidence 87%)
+Timestamp: March 25, 09:15
+System cause: Batch job frequency increased 3.4× in 48hr window
+Causal graph: ecs-worker → rds-main dependency chain may be amplifying query load
+Related actions: GCP CUD 1yr commitment ($400/mo savings), ML ASG Spot migration ($8,731/mo savings)`
+  }
+};
+
+async function explainAnomaly(id) {
+  const btn = document.getElementById('explain-btn-'+id);
+  const container = document.getElementById('explain-result-'+id);
+  const data = ANOMALY_DATA[id];
+
+  btn.disabled = true;
+  btn.textContent = '⌛ Analyzing…';
+
+  const resultDiv = document.createElement('div');
+  resultDiv.className = 'explain-result';
+  resultDiv.innerHTML = `
+    <div class="explain-label">✦ CAUSAL ANALYSIS · ${data.svc.toUpperCase()}</div>
+    <div class="explain-text" id="explain-text-${id}"><span class="explain-cursor"></span></div>
+    <div class="conf-bar">
+      <div class="conf-label">
+        <span style="font-family:var(--mono);font-size:8px;color:var(--dim);">CONFIDENCE</span>
+        <span style="font-family:var(--mono);font-size:9px;color:var(--green);">${Math.round(data.conf*100)}%</span>
+      </div>
+      <div class="conf-track"><div class="conf-fill" id="conf-fill-${id}" style="width:0%;background:var(--green)"></div></div>
+    </div>
+  `;
+  container.innerHTML = '';
+  container.appendChild(resultDiv);
+
+  // Animate confidence bar
+  setTimeout(() => {
+    document.getElementById('conf-fill-'+id).style.width = (data.conf*100)+'%';
+  }, 200);
+
+  const prompt = `You are the FintelliOps causal analysis engine. Explain this anomaly in exactly 3 sentences:
+1. State the root cause definitively
+2. Explain the mechanism (why this service, why now)
+3. State the recommended action with its exact dollar impact
+
+${data.context}
+
+Format: Plain prose, no bullets, no headers. End the final sentence with "Confidence: ${Math.round(data.conf*100)}%"`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 180,
+        stream: true,
+        messages: [{role:'user', content: prompt}]
+      })
+    });
+
+    const textEl = document.getElementById('explain-text-'+id);
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let full = '';
+
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      for (const line of dec.decode(value).split('\n')) {
+        if (line.startsWith('data: ')) {
+          try {
+            const j = JSON.parse(line.slice(6));
+            if (j.type === 'content_block_delta' && j.delta && j.delta.text) {
+              full += j.delta.text;
+              textEl.innerHTML = '"' + full + '<span class="explain-cursor"></span>"';
+            }
+          } catch(e) {}
+        }
+      }
+    }
+
+    textEl.innerHTML = '"' + full + '"';
+    resultDiv.insertAdjacentHTML('beforeend', `
+      <div class="explain-actions">
+        <button class="btn btn-green" style="flex:1;padding:6px 0;font-size:9px;">→ Open in Action Engine</button>
+        <button class="btn btn-cyan" style="flex:1;padding:6px 0;font-size:9px;">→ View Causal Graph</button>
+      </div>
+    `);
+
+  } catch(e) {
+    document.getElementById('explain-text-'+id).textContent = 'API connection required to generate live causal analysis.';
+  }
+
+  btn.disabled = false;
+  btn.textContent = '↺ Re-explain';
+}
+
+// Build CCAG node visualization
+function buildCausalNodes() {
+  const nodes = [
+    {id:'elb',    label:'ALB',        cost:1284,  color:'#00D4FF', deps:[]},
+    {id:'ec2',    label:'EC2 api',    cost:9680,  color:'#FF9900', deps:['elb']},
+    {id:'rds',    label:'RDS',        cost:6120,  color:'#00FFCC', deps:['ec2'], alert:true},
+    {id:'lambda', label:'Lambda ×84', cost:420,   color:'#A855F7', deps:['ec2']},
+    {id:'s3',     label:'S3 Logs',    cost:936,   color:'#00FFCC', deps:['ec2','rds']},
+    {id:'ecs',    label:'ECS Workers',cost:2840,  color:'#FF9900', deps:[]},
+    {id:'cache',  label:'ElastiCache',cost:1240,  color:'#A855F7', deps:['ecs']},
+  ];
+  const container = document.getElementById('causal-nodes');
+  nodes.forEach(n => {
+    const size = Math.max(28, Math.min(52, n.cost/220));
+    const el = document.createElement('div');
+    el.style.cssText = `display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;`;
+    el.innerHTML = `
+      <div style="width:${size}px;height:${size}px;border-radius:${size/4}px;
+        background:${n.color}${n.alert?'28':'18'};
+        border:${n.alert?'2':'1'}px solid ${n.color}${n.alert?'':40};
+        display:flex;align-items:center;justify-content:center;
+        font-family:var(--mono);font-size:8px;color:${n.color};font-weight:500;
+        box-shadow:${n.alert?`0 0 12px ${n.color}40`:'none'};
+        transition:all .15s;"
+        title="${n.label} · $${n.cost.toLocaleString()}/mo"
+      >$${(n.cost/1000).toFixed(0)}K</div>
+      <div style="font-family:var(--mono);font-size:7px;color:var(--dim);text-align:center;">${n.label}</div>
+      ${n.alert ? '<div style="font-family:var(--mono);font-size:7px;color:var(--red);">⚠ ANOMALY</div>' : ''}
+    `;
+    container.appendChild(el);
+
+    if (n.deps.length) {
+      const arrow = document.createElement('span');
+      arrow.style.cssText = 'font-size:12px;color:var(--dim);align-self:center;margin-bottom:16px;';
+      arrow.textContent = '→';
+      container.insertBefore(arrow, el);
+    }
+  });
+}
+
+// ── EFFICIENT FRONTIER ───────────────────────────────────────────
+const FRONTIER_POINTS = [
+  {risk:5,  saving:14688,  label:'$14,688',  instruments:['rds-ri']},
+  {risk:12, saving:24288,  label:'$24,288',  instruments:['rds-ri','gcp-cud']},
+  {risk:19, saving:37716,  label:'$37,716',  instruments:['rds-ri','gcp-cud','ec2-sp']},
+  {risk:28, saving:46236,  label:'$46,236',  instruments:['rds-ri','gcp-cud','ec2-sp','azure-sp']},
+  {risk:40, saving:58076,  label:'$58,076',  instruments:['rds-ri','gcp-cud','ec2-sp','azure-sp','ec2-ri3']},
+  {risk:55, saving:83276,  label:'$83,276',  instruments:['rds-ri','gcp-cud','ec2-sp','azure-sp','ec2-ri3','ec2-sp3']},
+];
+
+const INSTRUMENTS = {
+  'rds-ri':   {label:'RDS RI 1yr',          saving:14688, provider:'AWS',   risk:'low',  color:'#FF9900'},
+  'gcp-cud':  {label:'GCP CUD 1yr',          saving:4800,  provider:'GCP',   risk:'low',  color:'#00D4FF'},
+  'ec2-sp':   {label:'EC2 Savings Plan 1yr', saving:28400, provider:'AWS',   risk:'med',  color:'#FF9900'},
+  'azure-sp': {label:'Azure Savings Plan',   saving:9600,  provider:'Azure', risk:'med',  color:'#0078D4'},
+  'ec2-ri3':  {label:'EC2 RI 3yr',           saving:22080, provider:'AWS',   risk:'high', color:'#FF9900'},
+  'ec2-sp3':  {label:'EC2 SP 3yr',           saving:37440, provider:'AWS',   risk:'high', color:'#FF9900'},
+};
+
+function xScale(r) { return 50 + (r/60)*(420); }
+function yScale(s) { return 155 - ((s-10000)/(90000-10000))*(135); }
+
+function buildFrontierDots() {
+  const g = document.getElementById('frontier-dots');
+  FRONTIER_POINTS.forEach((p,i) => {
+    const cx = xScale(p.risk), cy = yScale(p.saving);
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
+    circle.setAttribute('r', 6); circle.setAttribute('fill', 'var(--bg1)');
+    circle.setAttribute('stroke', 'var(--cyan)'); circle.setAttribute('stroke-width', '2');
+    circle.style.cursor = 'pointer';
+    circle.onclick = () => { document.getElementById('risk-slider').value = p.risk; updateFrontier(p.risk); };
+    circle.onmouseenter = () => { circle.setAttribute('r', 9); circle.setAttribute('fill', 'var(--cyan)'); };
+    circle.onmouseleave = () => { circle.setAttribute('r', 6); circle.setAttribute('fill', 'var(--bg1)'); };
+    g.appendChild(circle);
+
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('x', cx); label.setAttribute('y', cy-12);
+    label.setAttribute('text-anchor', 'middle'); label.setAttribute('font-size', '8');
+    label.setAttribute('fill', 'var(--dim)'); label.setAttribute('font-family', 'DM Mono, monospace');
+    label.setAttribute('id', 'fp-label-'+i);
+    label.textContent = p.label;
+    g.appendChild(label);
+  });
+}
+
+function updateFrontier(riskVal) {
+  const risk = parseInt(riskVal);
+  const closest = FRONTIER_POINTS.reduce((a,b) => Math.abs(b.risk-risk) < Math.abs(a.risk-risk) ? b : a);
+
+  // Update risk line
+  document.getElementById('risk-line').setAttribute('x1', xScale(risk));
+  document.getElementById('risk-line').setAttribute('x2', xScale(risk));
+
+  // Update labels
+  const tiers = [{v:5,l:'Very Low'},{v:19,l:'Moderate'},{v:40,l:'Balanced'},{v:55,l:'Aggressive'}];
+  const tier = tiers.reduce((a,b) => Math.abs(b.v-risk)<Math.abs(a.v-risk)?b:a);
+  document.getElementById('risk-pct-label').textContent = risk+'% locked';
+  document.getElementById('risk-tier-label').textContent = tier.l;
+
+  // Update savings
+  const f = v => '$'+v.toLocaleString();
+  document.getElementById('total-saving').textContent = f(closest.saving);
+  document.getElementById('rec-saving').textContent = f(closest.saving)+'/yr';
+  document.getElementById('rec-coverage').textContent = closest.risk+'% locked · '+closest.instruments.length+' instrument'+(closest.instruments.length>1?'s':'');
+  const delta = closest.saving - 57488;
+  document.getElementById('delta-saving').textContent = (delta>=0?'+':'')+f(delta)+'/yr';
+  document.getElementById('delta-saving').style.color = delta >= 0 ? 'var(--green)' : 'var(--red)';
+
+  // Update instrument list
+  const list = document.getElementById('instrument-list');
+  list.innerHTML = '';
+  Object.entries(INSTRUMENTS).forEach(([id, inst]) => {
+    const active = closest.instruments.includes(id);
+    const div = document.createElement('div');
+    div.className = 'instrument '+(active?'active':'inactive');
+    div.style.marginBottom = '6px';
+    div.innerHTML = `
+      <div class="inst-header">
+        <span class="inst-name">${inst.label}</span>
+        <span class="inst-saving">${f(inst.saving)}/yr</span>
+      </div>
+      <div class="inst-meta" style="display:flex;gap:6px;">
+        <span style="color:${inst.color};background:${inst.color}14;padding:1px 5px;border-radius:3px;border:1px solid ${inst.color}28;">${inst.provider}</span>
+        <span style="background:var(--bg3);padding:1px 5px;border-radius:3px;">${inst.risk} risk</span>
+        ${active ? '<span style="color:var(--green);">✓ ACTIVE</span>' : ''}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+
+  // Highlight selected dot
+  document.querySelectorAll('#frontier-dots circle').forEach((c,i) => {
+    const p = FRONTIER_POINTS[i];
+    const isSel = p.risk === closest.risk;
+    c.setAttribute('r', isSel ? 8 : 6);
+    c.setAttribute('fill', isSel ? 'var(--cyan)' : 'var(--bg1)');
+    c.setAttribute('stroke-width', isSel ? 0 : 2);
+  });
+}
+
+// ── TIME MACHINE ─────────────────────────────────────────────────
+const TM_SNAPSHOTS = [
+  {date:'Jan 1, 2026',  spend:128400, recs:18, executed:2,  savings:4200,  anomaly:'EC2 over-provisioning +$6,200'},
+  {date:'Jan 15, 2026', spend:131200, recs:16, executed:3,  savings:8400,  anomaly:'S3 lifecycle missing +$1,840'},
+  {date:'Feb 1, 2026',  spend:134800, recs:15, executed:4,  savings:11200, anomaly:'Dev ASG running weekends +$2,100'},
+  {date:'Feb 15, 2026', spend:138200, recs:15, executed:5,  savings:14800, anomaly:'Azure VM gap +$3,400'},
+  {date:'Mar 1, 2026',  spend:142600, recs:14, executed:6,  savings:18400, anomaly:'RDS RI expiry imminent'},
+  {date:'Mar 15, 2026', spend:146200, recs:14, executed:7,  savings:21200, anomaly:'RDS RI expiry critical'},
+  {date:'Today',        spend:148400, recs:14, executed:7,  savings:21200, anomaly:'RDS RI EXPIRED — CRITICAL'},
+];
+
+const TM_RECS = [
+  {id:0, title:'RDS RI 1yr', monthly:1224, annual:14688,  since:'Jan 5',  selected:true},
+  {id:1, title:'Dev ASG nightly shutdown', monthly:2478, annual:29736, since:'Jan 15', selected:false},
+  {id:2, title:'ML ASG → Spot Fleet', monthly:8731, annual:104772, since:'Feb 1', selected:false},
+];
+
+let selectedRec = 0;
+
+function updateTimeMachine(val) {
+  const idx = parseInt(val);
+  const snap = TM_SNAPSHOTS[idx];
+  const rec  = TM_RECS[selectedRec];
+  const weeksToToday = (6 - idx) * 2; // approx weeks
+  const missed = Math.round(weeksToToday * rec.monthly / 4.33);
+  const totalOpp = rec.annual + missed;
+
+  document.getElementById('tm-date-label').textContent = snap.date;
+
+  document.getElementById('tm-snapshot').innerHTML = `
+    <div style="font-family:var(--mono);font-size:8px;color:var(--amber);letter-spacing:0.1em;margin-bottom:8px;">PLATFORM STATE · ${snap.date.toUpperCase()}</div>
+    ${[
+      ['MTD Spend', '$'+snap.spend.toLocaleString(), 'var(--white)'],
+      ['Recs Available', snap.recs, 'var(--amber)'],
+      ['Savings Realized', '$'+snap.savings.toLocaleString(), 'var(--green)'],
+      ['Top Anomaly', snap.anomaly, 'var(--red)'],
+    ].map(([k,v,c]) => `
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,176,32,0.1);">
+        <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">${k}</span>
+        <span style="font-family:var(--mono);font-size:9px;color:${c};font-weight:500;">${v}</span>
+      </div>
+    `).join('')}
+  `;
+
+  document.getElementById('tm-missed').textContent = '-$'+missed.toLocaleString();
+  document.getElementById('tm-missed-sub').textContent = 'over ~'+weeksToToday+' weeks of inaction';
+  document.getElementById('tm-per-week').textContent = '$'+Math.round(rec.monthly/4.33).toLocaleString()+'/wk';
+  document.getElementById('tm-projection').textContent = '$'+rec.annual.toLocaleString()+'/yr';
+  document.getElementById('tm-total-opp').textContent = '$'+totalOpp.toLocaleString();
+  document.getElementById('tm-execute-btn').textContent = 'Execute Now → Save $'+rec.annual.toLocaleString()+'/yr';
+
+  const narratives = [
+    `Purchasing the RDS RI on ${snap.date} would have avoided $${missed.toLocaleString()} in on-demand premium. The commitment was available January 5 — every week of delay cost $${Math.round(rec.monthly/4.33).toLocaleString()}. Acting now saves $${rec.annual.toLocaleString()} over the next 12 months.`,
+    `Scheduling the Dev ASG shutdown on ${snap.date} would have recovered $${missed.toLocaleString()} in idle compute time. Dev instances run 24/7 by default — this was pure waste. The shutdown takes 5 minutes to configure and saves $${rec.annual.toLocaleString()}/yr.`,
+    `The Spot Fleet migration on ${snap.date} would have been the highest-value action taken. $${missed.toLocaleString()} in on-demand premium paid unnecessarily. ML training workloads are fault-tolerant — Spot interruption risk is fully manageable at $${rec.annual.toLocaleString()} annual savings.`,
+  ];
+  document.getElementById('tm-narrative').textContent = narratives[selectedRec];
+
+  // Draw chart
+  drawTMChart(idx, rec);
+}
+
+function drawTMChart(pivotIdx, rec) {
+  const svg = document.getElementById('tm-chart');
+  svg.innerHTML = `<defs>
+    <linearGradient id="red-grad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ff3b5c" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ff3b5c" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>`;
+
+  const pts = TM_SNAPSHOTS;
+  const minS = 125000, maxS = 152000;
+  const W = 460, H = 100, pad = 20;
+  const x = i => pad + (i/(pts.length-1))*(W-pad*2);
+  const y = s => H-10 - ((s-minS)/(maxS-minS))*(H-20);
+
+  // Actual line
+  const actualPts = pts.map((p,i) => `${x(i)},${y(p.spend)}`).join(' ');
+  const areaActual = actualPts + ` ${x(pts.length-1)},${H} ${x(0)},${H}`;
+
+  const area = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  area.setAttribute('points', areaActual);
+  area.setAttribute('fill', 'url(#red-grad)');
+  svg.appendChild(area);
+
+  const actualLine = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  actualLine.setAttribute('points', actualPts);
+  actualLine.setAttribute('fill', 'none');
+  actualLine.setAttribute('stroke', '#ff3b5c');
+  actualLine.setAttribute('stroke-width', '2');
+  svg.appendChild(actualLine);
+
+  // Counterfactual line
+  const cfPts = pts.map((p,i) => {
+    const saving = i <= pivotIdx ? 0 : (i-pivotIdx) * rec.monthly/4.33;
+    return `${x(i)},${y(p.spend - saving)}`;
+  }).join(' ');
+
+  const cfLine = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  cfLine.setAttribute('points', cfPts);
+  cfLine.setAttribute('fill', 'none');
+  cfLine.setAttribute('stroke', '#00ff88');
+  cfLine.setAttribute('stroke-width', '1.5');
+  cfLine.setAttribute('stroke-dasharray', '4,2');
+  cfLine.setAttribute('opacity', '0.8');
+  svg.appendChild(cfLine);
+
+  // Pivot line
+  const pivLine = document.createElementNS('http://www.w3.org/2000/svg','line');
+  pivLine.setAttribute('x1', x(pivotIdx)); pivLine.setAttribute('y1', 5);
+  pivLine.setAttribute('x2', x(pivotIdx)); pivLine.setAttribute('y2', H-5);
+  pivLine.setAttribute('stroke', '#ffb020'); pivLine.setAttribute('stroke-width', '1');
+  pivLine.setAttribute('stroke-dasharray', '3,2'); pivLine.setAttribute('opacity', '0.7');
+  svg.appendChild(pivLine);
+}
+
+function buildTMRecList() {
+  const list = document.getElementById('tm-rec-list');
+  list.innerHTML = '';
+  TM_RECS.forEach(r => {
+    const div = document.createElement('div');
+    div.style.cssText = `padding:8px 10px;border-radius:5px;cursor:pointer;margin-bottom:6px;transition:all .15s;border:1px solid ${r.id===selectedRec?'rgba(0,212,255,0.4)':'var(--border)'};background:${r.id===selectedRec?'rgba(0,212,255,0.07)':'var(--bg2)'};`;
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+        <span style="font-family:var(--mono);font-size:10px;color:${r.id===selectedRec?'var(--cyan)':'var(--white)'};font-weight:500;">${r.title}</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--green);">$${r.annual.toLocaleString()}/yr</span>
+      </div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--dim);">Available since ${r.since} · $${r.monthly}/mo</div>
+    `;
+    div.onclick = () => {
+      selectedRec = r.id;
+      buildTMRecList();
+      updateTimeMachine(document.getElementById('tm-slider').value);
+    };
+    list.appendChild(div);
+  });
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  buildCausalNodes();
+  buildFrontierDots();
+  updateFrontier(19);
+  buildTMRecList();
+  updateTimeMachine(4);
+
+  // Enter key for chat
+  document.getElementById('chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendChat();
+  });
+});
+</script>
+</body>
+</html>
