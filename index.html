@@ -6,535 +6,520 @@
 <title>FintelliOps™ — Where FinOps Meets AI Observability</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg0: #04060F;
-    --bg1: #070B18;
-    --bg2: #0C1225;
-    --bg3: #111830;
-    --border: #1A2444;
-    --borderb: #243060;
-    --cyan: #00D4FF;
-    --cyan2: #0099CC;
-    --amber: #FFB020;
-    --green: #00E87A;
-    --red: #FF3B5C;
-    --purple: #A855F7;
-    --teal: #00FFCC;
-    --white: #E8EDF8;
-    --dim: #4A5578;
-    --dimmer: #2A3050;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Inter', sans-serif;
-    --display: 'Syne', sans-serif;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg0);
-    color: var(--white);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
-  /* ── TYPOGRAPHY ── */
-  .display { font-family: var(--display); }
-  .mono { font-family: var(--mono); }
-  .label { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
-  .label-cyan { color: var(--cyan); }
+:root {
+  --bg:      #080B14;
+  --bg1:     #0C1020;
+  --bg2:     #10152A;
+  --bg3:     #161C34;
+  --line:    #1E2540;
+  --line2:   #2A3358;
+  --cyan:    #06B6D4;
+  --cyanlt:  #22D3EE;
+  --cyandk:  #0891B2;
+  --text:    #F0F4FF;
+  --text2:   #A8B4CC;
+  --text3:   #5A6580;
+  --text4:   #323B55;
+  --mono:    'IBM Plex Mono', monospace;
+  --sans:    'Plus Jakarta Sans', sans-serif;
+  --red:     #F43F5E;
+  --green:   #10B981;
+  --amber:   #F59E0B;
+}
 
-  /* ── GRID NOISE BACKGROUND ── */
-  body::before {
-    content: '';
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.015) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none; z-index: 0;
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 40px; height: 64px;
-    background: rgba(4,6,15,0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-brand {
-    display: flex; align-items: center; gap: 10px;
-  }
-  .nav-logo {
-    width: 32px; height: 32px; border-radius: 8px;
-    background: linear-gradient(135deg, var(--cyan), var(--purple));
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--bg0);
-  }
-  .nav-wordmark {
-    font-family: var(--display); font-size: 18px; font-weight: 700;
-    background: linear-gradient(90deg, var(--cyan), var(--purple));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .nav-links { display: flex; gap: 32px; }
-  .nav-links a {
-    font-family: var(--mono); font-size: 12px; color: var(--dim);
-    text-decoration: none; transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--cyan); }
-  .nav-actions { display: flex; gap: 12px; align-items: center; }
-  .btn-ghost {
-    font-family: var(--mono); font-size: 12px; color: var(--dim);
-    background: none; border: 1px solid var(--border); border-radius: 6px;
-    padding: 8px 16px; cursor: pointer; text-decoration: none;
-    transition: all 0.2s;
-  }
-  .btn-ghost:hover { color: var(--white); border-color: var(--borderb); }
-  .btn-primary {
-    font-family: var(--mono); font-size: 12px; font-weight: 600;
-    color: var(--bg0); background: var(--cyan);
-    border: none; border-radius: 6px; padding: 8px 20px;
-    cursor: pointer; text-decoration: none; transition: all 0.2s;
-  }
-  .btn-primary:hover { background: #22DDFF; box-shadow: 0 0 20px rgba(0,212,255,0.4); }
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(8,11,20,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo {
+  width: 30px; height: 30px; border-radius: 7px;
+  background: var(--cyan); display: flex; align-items: center;
+  justify-content: center;
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--bg); letter-spacing: -0.02em;
+}
+.nav-wordmark {
+  font-size: 16px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.02em;
+}
+.nav-wordmark span { color: var(--cyan); }
+.nav-byline { font-size: 11px; color: var(--text3); font-weight: 400; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--text3);
+  text-decoration: none; transition: color .15s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-actions { display: flex; gap: 10px; align-items: center; }
+.btn-ghost {
+  font-size: 13px; font-weight: 500; color: var(--text3);
+  background: none; border: 1px solid var(--line); border-radius: 6px;
+  padding: 7px 16px; cursor: pointer; text-decoration: none; transition: all .15s;
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--line2); }
+.btn-primary {
+  font-size: 13px; font-weight: 600; color: var(--bg);
+  background: var(--cyan); border: none; border-radius: 6px;
+  padding: 7px 18px; cursor: pointer; text-decoration: none; transition: all .15s;
+}
+.btn-primary:hover { background: var(--cyanlt); }
 
-  /* ── TICKER ── */
-  .ticker-wrap {
-    margin-top: 64px;
-    background: var(--bg1); border-bottom: 1px solid var(--border);
-    overflow: hidden; padding: 8px 0;
-  }
-  .ticker-inner {
-    display: flex; gap: 0;
-    animation: ticker 30s linear infinite;
-    white-space: nowrap;
-  }
-  .ticker-item {
-    font-family: var(--mono); font-size: 11px;
-    padding: 0 32px; color: var(--dim);
-    border-right: 1px solid var(--border);
-  }
-  .ticker-item .val { color: var(--cyan); }
-  .ticker-item .up { color: var(--green); }
-  .ticker-item .warn { color: var(--amber); }
-  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* ── TICKER ── */
+.ticker-wrap {
+  margin-top: 60px; overflow: hidden;
+  background: var(--bg1); border-bottom: 1px solid var(--line);
+  padding: 9px 0;
+}
+.ticker-track {
+  display: flex; animation: ticker 40s linear infinite; white-space: nowrap;
+}
+.tick {
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  padding: 0 28px; border-right: 1px solid var(--line); flex-shrink: 0;
+}
+.tick .hi { color: var(--cyan); }
+.tick .warn { color: var(--amber); }
+.tick .ok { color: var(--green); }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-  /* ── SECTIONS ── */
-  section { position: relative; z-index: 1; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+/* ── LAYOUT ── */
+.container { max-width: 1160px; margin: 0 auto; padding: 0 48px; }
+section { position: relative; }
 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 100px 0 80px;
-    position: relative;
-  }
-  .hero::after {
-    content: '';
-    position: absolute; top: 0; left: 50%; right: 0; bottom: 0;
-    background: radial-gradient(ellipse at 70% 30%, rgba(0,212,255,0.06) 0%, transparent 60%),
-                radial-gradient(ellipse at 90% 80%, rgba(168,85,247,0.05) 0%, transparent 50%);
-    pointer-events: none;
-  }
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 20px; padding: 6px 16px; margin-bottom: 32px;
-  }
-  .hero-eyebrow-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-  @keyframes pulse-dot { 0%,100%{opacity:1;box-shadow:0 0 8px var(--cyan)} 50%{opacity:0.5;box-shadow:0 0 4px var(--cyan)} }
-  .hero-headline {
-    font-family: var(--display); font-size: clamp(52px, 6vw, 88px);
-    font-weight: 800; line-height: 1.0; letter-spacing: -0.03em;
-    margin-bottom: 24px;
-  }
-  .hero-headline .line1 { display: block; color: var(--white); }
-  .hero-headline .line2 {
-    display: block;
-    background: linear-gradient(90deg, var(--cyan) 0%, var(--purple) 60%, var(--amber) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .hero-headline .line3 { display: block; color: var(--dim); }
-  .hero-sub {
-    font-size: 18px; color: #8899BB; max-width: 600px;
-    line-height: 1.7; margin-bottom: 48px;
-  }
-  .hero-sub strong { color: var(--white); font-weight: 500; }
-  .hero-actions { display: flex; gap: 16px; align-items: center; margin-bottom: 80px; }
-  .btn-hero {
-    font-family: var(--mono); font-size: 14px; font-weight: 600;
-    padding: 14px 32px; border-radius: 8px; cursor: pointer;
-    text-decoration: none; transition: all 0.25s;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .btn-hero-primary {
-    background: var(--cyan); color: var(--bg0); border: none;
-  }
-  .btn-hero-primary:hover { box-shadow: 0 0 40px rgba(0,212,255,0.5); transform: translateY(-1px); }
-  .btn-hero-secondary {
-    background: transparent; color: var(--white);
-    border: 1px solid var(--borderb);
-  }
-  .btn-hero-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+/* ── HERO ── */
+.hero {
+  padding: 120px 0 100px;
+  border-bottom: 1px solid var(--line);
+}
+.hero-inner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.hero-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  color: var(--cyan); letter-spacing: 0.06em;
+  background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.2);
+  border-radius: 4px; padding: 5px 10px; margin-bottom: 28px;
+}
+.hero-label-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--cyan); animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+h1 {
+  font-size: clamp(40px, 4.5vw, 64px);
+  font-weight: 800; line-height: 1.08;
+  letter-spacing: -0.03em; color: var(--text);
+  margin-bottom: 20px;
+}
+h1 .accent { color: var(--cyan); }
+h1 .question { color: var(--text2); font-weight: 600; }
+.hero-body {
+  font-size: 17px; color: var(--text2); line-height: 1.7;
+  margin-bottom: 36px; max-width: 480px;
+}
+.hero-body strong { color: var(--text); font-weight: 600; }
+.hero-cta { display: flex; gap: 12px; align-items: center; }
+.btn-lg {
+  font-size: 14px; font-weight: 600; padding: 12px 24px;
+  border-radius: 7px; cursor: pointer; text-decoration: none; transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-lg-primary { background: var(--cyan); color: var(--bg); border: none; }
+.btn-lg-primary:hover { background: var(--cyanlt); box-shadow: 0 0 24px rgba(6,182,212,0.3); }
+.btn-lg-outline { background: transparent; color: var(--text2); border: 1px solid var(--line2); }
+.btn-lg-outline:hover { color: var(--text); border-color: var(--text3); }
 
-  /* ── HERO STATS ── */
-  .hero-stats {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 1px; background: var(--border);
-    border: 1px solid var(--border); border-radius: 12px;
-    overflow: hidden; max-width: 800px;
-  }
-  .hero-stat {
-    background: var(--bg1); padding: 24px;
-    transition: background 0.2s;
-  }
-  .hero-stat:hover { background: var(--bg2); }
-  .hero-stat-val {
-    font-family: var(--display); font-size: 32px; font-weight: 800;
-    line-height: 1; margin-bottom: 6px;
-  }
-  .hero-stat-label { font-family: var(--mono); font-size: 10px; color: var(--dim); }
+/* ── HERO RIGHT: SIGNAL CARD ── */
+.signal-card {
+  background: var(--bg1); border: 1px solid var(--line);
+  border-radius: 12px; overflow: hidden;
+}
+.signal-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+}
+.signal-live {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; color: var(--cyan);
+}
+.signal-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--cyan);
+  animation: blink 2s ease-in-out infinite;
+}
+.signal-item {
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.signal-item:last-child { border-bottom: none; }
+.signal-sev {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  padding: 2px 7px; border-radius: 3px; flex-shrink: 0; margin-top: 1px;
+}
+.sev-critical { background: rgba(244,63,94,0.12); color: var(--red); }
+.sev-high { background: rgba(245,158,11,0.12); color: var(--amber); }
+.sev-signal { background: rgba(6,182,212,0.1); color: var(--cyan); }
+.signal-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.signal-text strong { color: var(--text); font-weight: 600; }
+.signal-meta {
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+  margin-top: 3px;
+}
+.signal-footer {
+  padding: 12px 18px; background: rgba(6,182,212,0.04);
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  display: flex; justify-content: space-between;
+}
 
-  /* ── THE QUESTION ── */
-  .the-question {
-    padding: 120px 0;
-    background: linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 50%, var(--bg0) 100%);
-  }
-  .question-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .question-label { margin-bottom: 20px; }
-  .question-headline {
-    font-family: var(--display); font-size: 48px; font-weight: 800;
-    line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em;
-  }
-  .question-body { font-size: 16px; color: #8899BB; line-height: 1.8; margin-bottom: 32px; }
-  .question-body strong { color: var(--white); }
-  .three-tools {
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .tool-row {
-    display: flex; align-items: center; gap: 16px;
-    padding: 14px 20px; border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-  }
-  .tool-row.highlight { border-color: var(--cyan); background: rgba(0,212,255,0.06); }
-  .tool-icon { font-size: 18px; width: 32px; text-align: center; flex-shrink: 0; }
-  .tool-name { font-family: var(--mono); font-size: 12px; font-weight: 600; flex: 1; }
-  .tool-answer { font-family: var(--mono); font-size: 11px; color: var(--dim); }
-  .tool-row.highlight .tool-answer { color: var(--cyan); }
+/* ── STATS BAR ── */
+.stats-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  background: var(--bg1);
+}
+.stat {
+  padding: 28px 32px; border-right: 1px solid var(--line);
+  transition: background .15s;
+}
+.stat:last-child { border-right: none; }
+.stat:hover { background: var(--bg2); }
+.stat-val {
+  font-size: 32px; font-weight: 800; letter-spacing: -0.03em;
+  line-height: 1; margin-bottom: 6px;
+}
+.stat-label { font-size: 12px; color: var(--text3); font-weight: 500; }
 
-  /* ── PLATFORM OVERVIEW ── */
-  .platform { padding: 120px 0; }
-  .section-header { text-align: center; margin-bottom: 72px; }
-  .section-title {
-    font-family: var(--display); font-size: 52px; font-weight: 800;
-    letter-spacing: -0.02em; margin-bottom: 16px;
-  }
-  .section-sub { font-size: 18px; color: #8899BB; max-width: 560px; margin: 0 auto; line-height: 1.7; }
+/* ── SECTION COMMON ── */
+.section-tag {
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  color: var(--cyan); letter-spacing: 0.08em; margin-bottom: 14px;
+  display: block;
+}
+.section-h {
+  font-size: clamp(28px, 3vw, 44px); font-weight: 800;
+  letter-spacing: -0.025em; line-height: 1.1; color: var(--text);
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 16px; color: var(--text2); line-height: 1.7;
+  max-width: 540px;
+}
+.section-header { margin-bottom: 56px; }
+.section-header.center { text-align: center; }
+.section-header.center .section-sub { margin: 0 auto; }
+hr.divider {
+  border: none; border-top: 1px solid var(--line); margin: 0;
+}
 
-  /* ── CAPABILITY GROUPS ── */
-  .cap-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); border-radius: 16px; overflow: hidden; }
-  .cap-group {
-    background: var(--bg1); padding: 32px;
-    transition: background 0.2s;
-  }
-  .cap-group:hover { background: var(--bg2); }
-  .cap-group-icon {
-    width: 44px; height: 44px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; margin-bottom: 16px;
-  }
-  .cap-group-name {
-    font-family: var(--display); font-size: 18px; font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .cap-group-desc { font-size: 13px; color: #8899BB; line-height: 1.6; margin-bottom: 16px; }
-  .cap-group-panels { display: flex; flex-wrap: wrap; gap: 6px; }
-  .panel-chip {
-    font-family: var(--mono); font-size: 10px;
-    padding: 3px 8px; border-radius: 4px;
-    background: rgba(255,255,255,0.05); color: var(--dim);
-    border: 1px solid var(--border);
-  }
-  .panel-chip.new {
-    background: rgba(0,212,255,0.1); color: var(--cyan);
-    border-color: rgba(0,212,255,0.3);
-  }
+/* ── THE PROBLEM ── */
+.problem { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.tool-table { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.tool-row {
+  display: grid; grid-template-columns: 180px 1fr 1fr;
+  padding: 14px 20px; background: var(--bg1); gap: 16px; align-items: center;
+}
+.tool-row.header { background: var(--bg2); }
+.tool-row.highlight { background: rgba(6,182,212,0.05); }
+.tool-row.highlight .tool-name { color: var(--cyan); }
+.tr-label { font-family: var(--mono); font-size: 10px; color: var(--text3); font-weight: 500; }
+.tool-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.tool-name.dim { color: var(--text3); font-weight: 400; }
+.check-cell { font-size: 13px; color: var(--text2); }
+.check-cell.yes { color: var(--green); }
+.check-cell.no { color: var(--red); opacity: 0.6; }
+.check-cell.cyan { color: var(--cyan); font-weight: 500; }
 
-  /* ── THE CONVERGENCE ── */
-  .convergence {
-    padding: 120px 0;
-    background: linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%);
-  }
-  .convergence-grid { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0; }
-  .convergence-divider { background: var(--border); }
-  .convergence-side { padding: 48px; }
-  .convergence-side-label { margin-bottom: 16px; }
-  .convergence-side-title {
-    font-family: var(--display); font-size: 28px; font-weight: 700;
-    margin-bottom: 16px;
-  }
-  .convergence-side-body { font-size: 15px; color: #8899BB; line-height: 1.8; margin-bottom: 24px; }
-  .convergence-list { display: flex; flex-direction: column; gap: 8px; }
-  .conv-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 14px; color: #8899BB;
-  }
-  .conv-check { color: var(--green); margin-top: 2px; flex-shrink: 0; }
-  .conv-x { color: var(--red); margin-top: 2px; flex-shrink: 0; }
+/* ── PLATFORM ── */
+.platform { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.groups-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.group-card { background: var(--bg1); padding: 28px; transition: background .15s; }
+.group-card:hover { background: var(--bg2); }
+.group-tag {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  color: var(--text3); letter-spacing: 0.08em; margin-bottom: 10px;
+}
+.group-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.group-desc { font-size: 13px; color: var(--text3); line-height: 1.6; margin-bottom: 16px; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+  background: var(--bg3); border: 1px solid var(--line);
+  border-radius: 4px; padding: 2px 7px;
+}
+.chip.new {
+  color: var(--cyan); background: rgba(6,182,212,0.08);
+  border-color: rgba(6,182,212,0.25);
+}
 
-  /* ── SIGNAL PANELS (S55-S58) ── */
-  .new-panels { padding: 120px 0; }
-  .new-panels-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--border); border-radius: 20px; overflow: hidden; }
-  .new-panel-card {
-    background: var(--bg1); padding: 40px;
-    transition: background 0.2s;
-  }
-  .new-panel-card:hover { background: var(--bg2); }
-  .new-panel-number {
-    font-family: var(--mono); font-size: 11px; font-weight: 600;
-    color: var(--dim); margin-bottom: 12px; letter-spacing: 0.1em;
-  }
-  .new-panel-title {
-    font-family: var(--display); font-size: 24px; font-weight: 700;
-    margin-bottom: 12px; line-height: 1.2;
-  }
-  .new-panel-body { font-size: 14px; color: #8899BB; line-height: 1.7; margin-bottom: 24px; }
-  .new-panel-metric {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 6px; padding: 8px 14px;
-    font-family: var(--mono); font-size: 12px;
-  }
-  .new-panel-metric .metric-val { color: var(--cyan); font-weight: 600; }
+/* ── CONVERGENCE ── */
+.convergence { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.conv-grid { display: grid; grid-template-columns: 1fr 1px 1fr; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.conv-divider { background: var(--line); }
+.conv-side { padding: 40px; }
+.conv-side-a { background: var(--bg1); }
+.conv-side-b { background: linear-gradient(135deg, rgba(6,182,212,0.04), var(--bg1)); }
+.conv-side-tag {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  color: var(--text3); letter-spacing: 0.08em; margin-bottom: 16px;
+}
+.conv-side-b .conv-side-tag { color: var(--cyan); }
+.conv-h { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.3; }
+.conv-body { font-size: 14px; color: var(--text3); line-height: 1.7; margin-bottom: 24px; }
+.conv-list { display: flex; flex-direction: column; gap: 9px; }
+.conv-li { display: flex; gap: 10px; font-size: 13px; color: var(--text3); line-height: 1.5; }
+.conv-icon { flex-shrink: 0; margin-top: 1px; font-size: 13px; }
+.conv-icon.yes { color: var(--green); }
+.conv-icon.no { color: var(--text4); }
 
-  /* ── PROOF POINTS ── */
-  .proof { padding: 120px 0; }
-  .proof-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 60px; }
-  .proof-card {
-    background: var(--bg1); padding: 32px;
-    text-align: center;
-  }
-  .proof-val {
-    font-family: var(--display); font-size: 48px; font-weight: 800;
-    line-height: 1; margin-bottom: 8px;
-  }
-  .proof-label { font-family: var(--mono); font-size: 11px; color: var(--dim); margin-bottom: 4px; }
-  .proof-sub { font-size: 12px; color: #6677AA; }
+/* ── NEW PANELS ── */
+.new-panels { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.panels-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.panel-card { background: var(--bg1); padding: 36px; transition: background .15s; }
+.panel-card:hover { background: var(--bg2); }
+.panel-num {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--text3); letter-spacing: 0.08em; margin-bottom: 14px;
+}
+.panel-h { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 10px; line-height: 1.25; }
+.panel-body { font-size: 14px; color: var(--text3); line-height: 1.7; margin-bottom: 20px; }
+.panel-metric {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  font-family: var(--mono); font-size: 12px;
+  background: rgba(6,182,212,0.07); border: 1px solid rgba(6,182,212,0.18);
+  border-radius: 5px; padding: 8px 12px;
+}
+.panel-metric-val { font-size: 15px; font-weight: 600; color: var(--cyan); }
+.panel-metric-desc { color: var(--text3); }
 
-  /* ── REASONING ENGINES ── */
-  .reasoning { padding: 120px 0; background: var(--bg1); }
-  .reasoning-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-  .reasoning-copy .section-title { text-align: left; font-size: 44px; }
-  .reasoning-copy .section-sub { text-align: left; margin: 0; margin-bottom: 32px; }
-  .reasoning-features { display: flex; flex-direction: column; gap: 16px; }
-  .reasoning-feat {
-    padding: 20px 24px; border-radius: 10px;
-    border: 1px solid var(--border); background: var(--bg2);
-    transition: border-color 0.2s;
-  }
-  .reasoning-feat:hover { border-color: var(--cyan); }
-  .reasoning-feat-title { font-family: var(--mono); font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--white); }
-  .reasoning-feat-body { font-size: 13px; color: #8899BB; line-height: 1.6; }
-  .reasoning-visual {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: 16px; padding: 32px; position: sticky; top: 100px;
-  }
-  .rv-header {
-    font-family: var(--mono); font-size: 11px; color: var(--dim);
-    margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between;
-  }
-  .rv-badge {
-    background: rgba(0,212,255,0.15); color: var(--cyan);
-    padding: 2px 8px; border-radius: 4px; font-size: 10px;
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-  .rv-signal { display: flex; flex-direction: column; gap: 10px; }
-  .rv-item {
-    padding: 12px 14px; border-radius: 8px;
-    border-left: 3px solid var(--border);
-    background: rgba(255,255,255,0.02);
-    font-family: var(--mono); font-size: 11px; color: #8899BB;
-    line-height: 1.5;
-  }
-  .rv-item.critical { border-color: var(--red); background: rgba(255,59,92,0.06); }
-  .rv-item.high { border-color: var(--amber); background: rgba(255,176,32,0.06); }
-  .rv-item.info { border-color: var(--cyan); background: rgba(0,212,255,0.06); }
-  .rv-item .rv-sev {
-    font-weight: 600; font-size: 10px; margin-bottom: 4px; display: block;
-  }
-  .rv-item.critical .rv-sev { color: var(--red); }
-  .rv-item.high .rv-sev { color: var(--amber); }
-  .rv-item.info .rv-sev { color: var(--cyan); }
-  .rv-corr { margin-top: 16px; padding: 12px 14px; border-radius: 8px; background: var(--bg3); }
-  .rv-corr-label { font-family: var(--mono); font-size: 10px; color: var(--dim); margin-bottom: 6px; }
-  .rv-corr-bars { display: flex; gap: 4px; }
-  .rv-corr-bar {
-    flex: 1; height: 28px; border-radius: 4px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 9px; font-weight: 600;
-  }
+/* ── PROOF ── */
+.proof { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.proof-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 32px; }
+.proof-card { background: var(--bg1); padding: 28px; transition: background .15s; }
+.proof-card:hover { background: var(--bg2); }
+.proof-val { font-size: 36px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+.proof-label { font-size: 12px; color: var(--text3); font-weight: 500; margin-bottom: 4px; }
+.proof-sub { font-family: var(--mono); font-size: 11px; color: var(--text4); }
+.callout {
+  background: var(--bg1); border: 1px solid var(--line);
+  border-left: 3px solid var(--cyan);
+  border-radius: 8px; padding: 24px 28px;
+}
+.callout-text { font-size: 15px; color: var(--text2); line-height: 1.7; }
+.callout-text strong { color: var(--text); font-weight: 600; }
 
-  /* ── COMPETITIVE ── */
-  .competitive { padding: 120px 0; }
-  .comp-table-wrap { overflow-x: auto; }
-  .comp-table {
-    width: 100%; border-collapse: collapse;
-    font-family: var(--mono); font-size: 12px;
-  }
-  .comp-table th {
-    padding: 14px 20px; text-align: left;
-    background: var(--bg2); border-bottom: 2px solid var(--cyan);
-    color: var(--dim); font-weight: 600; letter-spacing: 0.06em;
-    font-size: 10px;
-  }
-  .comp-table th:first-child { color: var(--white); }
-  .comp-table td { padding: 12px 20px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-  .comp-table tr:hover td { background: var(--bg1); }
-  .comp-table .us td { background: rgba(0,212,255,0.04); }
-  .comp-table .us td:first-child { color: var(--cyan); font-weight: 600; }
-  .check { color: var(--green); }
-  .partial { color: var(--amber); }
-  .none { color: var(--dimmer); }
+/* ── REASONING ── */
+.reasoning { padding: 96px 0; background: var(--bg1); border-bottom: 1px solid var(--line); }
+.reasoning-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.feat-list { display: flex; flex-direction: column; gap: 14px; margin-top: 36px; }
+.feat {
+  padding: 18px 20px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--bg2); transition: border-color .15s;
+}
+.feat:hover { border-color: var(--line2); }
+.feat-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+.feat-body { font-size: 13px; color: var(--text3); line-height: 1.6; }
 
-  /* ── IP ── */
-  .ip-section { padding: 120px 0; background: var(--bg1); }
-  .ip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .ip-card {
-    padding: 24px; border-radius: 10px;
-    border: 1px solid var(--border); background: var(--bg2);
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .ip-card:hover { border-color: rgba(168,85,247,0.4); transform: translateY(-2px); }
-  .ip-num { font-family: var(--mono); font-size: 11px; color: var(--purple); margin-bottom: 8px; }
-  .ip-title { font-family: var(--display); font-size: 15px; font-weight: 600; margin-bottom: 8px; }
-  .ip-desc { font-size: 12px; color: #8899BB; line-height: 1.6; }
-  .ip-badge {
-    display: inline-block; margin-top: 10px;
-    font-family: var(--mono); font-size: 9px; font-weight: 600;
-    background: rgba(168,85,247,0.15); color: var(--purple);
-    border: 1px solid rgba(168,85,247,0.3); border-radius: 3px; padding: 2px 8px;
-  }
+/* ── REASONING VISUAL ── */
+.rv { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; position: sticky; top: 80px; }
+.rv-head {
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+}
+.rv-live { display: flex; align-items: center; gap: 5px; color: var(--cyan); }
+.rv-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); animation: blink 2s infinite; }
+.rv-sig { padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.rv-sig:last-of-type { border-bottom: none; }
+.rv-sev-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.rv-sev-badge {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  padding: 2px 7px; border-radius: 3px;
+}
+.rv-corr-count { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+.rv-sig-text { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.rv-sig-text strong { color: var(--text); }
+.rv-footer {
+  padding: 12px 16px; background: rgba(6,182,212,0.04);
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  display: flex; justify-content: space-between;
+}
 
-  /* ── DEPLOYMENT ── */
-  .deployment { padding: 120px 0; }
-  .deploy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .deploy-card {
-    padding: 32px; border-radius: 14px;
-    border: 1px solid var(--border); background: var(--bg1);
-    transition: all 0.25s;
-  }
-  .deploy-card:hover { border-color: var(--cyan); background: var(--bg2); }
-  .deploy-card.featured {
-    border-color: var(--cyan);
-    background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(168,85,247,0.04));
-  }
-  .deploy-icon { font-size: 28px; margin-bottom: 16px; }
-  .deploy-title { font-family: var(--display); font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-  .deploy-subtitle { font-family: var(--mono); font-size: 11px; color: var(--cyan); margin-bottom: 16px; }
-  .deploy-body { font-size: 14px; color: #8899BB; line-height: 1.7; margin-bottom: 20px; }
-  .deploy-list { display: flex; flex-direction: column; gap: 6px; }
-  .deploy-item { font-size: 13px; color: #8899BB; display: flex; gap: 8px; }
-  .deploy-item::before { content: '◈'; color: var(--dim); font-size: 11px; margin-top: 3px; flex-shrink: 0; }
+/* ── COMPETITIVE ── */
+.competitive { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.comp-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+.comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.comp-table th {
+  padding: 12px 16px; text-align: left; background: var(--bg2);
+  border-bottom: 1px solid var(--line); color: var(--text3);
+  font-weight: 600; font-size: 11px; white-space: nowrap;
+  font-family: var(--mono); letter-spacing: 0.04em;
+}
+.comp-table th:first-child { color: var(--text); }
+.comp-table td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table tr.us td { background: rgba(6,182,212,0.03); }
+.comp-table tr.us td:first-child { color: var(--cyan); font-weight: 600; }
+.comp-table tr:not(.us):hover td { background: var(--bg1); }
+.cyes { color: var(--green); font-size: 12px; }
+.cpart { color: var(--amber); font-size: 12px; }
+.cno { color: var(--text4); font-size: 12px; }
 
-  /* ── PARTNERS ── */
-  .partners { padding: 80px 0; background: var(--bg1); }
-  .partners-title { font-family: var(--mono); font-size: 11px; color: var(--dim); text-align: center; margin-bottom: 32px; letter-spacing: 0.1em; text-transform: uppercase; }
-  .partner-logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-  .partner-chip {
-    font-family: var(--mono); font-size: 11px;
-    padding: 8px 18px; border-radius: 6px;
-    border: 1px solid var(--border); color: var(--dim);
-    background: var(--bg2); transition: all 0.2s;
-  }
-  .partner-chip:hover { border-color: var(--borderb); color: var(--white); }
-  .partner-chip.active { border-color: rgba(0,212,255,0.3); color: var(--cyan); background: rgba(0,212,255,0.06); }
+/* ── IP ── */
+.ip-section { padding: 96px 0; background: var(--bg1); border-bottom: 1px solid var(--line); }
+.ip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.ip-card { background: var(--bg1); padding: 24px; transition: background .15s; }
+.ip-card:hover { background: var(--bg2); }
+.ip-num { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 8px; }
+.ip-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.ip-desc { font-size: 13px; color: var(--text3); line-height: 1.6; margin-bottom: 10px; }
+.ip-badge {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--text3); background: var(--bg3); border: 1px solid var(--line);
+  border-radius: 3px; padding: 2px 7px; display: inline-block;
+}
 
-  /* ── PRICING ── */
-  .pricing { padding: 120px 0; }
-  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .pricing-card {
-    padding: 36px; border-radius: 16px;
-    border: 1px solid var(--border); background: var(--bg1);
-    position: relative;
-  }
-  .pricing-card.featured {
-    border-color: var(--cyan);
-    background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(168,85,247,0.03));
-  }
-  .featured-badge {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: var(--cyan); color: var(--bg0);
-    font-family: var(--mono); font-size: 10px; font-weight: 700;
-    padding: 4px 14px; border-radius: 10px;
-  }
-  .pricing-tier { font-family: var(--mono); font-size: 11px; color: var(--dim); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
-  .pricing-name { font-family: var(--display); font-size: 28px; font-weight: 800; margin-bottom: 4px; }
-  .pricing-range { font-family: var(--mono); font-size: 14px; color: var(--cyan); margin-bottom: 6px; }
-  .pricing-spend { font-size: 13px; color: var(--dim); margin-bottom: 24px; }
-  .pricing-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px; }
-  .pricing-item { font-size: 13px; color: #8899BB; display: flex; gap: 10px; }
-  .pricing-item::before { content: '✓'; color: var(--green); font-size: 12px; margin-top: 2px; flex-shrink: 0; }
-  .btn-pricing {
-    display: block; text-align: center; text-decoration: none;
-    font-family: var(--mono); font-size: 13px; font-weight: 600;
-    padding: 12px; border-radius: 8px; border: 1px solid;
-    transition: all 0.2s; cursor: pointer;
-  }
-  .btn-pricing-outline { border-color: var(--border); color: var(--dim); background: transparent; }
-  .btn-pricing-outline:hover { border-color: var(--cyan); color: var(--cyan); }
-  .btn-pricing-filled { border-color: var(--cyan); color: var(--bg0); background: var(--cyan); }
-  .btn-pricing-filled:hover { box-shadow: 0 0 30px rgba(0,212,255,0.4); }
+/* ── DEPLOYMENT ── */
+.deployment { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.deploy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.deploy-card {
+  padding: 28px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--bg1); transition: border-color .2s;
+}
+.deploy-card:hover { border-color: var(--line2); }
+.deploy-card.featured { border-color: rgba(6,182,212,0.35); }
+.deploy-eyebrow {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--cyan); letter-spacing: 0.06em; margin-bottom: 12px;
+}
+.deploy-name { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.deploy-body { font-size: 14px; color: var(--text3); line-height: 1.7; margin-bottom: 20px; }
+.deploy-list { display: flex; flex-direction: column; gap: 7px; }
+.deploy-item { font-size: 13px; color: var(--text3); display: flex; gap: 8px; line-height: 1.4; }
+.deploy-item::before { content: '—'; color: var(--text4); flex-shrink: 0; }
 
-  /* ── CTA ── */
-  .cta-section {
-    padding: 140px 0; text-align: center;
-    background: linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%);
-  }
-  .cta-title {
-    font-family: var(--display); font-size: 64px; font-weight: 800;
-    letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 24px;
-  }
-  .cta-sub { font-size: 18px; color: #8899BB; max-width: 480px; margin: 0 auto 40px; line-height: 1.7; }
-  .cta-actions { display: flex; gap: 16px; justify-content: center; align-items: center; }
-  .cta-note { font-family: var(--mono); font-size: 11px; color: var(--dim); margin-top: 20px; }
+/* ── PARTNERS ── */
+.partners { padding: 64px 0; border-bottom: 1px solid var(--line); }
+.partners-label { font-family: var(--mono); font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 28px; letter-spacing: 0.08em; }
+.partner-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.pchip {
+  font-size: 13px; font-weight: 500; color: var(--text3);
+  padding: 7px 16px; border-radius: 6px; border: 1px solid var(--line);
+  background: var(--bg1); transition: all .15s;
+}
+.pchip:hover { color: var(--text); border-color: var(--line2); }
+.pchip.active { color: var(--cyan); border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.05); }
 
-  /* ── FOOTER ── */
-  footer {
-    padding: 60px 0 40px; border-top: 1px solid var(--border);
-    background: var(--bg1);
-  }
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
-  .footer-brand { }
-  .footer-brand-name { font-family: var(--display); font-size: 20px; font-weight: 700; margin-bottom: 12px; }
-  .footer-tagline { font-size: 13px; color: var(--dim); line-height: 1.6; margin-bottom: 16px; }
-  .footer-col-title { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--white); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.08em; }
-  .footer-link { display: block; font-size: 13px; color: var(--dim); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
-  .footer-link:hover { color: var(--cyan); }
-  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--dimmer); }
-  .gcn-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 6px; background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); font-family: var(--mono); font-size: 11px; color: var(--cyan); }
+/* ── PRICING ── */
+.pricing { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.pricing-card {
+  padding: 32px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--bg1); position: relative;
+}
+.pricing-card.featured { border-color: rgba(6,182,212,0.4); }
+.featured-label {
+  position: absolute; top: -11px; left: 28px;
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  background: var(--cyan); color: var(--bg);
+  padding: 3px 10px; border-radius: 4px; letter-spacing: 0.04em;
+}
+.pricing-tier { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-bottom: 8px; letter-spacing: 0.06em; }
+.pricing-name { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -0.02em; }
+.pricing-range { font-family: var(--mono); font-size: 13px; color: var(--cyan); margin-bottom: 4px; }
+.pricing-spend { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+.pricing-list { display: flex; flex-direction: column; gap: 9px; margin-bottom: 28px; }
+.pricing-item { font-size: 13px; color: var(--text3); display: flex; gap: 9px; }
+.pricing-item::before { content: '✓'; color: var(--green); font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+.btn-pricing {
+  display: block; text-align: center; text-decoration: none;
+  font-size: 13px; font-weight: 600;
+  padding: 11px; border-radius: 7px; cursor: pointer; transition: all .2s;
+}
+.btn-outline-p { border: 1px solid var(--line); color: var(--text3); background: transparent; }
+.btn-outline-p:hover { border-color: var(--line2); color: var(--text); }
+.btn-filled-p { background: var(--cyan); color: var(--bg); border: none; }
+.btn-filled-p:hover { background: var(--cyanlt); }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    .nav-links { display: none; }
-    .hero-headline { font-size: 44px; }
-    .hero-stats { grid-template-columns: repeat(2,1fr); }
-    .question-grid, .convergence-grid, .reasoning-inner { grid-template-columns: 1fr; }
-    .new-panels-grid, .cap-groups, .ip-grid { grid-template-columns: 1fr; }
-    .proof-grid, .deploy-grid, .pricing-grid { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-  }
+/* ── CTA ── */
+.cta-section {
+  padding: 120px 0;
+  text-align: center;
+  background: var(--bg1);
+}
+.cta-h {
+  font-size: clamp(36px, 4vw, 56px); font-weight: 800;
+  letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px;
+}
+.cta-h .cyan { color: var(--cyan); }
+.cta-sub { font-size: 17px; color: var(--text2); max-width: 440px; margin: 0 auto 36px; line-height: 1.7; }
+.cta-actions { display: flex; gap: 12px; justify-content: center; }
+.cta-note { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-top: 16px; }
+.bottom-stats { display: flex; gap: 56px; justify-content: center; margin-top: 64px; flex-wrap: wrap; }
+.bstat-val { font-size: 36px; font-weight: 800; letter-spacing: -0.03em; color: var(--text); line-height: 1; margin-bottom: 6px; }
+.bstat-label { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 56px 0 40px; border-top: 1px solid var(--line);
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 48px; }
+.footer-name { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 10px; letter-spacing: -0.02em; }
+.footer-name span { color: var(--cyan); }
+.footer-tagline { font-size: 13px; color: var(--text3); line-height: 1.7; margin-bottom: 16px; }
+.footer-col-h { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 14px; letter-spacing: 0.06em; }
+.flink { display: block; font-size: 13px; color: var(--text3); text-decoration: none; margin-bottom: 9px; transition: color .15s; }
+.flink:hover { color: var(--cyan); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 24px; border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11px; color: var(--text4);
+}
+.gcn-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; color: var(--cyan);
+  background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.2);
+  border-radius: 4px; padding: 5px 10px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .container { padding: 0 24px; }
+  .hero-inner, .problem-grid, .reasoning-inner, .conv-grid { grid-template-columns: 1fr; }
+  .groups-grid, .panels-grid, .ip-grid { grid-template-columns: 1fr; }
+  .proof-grid, .deploy-grid, .pricing-grid { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  h1 { font-size: 36px; }
+  .conv-divider { display: none; }
+  .conv-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -543,142 +528,100 @@
 <nav>
   <div class="nav-brand">
     <div class="nav-logo">F</div>
-    <span class="nav-wordmark">FintelliOps™</span>
-    <span style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-left:8px;">by Venture Vertex LLC</span>
+    <div>
+      <div class="nav-wordmark">FintelliOps<span>™</span></div>
+    </div>
+    <span class="nav-byline" style="margin-left:8px;">by Venture Vertex LLC</span>
   </div>
   <div class="nav-links">
     <a href="#platform">Platform</a>
     <a href="#convergence">Convergence</a>
+    <a href="#ai-agents">AI Agents</a>
     <a href="#patents">IP</a>
-    <a href="#competitive">Why Us</a>
+    <a href="#competitive">Compare</a>
     <a href="#deployment">Deploy</a>
     <a href="#pricing">Pricing</a>
-    <a href="#partners">Partners</a>
   </div>
   <div class="nav-actions">
     <a href="#" class="btn-ghost">Sign In</a>
-    <a href="#cta" class="btn-primary">Request Demo →</a>
+    <a href="#cta" class="btn-primary">Request Demo</a>
   </div>
 </nav>
 
 <!-- TICKER -->
 <div class="ticker-wrap">
-  <div class="ticker-inner">
-    <div class="ticker-item">AWS MTD <span class="val">$74,200</span> <span class="up">+9.1% MoM</span></div>
-    <div class="ticker-item">5 cross-panel signals active · <span class="warn">RDS RI expiry — 5/5 panels corroborate</span></div>
-    <div class="ticker-item">Fleet V/C Ratio <span class="val">99.2×</span> · $5.08M value on $51K cost</div>
-    <div class="ticker-item">Waste identified <span class="warn">$16,916/mo</span> · $4,696 quick wins in &lt;48hrs</div>
-    <div class="ticker-item">AGT-005 value decay <span class="warn">projected underwater in 48 days</span></div>
-    <div class="ticker-item">CNRE <span class="val">880K</span> noise records filtered · sanity score <span class="val">96.2</span></div>
-    <div class="ticker-item">23 panels · 18 reasoning engines · $202,992/yr waste identified</div>
-    <div class="ticker-item">Behavior-cost correlation <span class="warn">−0.96 on AGT-005</span> · intervention required</div>
-    <!-- duplicate for loop -->
-    <div class="ticker-item">AWS MTD <span class="val">$74,200</span> <span class="up">+9.1% MoM</span></div>
-    <div class="ticker-item">5 cross-panel signals active · <span class="warn">RDS RI expiry — 5/5 panels corroborate</span></div>
-    <div class="ticker-item">Fleet V/C Ratio <span class="val">99.2×</span> · $5.08M value on $51K cost</div>
-    <div class="ticker-item">Waste identified <span class="warn">$16,916/mo</span> · $4,696 quick wins in &lt;48hrs</div>
-    <div class="ticker-item">AGT-005 value decay <span class="warn">projected underwater in 48 days</span></div>
-    <div class="ticker-item">CNRE <span class="val">880K</span> noise records filtered · sanity score <span class="val">96.2</span></div>
-    <div class="ticker-item">23 panels · 18 reasoning engines · $202,992/yr waste identified</div>
-    <div class="ticker-item">Behavior-cost correlation <span class="warn">−0.96 on AGT-005</span> · intervention required</div>
+  <div class="ticker-track">
+    <div class="tick">RDS RI expiry — <span class="warn">5/5 panels corroborate</span> · $601/day</div>
+    <div class="tick">Fleet V/C ratio <span class="hi">99.2×</span> · $5.08M value on $51K cost</div>
+    <div class="tick">Waste identified <span class="warn">$16,916/mo</span> · $4,696 quick wins &lt;48hrs</div>
+    <div class="tick">AGT-005 value decay — <span class="warn">underwater in 48 days</span></div>
+    <div class="tick">Behavior-cost correlation <span class="warn">−0.96</span> · AGT-005 intervention required</div>
+    <div class="tick">CNRE <span class="hi">880K</span> noise records filtered · sanity score 96.2</div>
+    <div class="tick">23 panels · 18 reasoning engines · <span class="hi">$202,992/yr</span> waste identified</div>
+    <div class="tick">GCP Marketplace listed · <span class="hi">Google Cloud Next 2026</span></div>
+    <div class="tick">RDS RI expiry — <span class="warn">5/5 panels corroborate</span> · $601/day</div>
+    <div class="tick">Fleet V/C ratio <span class="hi">99.2×</span> · $5.08M value on $51K cost</div>
+    <div class="tick">Waste identified <span class="warn">$16,916/mo</span> · $4,696 quick wins &lt;48hrs</div>
+    <div class="tick">AGT-005 value decay — <span class="warn">underwater in 48 days</span></div>
+    <div class="tick">Behavior-cost correlation <span class="warn">−0.96</span> · AGT-005 intervention required</div>
+    <div class="tick">CNRE <span class="hi">880K</span> noise records filtered · sanity score 96.2</div>
+    <div class="tick">23 panels · 18 reasoning engines · <span class="hi">$202,992/yr</span> waste identified</div>
+    <div class="tick">GCP Marketplace listed · <span class="hi">Google Cloud Next 2026</span></div>
   </div>
 </div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <div class="hero-eyebrow">
-      <div class="hero-eyebrow-dot"></div>
-      <span class="mono" style="font-size:11px;color:var(--cyan);font-weight:600;">GOOGLE CLOUD NEXT 2026 · GCP MARKETPLACE LISTED</span>
-    </div>
-    <h1 class="hero-headline">
-      <span class="line1">Your AI agents</span>
-      <span class="line2">cost money.</span>
-      <span class="line3">Are they worth it?</span>
-    </h1>
-    <p class="hero-sub">
-      FintelliOps is the only platform that connects every AI agent action to its <strong>business value</strong> and its <strong>true cost</strong> — simultaneously, in real time.
-      <br><br>
-      23 intelligence panels. 18 collaborative Claude reasoning engines. The convergence of FinOps and AI Observability.
-    </p>
-    <div class="hero-actions">
-      <a href="#cta" class="btn-hero btn-hero-primary">Request Live Demo →</a>
-      <a href="#platform" class="btn-hero btn-hero-secondary">Explore Platform</a>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val display" style="color:var(--red)">$202K</div>
-        <div class="hero-stat-label">Annual waste identified / environment</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val display" style="color:var(--green)">99.2×</div>
-        <div class="hero-stat-label">Agent fleet value/cost ratio</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val display" style="color:var(--cyan)">48d</div>
-        <div class="hero-stat-label">Earliest value decay prediction</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val display" style="color:var(--purple)">18</div>
-        <div class="hero-stat-label">Collaborative reasoning engines</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- THE QUESTION -->
-<section class="the-question" id="question">
-  <div class="container">
-    <div class="question-grid">
+    <div class="hero-inner">
       <div>
-        <div class="label label-cyan question-label">◈ THE PROBLEM</div>
-        <h2 class="question-headline">Three tools. Zero answers.</h2>
-        <p class="question-body">
-          Your engineering team knows if agents are <strong>running</strong>.<br>
-          Your FinOps team knows what they <strong>cost</strong>.<br>
-          Your commitment tools know if compute was bought <strong>efficiently</strong>.<br><br>
-          But nobody — not one tool, not one team — can tell you if your AI investment is actually <strong>worth what it costs</strong>. Or when it stops being worth it.
+        <div class="hero-label">
+          <div class="hero-label-dot"></div>
+          GOOGLE CLOUD NEXT 2026 · GCP MARKETPLACE
+        </div>
+        <h1>
+          Your AI agents<br>
+          cost <span class="accent">money.</span><br>
+          <span class="question">Are they worth it?</span>
+        </h1>
+        <p class="hero-body">
+          FintelliOps is the only platform that connects every AI agent action to its <strong>business value</strong> and its <strong>true cost</strong> — simultaneously, in real time, across your entire AI estate.
         </p>
-        <p class="question-body">
-          IDC calls this the <strong>AI infrastructure reckoning</strong>. By 2027, G1000 organizations will face a 30% rise in underestimated AI costs. Not from overspending — from under-visibility. Enterprises will manage 80× more agents by year-end 2026 than they deployed in 2025. The governance tools don't exist yet.
-        </p>
-        <p class="question-body" style="color:var(--white);">
-          We built them.
-        </p>
+        <div class="hero-cta">
+          <a href="mailto:vyasa.murthy@venture-vertex.com?subject=FintelliOps Demo" class="btn-lg btn-lg-primary">Request Live Demo →</a>
+          <a href="#platform" class="btn-lg btn-lg-outline">Explore Platform</a>
+        </div>
       </div>
       <div>
-        <div class="three-tools">
-          <div class="tool-row">
-            <div class="tool-icon">📡</div>
+        <div class="signal-card">
+          <div class="signal-card-header">
+            <span>COMMAND CENTER · CROSS-PANEL SCAN</span>
+            <div class="signal-live"><div class="signal-dot"></div>LIVE</div>
+          </div>
+          <div class="signal-item">
+            <span class="signal-sev sev-critical">CRITICAL</span>
             <div>
-              <div class="tool-name">Monitoring / APM</div>
-              <div class="tool-answer">Is the agent running? ✓</div>
-              <div class="tool-answer" style="color:var(--red);margin-top:2px;">Is it worth what it costs? ✗</div>
+              <div class="signal-text"><strong>RDS RI expiry — $8,420 accumulated</strong>. Reserved Instance expired March 14. On-demand premium $601/day compounding.</div>
+              <div class="signal-meta">5/5 PANELS CORROBORATE · CAUSAL ATE $8,420 · E-VALUE 9.4</div>
             </div>
           </div>
-          <div class="tool-row">
-            <div class="tool-icon">💰</div>
+          <div class="signal-item">
+            <span class="signal-sev sev-high">HIGH</span>
             <div>
-              <div class="tool-name">FinOps Tools (CloudHealth, Apptio)</div>
-              <div class="tool-answer">What does it cost? ✓</div>
-              <div class="tool-answer" style="color:var(--red);margin-top:2px;">What business value does it produce? ✗</div>
+              <div class="signal-text"><strong>AGT-005 value decay</strong>. Behavior-cost correlation −0.96. Reasoning confidence collapsed 0.74→0.38. Projected underwater in 48 days.</div>
+              <div class="signal-meta">4/5 PANELS · $501K/MO VALUE AT RISK</div>
             </div>
           </div>
-          <div class="tool-row">
-            <div class="tool-icon">🔒</div>
+          <div class="signal-item">
+            <span class="signal-sev sev-signal">SIGNAL</span>
             <div>
-              <div class="tool-name">Commitment Tools (Archera)</div>
-              <div class="tool-answer">Did we buy compute efficiently? ✓</div>
-              <div class="tool-answer" style="color:var(--red);margin-top:2px;">What workload runs on that commitment? ✗</div>
+              <div class="signal-text"><strong>Fleet cost pathology</strong>. AGT-001, 003, 005 share Sonnet + context bloat pattern. One routing rule fixes all three: $4,800/mo.</div>
+              <div class="signal-meta">3/5 PANELS · SINGLE INTERVENTION</div>
             </div>
           </div>
-          <div class="tool-row highlight">
-            <div class="tool-icon">◈</div>
-            <div>
-              <div class="tool-name" style="color:var(--cyan);">FintelliOps™</div>
-              <div class="tool-answer">What does each agent cost per business outcome? ✓</div>
-              <div class="tool-answer" style="color:var(--cyan);margin-top:2px;">When will value decay below cost — before it happens? ✓</div>
-            </div>
+          <div class="signal-footer">
+            <span>6 signals active · $1,202/day compounding</span>
+            <span style="color:var(--cyan);">47 actions ready</span>
           </div>
         </div>
       </div>
@@ -686,83 +629,132 @@
   </div>
 </section>
 
-<!-- PLATFORM OVERVIEW -->
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-val" style="color:var(--red);">$202K</div>
+    <div class="stat-label">Annual waste per environment</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val" style="color:var(--green);">99.2×</div>
+    <div class="stat-label">Agent fleet value/cost ratio</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val" style="color:var(--cyan);">48d</div>
+    <div class="stat-label">Earliest value decay prediction</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val" style="color:var(--text);">18</div>
+    <div class="stat-label">Collaborative reasoning engines</div>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div>
+        <span class="section-tag">THE PROBLEM</span>
+        <h2 class="section-h">Three tools.<br>Zero answers.</h2>
+        <p style="font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:20px;">
+          Your engineering team knows if agents are running. Your FinOps team knows what they cost. Your commitment tools know if compute was bought efficiently.
+        </p>
+        <p style="font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:20px;">
+          Nobody — not one tool, not one team — can tell you if your AI investment is worth what it costs. Or when it stops being worth it.
+        </p>
+        <p style="font-size:15px;color:var(--text2);line-height:1.8;">
+          IDC: by 2027, G1000 organizations face a 30% rise in underestimated AI costs. Enterprises will manage 80× more agents by year-end 2026 than they deployed in 2025. The governance tools didn't exist.
+        </p>
+        <p style="font-size:15px;color:var(--text);font-weight:600;margin-top:20px;">We built them.</p>
+      </div>
+      <div>
+        <div class="tool-table">
+          <div class="tool-row header">
+            <div class="tr-label">TOOL</div>
+            <div class="tr-label">ANSWERS</div>
+            <div class="tr-label">MISSING</div>
+          </div>
+          <div class="tool-row">
+            <div class="tool-name dim">Monitoring / APM</div>
+            <div class="check-cell yes">Is it running? ✓</div>
+            <div class="check-cell no">Is it worth it? ✗</div>
+          </div>
+          <div class="tool-row">
+            <div class="tool-name dim">FinOps Tools</div>
+            <div class="check-cell yes">What does it cost? ✓</div>
+            <div class="check-cell no">What does it produce? ✗</div>
+          </div>
+          <div class="tool-row">
+            <div class="tool-name dim">Archera / Commitments</div>
+            <div class="check-cell yes">Compute efficient? ✓</div>
+            <div class="check-cell no">Workload intelligent? ✗</div>
+          </div>
+          <div class="tool-row highlight">
+            <div class="tool-name">FintelliOps™</div>
+            <div class="check-cell cyan">Cost per business outcome ✓</div>
+            <div class="check-cell cyan">Value decay prediction ✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM -->
 <section class="platform" id="platform">
   <div class="container">
     <div class="section-header">
-      <div class="label label-cyan" style="margin-bottom:16px;">◉ PLATFORM</div>
-      <h2 class="section-title display">23 intelligence panels.<br>Seven capability groups.</h2>
-      <p class="section-sub">Each group powered by collaborative Claude reasoning engines that share context across all panels simultaneously.</p>
+      <span class="section-tag">PLATFORM</span>
+      <h2 class="section-h">23 intelligence panels.<br>Seven capability groups.</h2>
+      <p class="section-sub">Each group powered by collaborative Claude reasoning engines that share context across every panel simultaneously.</p>
     </div>
-    <div class="cap-groups">
-      <div class="cap-group">
-        <div class="cap-group-icon" style="background:rgba(0,212,255,0.1);">◈</div>
-        <div class="cap-group-name">Intelligence</div>
-        <div class="cap-group-desc">Deep cost analysis, causal attribution, behavioral fingerprinting, and data quality across all cloud providers.</div>
-        <div class="cap-group-panels">
-          <span class="panel-chip">Cost Explorer</span>
-          <span class="panel-chip">Causal AI</span>
-          <span class="panel-chip">Time Machine</span>
-          <span class="panel-chip">Normalization</span>
-          <span class="panel-chip">Tag Governance</span>
+    <div class="groups-grid">
+      <div class="group-card">
+        <div class="group-tag">HOME</div>
+        <div class="group-name">Command & Output</div>
+        <div class="group-desc">Mission control, AI-generated executive briefs, ROI scoreboard, and daily intelligence digest.</div>
+        <div class="chip-row">
+          <span class="chip">Command Center</span><span class="chip new">Executive Brief</span><span class="chip new">ROI Tracker</span><span class="chip new">Digest</span>
         </div>
       </div>
-      <div class="cap-group">
-        <div class="cap-group-icon" style="background:rgba(255,176,32,0.1);">◉</div>
-        <div class="cap-group-name">Optimize</div>
-        <div class="cap-group-desc">Action engine, AI debt management, forecasting, allocation, and the full waste elimination stack.</div>
-        <div class="cap-group-panels">
-          <span class="panel-chip">Action Engine</span>
-          <span class="panel-chip">AI Debt</span>
-          <span class="panel-chip">Forecast</span>
-          <span class="panel-chip new">Commitment Intel</span>
-          <span class="panel-chip new">Unit Economics</span>
-          <span class="panel-chip new">Waste Elimination</span>
+      <div class="group-card">
+        <div class="group-tag">INTELLIGENCE</div>
+        <div class="group-name">Deep Cost Analysis</div>
+        <div class="group-desc">Causal attribution, behavioral fingerprinting, data quality, platform intelligence, and adaptive indexing.</div>
+        <div class="chip-row">
+          <span class="chip">Intelligence</span><span class="chip">Cost Explorer</span><span class="chip">Time Machine</span><span class="chip">Platform Intel</span><span class="chip">Data Engine</span>
         </div>
       </div>
-      <div class="cap-group">
-        <div class="cap-group-icon" style="background:rgba(0,232,122,0.1);">▲</div>
-        <div class="cap-group-name" style="color:var(--green);">AI Agents ← NEW</div>
-        <div class="cap-group-desc">The convergence layer. Behavioral signals + financial signals unified. The panel set that doesn't exist anywhere else.</div>
-        <div class="cap-group-panels">
-          <span class="panel-chip">Agent FinOps</span>
-          <span class="panel-chip new">Behavior-Cost Correlation</span>
-          <span class="panel-chip new">Value Attribution</span>
-          <span class="panel-chip new">Agent Registry</span>
-          <span class="panel-chip new">Value Decay Detection</span>
+      <div class="group-card">
+        <div class="group-tag">OPTIMIZE</div>
+        <div class="group-name">Actions & Waste</div>
+        <div class="group-desc">Action engine, AI debt, forecasting, allocation, commitment intelligence, unit economics, waste elimination.</div>
+        <div class="chip-row">
+          <span class="chip">Action Engine</span><span class="chip">AI Debt</span><span class="chip">Forecast</span><span class="chip">Allocation</span>
         </div>
       </div>
-      <div class="cap-group">
-        <div class="cap-group-icon" style="background:rgba(168,85,247,0.1);">◎</div>
-        <div class="cap-group-name">Govern</div>
-        <div class="cap-group-desc">Policy enforcement at IaC provisioning time. Incident intelligence. Tag propagation mesh.</div>
-        <div class="cap-group-panels">
-          <span class="panel-chip">Policy Engine</span>
-          <span class="panel-chip">Tag Governance</span>
-          <span class="panel-chip">Normalization</span>
-          <span class="panel-chip">Incidents</span>
+      <div class="group-card" style="border-top:2px solid rgba(6,182,212,0.4);">
+        <div class="group-tag" style="color:var(--cyan);">AI AGENTS — NEW</div>
+        <div class="group-name">Convergence Layer</div>
+        <div class="group-desc">The panel set that doesn't exist anywhere else. Behavioral signals and financial signals unified on one platform.</div>
+        <div class="chip-row">
+          <span class="chip">Agent FinOps</span><span class="chip new">Behavior-Cost</span><span class="chip new">Value Attribution</span><span class="chip new">Agent Registry</span><span class="chip new">Value Decay</span>
         </div>
       </div>
-      <div class="cap-group">
-        <div class="cap-group-icon" style="background:rgba(0,255,204,0.1);">◌</div>
-        <div class="cap-group-name">Sustainability</div>
-        <div class="cap-group-desc">Carbon-cost Pareto optimization. SBTi 1.5°C trajectory. Grid intensity routing. EU AI Act compliance.</div>
-        <div class="cap-group-panels">
-          <span class="panel-chip">GreenOps</span>
-          <span class="panel-chip">Carbon Pareto</span>
-          <span class="panel-chip">SBTi Tracker</span>
-          <span class="panel-chip">Carbon Scheduling</span>
+      <div class="group-card">
+        <div class="group-tag">GOVERN</div>
+        <div class="group-name">Policy & Compliance</div>
+        <div class="group-desc">Incident intelligence, FinOpsLang™ policy engine, tag propagation mesh, semantic normalization.</div>
+        <div class="chip-row">
+          <span class="chip">Incidents</span><span class="chip">Policy Engine</span><span class="chip">Tag Governance</span><span class="chip">Normalization</span>
         </div>
       </div>
-      <div class="cap-group">
-        <div class="cap-group-icon" style="background:rgba(0,212,255,0.08);">⬢</div>
-        <div class="cap-group-name">Output Layer</div>
-        <div class="cap-group-desc">AI-generated executive briefs, ROI scoreboard, daily intelligence digest, and 6-step guided demo mode.</div>
-        <div class="cap-group-panels">
-          <span class="panel-chip new">Executive Brief</span>
-          <span class="panel-chip new">ROI Tracker</span>
-          <span class="panel-chip new">Digest Engine</span>
-          <span class="panel-chip new">Demo Mode</span>
+      <div class="group-card">
+        <div class="group-tag">SUSTAINABILITY · OPERATIONS</div>
+        <div class="group-name">GreenOps & Integrations</div>
+        <div class="group-desc">Carbon-cost Pareto optimization, SBTi tracking, integration hub, live data, enterprise connectors.</div>
+        <div class="chip-row">
+          <span class="chip">GreenOps</span><span class="chip">Integration Hub</span><span class="chip">Live Data</span><span class="chip">Partner Console</span>
         </div>
       </div>
     </div>
@@ -773,180 +765,172 @@
 <section class="convergence" id="convergence">
   <div class="container">
     <div class="section-header">
-      <div class="label label-cyan" style="margin-bottom:16px;">◈ THE CONVERGENCE LAYER</div>
-      <h2 class="section-title display">FinOps + Observability.<br>The category that didn't exist.</h2>
-      <p class="section-sub">State of FinOps 2026: 98% of teams now manage AI spend. The discipline has evolved. The tools haven't — until now.</p>
+      <span class="section-tag">THE CONVERGENCE LAYER</span>
+      <h2 class="section-h">FinOps + Observability.<br>One platform. One answer.</h2>
+      <p class="section-sub">State of FinOps 2026: 98% of teams now manage AI spend. The discipline evolved. The tools hadn't.</p>
     </div>
-    <div style="border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--bg1);">
-      <div class="convergence-grid">
-        <div class="convergence-side">
-          <div class="label" style="margin-bottom:12px;">WHAT EXISTED BEFORE</div>
-          <div class="convergence-side-title" style="color:var(--dim);">Two separate disciplines. Two separate tools. Zero connection.</div>
-          <div class="convergence-side-body">FinOps teams track cost. Observability tools track behavior. Neither connects behavioral degradation to financial impact. Neither predicts when value decays below cost.</div>
-          <div class="convergence-list">
-            <div class="conv-item"><span class="conv-check">✓</span>Cloud cost visibility</div>
-            <div class="conv-item"><span class="conv-check">✓</span>Agent uptime monitoring</div>
-            <div class="conv-item"><span class="conv-check">✓</span>Token count tracking</div>
-            <div class="conv-item"><span class="conv-x">✗</span>Behavioral drift + cost correlation on same chart</div>
-            <div class="conv-item"><span class="conv-x">✗</span>Value produced per business outcome, per agent</div>
-            <div class="conv-item"><span class="conv-x">✗</span>Predictive decay: when does cost exceed value?</div>
-            <div class="conv-item"><span class="conv-x">✗</span>Cross-panel corroboration of the same root cause</div>
-          </div>
+    <div class="conv-grid">
+      <div class="conv-side conv-side-a">
+        <div class="conv-side-tag">WHAT EXISTED BEFORE</div>
+        <div class="conv-h">Two disciplines. Two tools. No connection.</div>
+        <div class="conv-body">FinOps teams tracked cost. Observability tools tracked behavior. Neither connected behavioral degradation to financial impact. Neither predicted when value decayed below cost.</div>
+        <div class="conv-list">
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Cloud cost visibility</div>
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Agent uptime monitoring</div>
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Token count tracking</div>
+          <div class="conv-li"><span class="conv-icon no">—</span>Behavioral drift + cost on same chart</div>
+          <div class="conv-li"><span class="conv-icon no">—</span>Value per business outcome, per agent</div>
+          <div class="conv-li"><span class="conv-icon no">—</span>Predictive decay: when does cost exceed value?</div>
+          <div class="conv-li"><span class="conv-icon no">—</span>Cross-panel corroboration of root causes</div>
         </div>
-        <div class="convergence-divider"></div>
-        <div class="convergence-side" style="background:linear-gradient(135deg,rgba(0,212,255,0.04),rgba(168,85,247,0.03));">
-          <div class="label label-cyan" style="margin-bottom:12px;">WHAT FINTELLIOPS ADDS</div>
-          <div class="convergence-side-title" style="color:var(--white);">One platform. Both dimensions. Causally connected.</div>
-          <div class="convergence-side-body">23 panels. 18 Claude reasoning engines that share context across every panel simultaneously. A finding corroborated by 5 panels is a platform-level signal, not a local alert.</div>
-          <div class="convergence-list">
-            <div class="conv-item"><span class="conv-check">✓</span>Behavior-cost correlation coefficient, per agent, per day</div>
-            <div class="conv-item"><span class="conv-check">✓</span>Business value attribution: $8.20/ticket, $284/defect prevented</div>
-            <div class="conv-item"><span class="conv-check">✓</span>Value/cost ratio tracking with 90-day predictive decay</div>
-            <div class="conv-item"><span class="conv-check">✓</span>Agent registry with authorized budget, owner, compliance</div>
-            <div class="conv-item"><span class="conv-check">✓</span>Fleet-wide cost pathology detection across all agents</div>
-            <div class="conv-item"><span class="conv-check">✓</span>Cross-panel signal corroboration — up to 5/5 panels on one root cause</div>
-          </div>
+      </div>
+      <div class="conv-divider"></div>
+      <div class="conv-side conv-side-b">
+        <div class="conv-side-tag">WHAT FINTELLIOPS ADDS</div>
+        <div class="conv-h">One platform. Both dimensions. Causally connected.</div>
+        <div class="conv-body">23 panels. 18 Claude reasoning engines sharing context across every panel simultaneously. A finding corroborated by 5 panels is a platform-level signal, not a local alert.</div>
+        <div class="conv-list">
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Behavior-cost correlation coefficient, per agent, per day</div>
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Business value attribution: $8.20/ticket, $284/defect prevented</div>
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Value/cost ratio with 90-day predictive decay</div>
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Agent registry with authorized budget, owner, compliance</div>
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Fleet-wide cost pathology detection across all agents</div>
+          <div class="conv-li"><span class="conv-icon yes">✓</span>Cross-panel signal corroboration — up to 5/5 panels on one root cause</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- NEW PANELS S55-S58 -->
+<!-- AI AGENTS NEW PANELS -->
 <section class="new-panels" id="ai-agents">
   <div class="container">
     <div class="section-header">
-      <div class="label label-cyan" style="margin-bottom:16px;">◈ AI AGENTS INTELLIGENCE — NEW</div>
-      <h2 class="section-title display">Four panels that answer<br>the question no one else can.</h2>
-      <p class="section-sub">The convergence layer. Built for the 80× agent proliferation IDC is forecasting by end of 2026.</p>
+      <span class="section-tag">AI AGENTS INTELLIGENCE</span>
+      <h2 class="section-h">Four panels that answer<br>the question no one else can.</h2>
+      <p class="section-sub">Built for the 80× agent proliferation IDC is forecasting. The convergence layer.</p>
     </div>
-    <div class="new-panels-grid">
-      <div class="new-panel-card">
-        <div class="new-panel-number">S55 · BEHAVIORAL INTELLIGENCE</div>
-        <div class="new-panel-title" style="color:var(--cyan);">Behavior-Cost<br>Correlation Engine</div>
-        <div class="new-panel-body">Puts behavioral signals — reasoning confidence, tool call success rate, hallucination risk, context drift — on the same 30-day chart as cost per task. When behavior degrades and cost rises simultaneously, the correlation coefficient tells you exactly when to intervene and by how much.</div>
-        <div class="new-panel-metric"><span>AGT-005 correlation:</span><span class="metric-val">−0.96</span><span style="color:var(--dim);">= behavioral collapse driving $28K/mo cost inflation</span></div>
+    <div class="panels-grid">
+      <div class="panel-card">
+        <div class="panel-num">BEHAVIORAL INTELLIGENCE</div>
+        <div class="panel-h">Behavior-Cost<br>Correlation Engine</div>
+        <div class="panel-body">Behavioral signals — reasoning confidence, tool call success, hallucination risk, context drift — on the same 30-day chart as cost per task. Correlation coefficient tells you exactly when to intervene and by how much.</div>
+        <div class="panel-metric"><span class="panel-metric-val">−0.96</span><span class="panel-metric-desc">AGT-005 correlation · behavioral collapse driving $28K/mo cost inflation</span></div>
       </div>
-      <div class="new-panel-card">
-        <div class="new-panel-number">S56 · VALUE INTELLIGENCE</div>
-        <div class="new-panel-title" style="color:var(--green);">Business Value<br>Attribution Layer</div>
-        <div class="new-panel-body">For every agent, defines a business outcome — ticket resolved, defect caught, analysis delivered — and attaches a dollar value. Tracks outcomes vs targets in real time. The fleet value/cost ratio tells the CFO exactly what AI investment is producing, not costing.</div>
-        <div class="new-panel-metric"><span>Fleet V/C Ratio:</span><span class="metric-val">99.2×</span><span style="color:var(--dim);">= $5.08M value on $51K monthly cost</span></div>
+      <div class="panel-card">
+        <div class="panel-num">VALUE INTELLIGENCE</div>
+        <div class="panel-h">Business Value<br>Attribution Layer</div>
+        <div class="panel-body">For every agent, defines a business outcome — ticket resolved, defect caught, analysis delivered — with a dollar value. Tracks outcomes vs targets in real time. The number your CFO actually needs.</div>
+        <div class="panel-metric"><span class="panel-metric-val">99.2×</span><span class="panel-metric-desc">Fleet V/C ratio · $5.08M value on $51K monthly cost</span></div>
       </div>
-      <div class="new-panel-card">
-        <div class="new-panel-number">S57 · GOVERNANCE INTELLIGENCE</div>
-        <div class="new-panel-title" style="color:var(--purple);">Agent Registry with<br>Financial Accountability</div>
-        <div class="new-panel-body">Every agent registered with its owner, authorized budget, actual spend, compliance status, deployed date, and review schedule. The governance layer for agent sprawl — the same function FinOps teams perform for cloud resources, applied to AI agents at enterprise scale.</div>
-        <div class="new-panel-metric"><span>Coverage:</span><span class="metric-val">6 agents</span><span style="color:var(--dim);">$51.3K/mo authorized · GDPR · SOC2 · HIPAA tracked</span></div>
+      <div class="panel-card">
+        <div class="panel-num">GOVERNANCE INTELLIGENCE</div>
+        <div class="panel-h">Agent Registry with<br>Financial Accountability</div>
+        <div class="panel-body">Every agent registered with its owner, authorized budget, actual spend, compliance status, deployed date, and review schedule. Governance for agent sprawl — what FinOps teams do for cloud resources, applied to AI agents.</div>
+        <div class="panel-metric"><span class="panel-metric-val">6 agents</span><span class="panel-metric-desc">$51.3K/mo authorized · GDPR · SOC2 · HIPAA tracked</span></div>
       </div>
-      <div class="new-panel-card">
-        <div class="new-panel-number">S58 · PREDICTIVE INTELLIGENCE</div>
-        <div class="new-panel-title" style="color:var(--amber);">Predictive Value<br>Decay Detection</div>
-        <div class="new-panel-body">Tracks the value/cost ratio over time, fits a decay rate, and projects when each agent goes underwater — before it happens. $2.84M in value at risk in the demo environment over 90 days. Intervention cost: $84K. Intervention ROI: 33.8×.</div>
-        <div class="new-panel-metric"><span>Earliest underwater:</span><span class="metric-val">48 days</span><span style="color:var(--dim);">· $501K/mo value at risk from one agent</span></div>
+      <div class="panel-card">
+        <div class="panel-num">PREDICTIVE INTELLIGENCE</div>
+        <div class="panel-h">Predictive Value<br>Decay Detection</div>
+        <div class="panel-body">Tracks the value/cost ratio over time, fits a decay rate, and projects when each agent goes underwater — before it happens. $2.84M in fleet value at risk in 90 days. Intervention ROI: 33.8×.</div>
+        <div class="panel-metric"><span class="panel-metric-val">48 days</span><span class="panel-metric-desc">Earliest underwater · $501K/mo value at risk from one agent</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROOF POINTS -->
+<!-- PROOF -->
 <section class="proof" id="proof">
   <div class="container">
     <div class="section-header">
-      <div class="label label-cyan" style="margin-bottom:16px;">◉ PROOF POINTS</div>
-      <h2 class="section-title display">Real numbers.<br>Live environment.</h2>
+      <span class="section-tag">PROOF POINTS</span>
+      <h2 class="section-h">Real numbers. Live environment.</h2>
     </div>
     <div class="proof-grid">
       <div class="proof-card">
-        <div class="proof-val display" style="color:var(--red);">$16,916</div>
-        <div class="proof-label">MONTHLY WASTE IDENTIFIED</div>
-        <div class="proof-sub">35.6% of spend · $202K/year · 4 waste layers</div>
+        <div class="proof-val" style="color:var(--red);">$16,916</div>
+        <div class="proof-label">Monthly waste identified</div>
+        <div class="proof-sub">35.6% of spend · $202K/year · 4 layers</div>
       </div>
       <div class="proof-card">
-        <div class="proof-val display" style="color:var(--green);">$94,200</div>
-        <div class="proof-label">ANNUAL SAVINGS BACKLOG</div>
-        <div class="proof-sub">92% avg confidence · 47 actions queued · $3,358 realized MTD</div>
+        <div class="proof-val" style="color:var(--green);">$94,200</div>
+        <div class="proof-label">Annual savings backlog</div>
+        <div class="proof-sub">47 actions · 92% avg confidence · $3,358 realized MTD</div>
       </div>
       <div class="proof-card">
-        <div class="proof-val display" style="color:var(--cyan);">99.2×</div>
-        <div class="proof-label">FLEET VALUE/COST RATIO</div>
+        <div class="proof-val" style="color:var(--cyan);">99.2×</div>
+        <div class="proof-label">Fleet value/cost ratio</div>
         <div class="proof-sub">$5.08M business value on $51K agent spend</div>
       </div>
       <div class="proof-card">
-        <div class="proof-val display" style="color:var(--amber);">6 of 6</div>
-        <div class="proof-label">CROSS-PANEL SIGNALS ACTIVE</div>
-        <div class="proof-sub">RDS RI expiry: 5/5 panels corroborate one root cause</div>
+        <div class="proof-val" style="color:var(--text);">5/5</div>
+        <div class="proof-label">Cross-panel corroboration</div>
+        <div class="proof-sub">RDS RI expiry confirmed across all 5 relevant panels</div>
       </div>
     </div>
-    <div style="background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:32px;text-align:center;">
-      <div class="label label-cyan" style="margin-bottom:16px;">◈ THE SIGNAL NO OTHER PLATFORM SURFACES</div>
-      <p style="font-size:18px;color:var(--white);max-width:700px;margin:0 auto;line-height:1.7;">
-        One RDS Reserved Instance expired on March 14th. It's costing <span style="color:var(--red);font-family:var(--mono);">$601/day</span>.<br>
-        It shows up in <strong>Incidents</strong> (P2), <strong>Commitments</strong> (waste), <strong>Forecast</strong> (cliff), <strong>AI Debt</strong> (deferred), and <strong>Action Engine</strong> (backlog).
-        <br><br>
-        <strong>Five panels. Same root cause. Corroboration score: 5/5.</strong>
-        <br>
-        <span style="color:var(--dim);">That's collaborative intelligence. That's what makes a finding a platform-level signal.</span>
-      </p>
+    <div class="callout">
+      <p class="callout-text">One RDS Reserved Instance expired March 14th. It costs <strong>$601/day</strong>. It shows up in <strong>Incidents</strong> (P2), <strong>Commitments</strong> (waste), <strong>Forecast</strong> (Q2 cliff), <strong>AI Debt</strong> (deferred), and <strong>Action Engine</strong> (backlog) — simultaneously. Five panels. Same root cause. Corroboration score 5/5. That's collaborative intelligence. That's what makes a finding a platform-level signal.</p>
     </div>
   </div>
 </section>
 
-<!-- REASONING ENGINES -->
+<!-- REASONING -->
 <section class="reasoning" id="reasoning">
   <div class="container">
     <div class="reasoning-inner">
-      <div class="reasoning-copy">
-        <div class="label label-cyan" style="margin-bottom:16px;">◈ 18 REASONING ENGINES</div>
-        <h2 class="section-title display" style="font-size:44px;">Not dashboards.<br>Reasoning engines.</h2>
-        <p class="section-sub" style="text-align:left;margin:0 0 32px;">Every panel has a Claude reasoning engine with a domain-specific system prompt and access to the full platform context. Scan any panel and get causal, quantified findings — not generic FinOps advice.</p>
-        <div class="reasoning-features">
-          <div class="reasoning-feat">
-            <div class="reasoning-feat-title">◈ Collaborative context sharing</div>
-            <div class="reasoning-feat-body">Every engine reads every other panel's data simultaneously. A finding that 3+ panels corroborate gets flagged as a platform-level signal, not a local alert.</div>
+      <div>
+        <span class="section-tag">18 REASONING ENGINES</span>
+        <h2 class="section-h">Not dashboards.<br>Reasoning engines.</h2>
+        <p class="section-sub">Every panel has a Claude reasoning engine with a domain-specific system prompt and access to the full platform context.</p>
+        <div class="feat-list">
+          <div class="feat">
+            <div class="feat-title">Collaborative context sharing</div>
+            <div class="feat-body">Every engine reads every other panel's data simultaneously. A finding that 3+ panels corroborate gets flagged as a platform-level signal, not a local alert.</div>
           </div>
-          <div class="reasoning-feat">
-            <div class="reasoning-feat-title">◉ Domain-specific system prompts</div>
-            <div class="reasoning-feat-body">The Causal AI engine validates whether other panels' savings estimates are real or confounded. The Action Engine sequences the portfolio by cross-panel value. Each engine knows its domain and the full room.</div>
+          <div class="feat">
+            <div class="feat-title">Domain-specific intelligence</div>
+            <div class="feat-body">The Causal AI engine validates whether other panels' savings estimates are real or confounded. The Action Engine sequences by cross-panel value. Each engine knows its domain and the full room.</div>
           </div>
-          <div class="reasoning-feat">
-            <div class="reasoning-feat-title">▲ On-demand + proactive</div>
-            <div class="reasoning-feat-body">Scan on demand from any panel, or let the Daily Digest engine deliver the top 3 cross-panel findings every morning. The Executive Brief generates a boardroom-ready report in one click.</div>
+          <div class="feat">
+            <div class="feat-title">On-demand and proactive</div>
+            <div class="feat-body">Scan on demand from any panel. The Daily Digest engine delivers the top 3 cross-panel findings every morning. Executive Brief generates a boardroom-ready report in one click.</div>
           </div>
-          <div class="reasoning-feat">
-            <div class="reasoning-feat-title">◌ Causal, not correlational</div>
-            <div class="reasoning-feat-body">The platform knows the RDS +18.7% MoM growth traces causally to a feature store migration 6 weeks ago — not from pattern matching, but from the actual causal chain in the data.</div>
+          <div class="feat">
+            <div class="feat-title">Causal, not correlational</div>
+            <div class="feat-body">The platform connects RDS +18.7% MoM growth to a feature store migration 6 weeks prior — not from pattern matching, but from the actual causal chain in the data.</div>
           </div>
         </div>
       </div>
-      <div class="reasoning-visual">
-        <div class="rv-header">
-          <span>◈ COMMAND CENTER — CROSS-PANEL SCAN</span>
-          <span class="rv-badge">LIVE</span>
-        </div>
-        <div class="rv-signal">
-          <div class="rv-item critical">
-            <span class="rv-sev">CRITICAL · 5/5 PANELS CORROBORATE</span>
-            RDS RI expiry — $8,420 accumulated at $601/day. Visible in: Incidents (P2) · Commitments (waste slot) · Forecast (Q2 cliff) · AI Debt (deferred action) · Action Engine (backlog #3). Single non-renewal decision March 14th. Causal ATE: $8,420, E-value 9.4.
+      <div>
+        <div class="rv">
+          <div class="rv-head">
+            <span>COMMAND CENTER · LIVE SCAN</span>
+            <div class="rv-live"><div class="rv-dot"></div>ACTIVE</div>
           </div>
-          <div class="rv-item high">
-            <span class="rv-sev">HIGH · 4/5 PANELS · BEHAVIORAL</span>
-            AGT-001, AGT-003, AGT-005 share a fleet-wide cost pathology: Sonnet-class model + context &gt;3× fleet average. Fleet cost impact $4,800/mo. One routing rule fixes all three. Visible in: Agent FinOps · AI Debt · Incidents · Action Engine.
+          <div class="rv-sig">
+            <div class="rv-sev-row">
+              <span class="rv-sev-badge sev-critical">CRITICAL</span>
+              <span class="rv-corr-count">5/5 PANELS CORROBORATE</span>
+            </div>
+            <div class="rv-sig-text"><strong>RDS RI expiry — $8,420 accumulated at $601/day.</strong> Visible in: Incidents (P2) · Commitments (waste slot) · Forecast (Q2 cliff) · AI Debt (deferred) · Action Engine (backlog #3). Single non-renewal decision March 14th.</div>
           </div>
-          <div class="rv-item info">
-            <span class="rv-sev">SIGNAL · 4/5 PANELS · DUAL WIN</span>
-            GPU RI idle 48% ($2,938/mo waste) = 48% wasted carbon (184kg CO2/mo). Fix is job scheduler, not commitment exchange. Dual win: Commitments + GreenOps + Forecast + Action Engine all see this.
+          <div class="rv-sig">
+            <div class="rv-sev-row">
+              <span class="rv-sev-badge sev-high">HIGH</span>
+              <span class="rv-corr-count">4/5 PANELS</span>
+            </div>
+            <div class="rv-sig-text"><strong>Fleet cost pathology — Sonnet + context bloat.</strong> AGT-001, 003, 005 share pattern. $4,800/mo fleet savings from one routing rule. Agent FinOps · AI Debt · Incidents · Action Engine.</div>
           </div>
-        </div>
-        <div class="rv-corr">
-          <div class="rv-corr-label">Cross-panel corroboration scores</div>
-          <div class="rv-corr-bars">
-            <div class="rv-corr-bar" style="background:var(--red);color:var(--bg0);">5/5</div>
-            <div class="rv-corr-bar" style="background:var(--amber);color:var(--bg0);">4/5</div>
-            <div class="rv-corr-bar" style="background:var(--amber);color:var(--bg0);">4/5</div>
-            <div class="rv-corr-bar" style="background:var(--cyan);color:var(--bg0);">3/5</div>
-            <div class="rv-corr-bar" style="background:var(--cyan);color:var(--bg0);">3/5</div>
-            <div class="rv-corr-bar" style="background:var(--borderb);color:var(--dim);">2/5</div>
+          <div class="rv-sig">
+            <div class="rv-sev-row">
+              <span class="rv-sev-badge sev-signal">SIGNAL</span>
+              <span class="rv-corr-count">4/5 PANELS</span>
+            </div>
+            <div class="rv-sig-text"><strong>GPU RI idle 48% = 48% wasted carbon.</strong> $2,938/mo waste + 184kg CO2/mo. Fix is job scheduler, not commitment exchange. Dual win across Commitments + GreenOps.</div>
+          </div>
+          <div class="rv-footer">
+            <span>6 active signals</span>
+            <span style="color:var(--cyan);">$1,202/day compounding</span>
           </div>
         </div>
       </div>
@@ -958,91 +942,66 @@
 <section class="competitive" id="competitive">
   <div class="container">
     <div class="section-header">
-      <div class="label label-cyan" style="margin-bottom:16px;">◎ COMPETITIVE LANDSCAPE</div>
-      <h2 class="section-title display">No incumbent comes close.</h2>
-      <p class="section-sub">A direct comparison on the capabilities that define next-generation enterprise AI FinOps in 2026.</p>
+      <span class="section-tag">COMPETITIVE LANDSCAPE</span>
+      <h2 class="section-h">No incumbent comes close.</h2>
+      <p class="section-sub">A direct comparison on the capabilities that define enterprise AI FinOps in 2026.</p>
     </div>
-    <div class="comp-table-wrap">
+    <div class="comp-wrap">
       <table class="comp-table">
         <thead>
           <tr>
             <th>Platform</th>
             <th>AI Agent FinOps</th>
-            <th>Behavior-Cost Correlation</th>
+            <th>Behavior-Cost Corr.</th>
             <th>Value Attribution</th>
-            <th>Value Decay Prediction</th>
+            <th>Value Decay</th>
             <th>Cross-Panel Reasoning</th>
             <th>Causal Attribution</th>
-            <th>Carbon-Cost Pareto</th>
+            <th>Carbon-Cost</th>
             <th>Policy DSL</th>
           </tr>
         </thead>
         <tbody>
           <tr class="us">
             <td>FintelliOps™</td>
-            <td class="check">Full · 4 panels</td>
-            <td class="check">−0.96 correlation</td>
-            <td class="check">99.2× V/C ratio</td>
-            <td class="check">48d prediction</td>
-            <td class="check">18 engines · 5/5</td>
-            <td class="check">Full DAG · E-value</td>
-            <td class="check">NSGA-III · SBTi</td>
-            <td class="check">FinOpsLang™</td>
+            <td class="cyes">Full · 4 panels</td>
+            <td class="cyes">−0.96 coeff.</td>
+            <td class="cyes">99.2× V/C ratio</td>
+            <td class="cyes">48d prediction</td>
+            <td class="cyes">18 engines · 5/5</td>
+            <td class="cyes">Full DAG · E-value</td>
+            <td class="cyes">NSGA-III · SBTi</td>
+            <td class="cyes">FinOpsLang™</td>
           </tr>
           <tr>
-            <td>CloudHealth / VMware</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
+            <td>CloudHealth</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td>
           </tr>
           <tr>
             <td>Apptio Cloudability</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td>
           </tr>
           <tr>
             <td>Harness CCM</td>
-            <td class="partial">Basic</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="partial">Basic</td>
+            <td class="cpart">Basic</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cpart">Basic</td>
           </tr>
           <tr>
             <td>Archera</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td>
           </tr>
           <tr>
             <td>Vantage</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
-            <td class="none">None</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td><td class="cno">None</td>
+            <td class="cno">None</td><td class="cno">None</td>
           </tr>
         </tbody>
       </table>
@@ -1053,23 +1012,23 @@
 <!-- IP -->
 <section class="ip-section" id="patents">
   <div class="container">
-    <div class="section-header">
-      <div class="label" style="color:var(--purple);margin-bottom:16px;">🔒 IP PORTFOLIO</div>
-      <h2 class="section-title display">11 patent-pending innovations.</h2>
-      <p class="section-sub">Novel algorithms, data structures, and architectures not present in any known commercial or open-source FinOps product as of Q1 2026.</p>
+    <div class="section-header center">
+      <span class="section-tag">IP PORTFOLIO</span>
+      <h2 class="section-h">11 patent-pending innovations.</h2>
+      <p class="section-sub">Novel algorithms not present in any known commercial or open-source FinOps product as of Q1 2026.</p>
     </div>
     <div class="ip-grid">
-      <div class="ip-card"><div class="ip-num">Priority 1 · Utility + Provisional</div><div class="ip-title">Dynamic Cloud Schema Evolution Engine</div><div class="ip-desc">Autonomous NLP-driven detection and zero-downtime hot-reload of provider schema changes.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 2 · Utility + Provisional</div><div class="ip-title">Multi-Dimensional Cost Noise Reduction</div><div class="ip-desc">3-stage statistical pipeline: rule engine → Bayesian priors → RL threshold adaptation. 880K records filtered.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 3 · Utility</div><div class="ip-title">Behavioral Cost Fingerprinting Engine</div><div class="ip-desc">512-dimensional Cost Fingerprint Vectors enabling behavioral anomaly detection with &lt;5% false positives.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 4 · Utility</div><div class="ip-title">Causal Cost Attribution Graph</div><div class="ip-desc">DAG engine tracing cost anomalies to root infrastructure events via counterfactual simulation. E-value 9.4.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 5 · Utility</div><div class="ip-title">Cross-Cloud Semantic Normalization</div><div class="ip-desc">GraphSAGE equivalence graphs across heterogeneous cloud service catalogs. 184 services mapped daily.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 6 · Utility</div><div class="ip-title">Predictive Commitment Portfolio Optimizer</div><div class="ip-desc">Modern Portfolio Theory applied to multi-cloud RI/SP selection with 10,000-scenario Monte Carlo.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 7 · Utility</div><div class="ip-title">Real-Time Tag Propagation Mesh</div><div class="ip-desc">Event-driven tag inheritance with sub-60s SLAs and priority-weighted conflict resolution.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 8 · Utility</div><div class="ip-title">FinOps Policy Runtime + FinOpsLang™</div><div class="ip-desc">Purpose-built DSL for cost governance evaluated at IaC provisioning time with &lt;3s gate evaluation.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 9 · Utility</div><div class="ip-title">Adaptive Cost Indexing Engine</div><div class="ip-desc">Query-pattern-driven partition evolution on Apache Iceberg. &lt;500ms P95 on 10B+ billing records.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 10 · Utility</div><div class="ip-title">Carbon-Cost Pareto Optimizer</div><div class="ip-desc">NSGA-III Pareto frontier of financial vs environmental trade-offs with real-time grid intensity integration.</div><div class="ip-badge">PATENT PENDING</div></div>
-      <div class="ip-card"><div class="ip-num">Priority 11 · Utility</div><div class="ip-title">Data Sanity Validation Framework</div><div class="ip-desc">4-layer validation gate: schema, referential integrity, temporal coherence, statistical outlier detection.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">01 · Utility + Provisional</div><div class="ip-name">Dynamic Cloud Schema Evolution Engine</div><div class="ip-desc">Autonomous NLP-driven detection and zero-downtime hot-reload of provider schema changes.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">02 · Utility + Provisional</div><div class="ip-name">Multi-Dimensional Cost Noise Reduction</div><div class="ip-desc">3-stage pipeline: rule engine + Bayesian priors + RL threshold adaptation. 880K records filtered.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">03 · Utility</div><div class="ip-name">Behavioral Cost Fingerprinting Engine</div><div class="ip-desc">512-dimensional Cost Fingerprint Vectors enabling behavioral anomaly detection with &lt;5% false positives.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">04 · Utility</div><div class="ip-name">Causal Cost Attribution Graph</div><div class="ip-desc">DAG engine tracing cost anomalies to root infrastructure events via counterfactual simulation. E-value 9.4.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">05 · Utility</div><div class="ip-name">Cross-Cloud Semantic Normalization</div><div class="ip-desc">GraphSAGE equivalence graphs across heterogeneous cloud service catalogs. 184 services mapped daily.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">06 · Utility</div><div class="ip-name">Predictive Commitment Portfolio Optimizer</div><div class="ip-desc">Modern Portfolio Theory applied to multi-cloud RI/SP selection with 10,000-scenario Monte Carlo.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">07 · Utility</div><div class="ip-name">Real-Time Tag Propagation Mesh</div><div class="ip-desc">Event-driven tag inheritance with sub-60s SLAs and priority-weighted conflict resolution.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">08 · Utility</div><div class="ip-name">FinOps Policy Runtime + FinOpsLang™</div><div class="ip-desc">Purpose-built DSL for cost governance evaluated at IaC provisioning time with &lt;3s gate SLA.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">09 · Utility</div><div class="ip-name">Adaptive Cost Indexing Engine</div><div class="ip-desc">Query-pattern-driven partition evolution on Apache Iceberg. &lt;500ms P95 on 10B+ billing records.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">10 · Utility</div><div class="ip-name">Carbon-Cost Pareto Optimizer</div><div class="ip-desc">NSGA-III Pareto frontier of financial vs environmental trade-offs with real-time grid intensity.</div><div class="ip-badge">PATENT PENDING</div></div>
+      <div class="ip-card"><div class="ip-num">11 · Utility</div><div class="ip-name">Data Sanity Validation Framework</div><div class="ip-desc">4-layer validation gate: schema, referential integrity, temporal coherence, statistical outlier detection.</div><div class="ip-badge">PATENT PENDING</div></div>
     </div>
   </div>
 </section>
@@ -1078,40 +1037,37 @@
 <section class="deployment" id="deployment">
   <div class="container">
     <div class="section-header">
-      <div class="label label-cyan" style="margin-bottom:16px;">⬢ DEPLOYMENT</div>
-      <h2 class="section-title display">Deploy anywhere.<br>Data stays yours.</h2>
-      <p class="section-sub">Three deployment models built for enterprise data residency, compliance, and sovereignty requirements. Row-level multi-tenancy on every tier.</p>
+      <span class="section-tag">DEPLOYMENT</span>
+      <h2 class="section-h">Deploy anywhere.<br>Data stays yours.</h2>
+      <p class="section-sub">Three models for enterprise data residency, compliance, and sovereignty. Row-level multi-tenancy on every tier.</p>
     </div>
     <div class="deploy-grid">
       <div class="deploy-card featured">
-        <div class="deploy-icon">☁️</div>
-        <div class="deploy-title">SaaS</div>
-        <div class="deploy-subtitle">GCP Marketplace Listed · Connect in minutes</div>
-        <div class="deploy-body">Multi-tenant Cloud Run. Row-level PostgreSQL security. Auth0 Organizations. Your billing data analyzed in your designated region.</div>
+        <div class="deploy-eyebrow">GCP MARKETPLACE LISTED</div>
+        <div class="deploy-name">SaaS</div>
+        <div class="deploy-body">Multi-tenant Cloud Run. PostgreSQL Row Level Security. Auth0 Organizations. Your billing data analyzed in your designated region.</div>
         <div class="deploy-list">
-          <div class="deploy-item">AWS / Azure / GCP / OCI billing connectors</div>
-          <div class="deploy-item">SOC 2 Type II · ISO 27001 · GDPR compliant</div>
-          <div class="deploy-item">99.95% uptime SLA · 15-min RTO</div>
-          <div class="deploy-item">GCP Marketplace — single-click deploy</div>
+          <div class="deploy-item">AWS / Azure / GCP / OCI connectors</div>
+          <div class="deploy-item">SOC 2 Type II · ISO 27001 · GDPR</div>
+          <div class="deploy-item">99.95% SLA · 15-min RTO</div>
+          <div class="deploy-item">Single-click from GCP Marketplace</div>
         </div>
       </div>
       <div class="deploy-card">
-        <div class="deploy-icon">🏢</div>
-        <div class="deploy-title">Private VPC</div>
-        <div class="deploy-subtitle">Your cloud perimeter. Our platform.</div>
+        <div class="deploy-eyebrow">ENTERPRISE</div>
+        <div class="deploy-name">Private VPC</div>
         <div class="deploy-body">Helm chart into your AWS, Azure, or GCP VPC. Billing data never leaves your perimeter. Customer-managed encryption keys.</div>
         <div class="deploy-list">
-          <div class="deploy-item">EKS / AKS / GKE with Karpenter autoscaling</div>
+          <div class="deploy-item">EKS / AKS / GKE with Karpenter</div>
           <div class="deploy-item">CMEK · your IAM / SSO integration</div>
-          <div class="deploy-item">Dedicated Cloud SQL per enterprise tenant</div>
+          <div class="deploy-item">Dedicated Cloud SQL per tenant</div>
           <div class="deploy-item">Dedicated success engineer</div>
         </div>
       </div>
       <div class="deploy-card">
-        <div class="deploy-icon">🔐</div>
-        <div class="deploy-title">Air-Gapped</div>
-        <div class="deploy-subtitle">Regulated environments · FedRAMP-ready</div>
-        <div class="deploy-body">Fully offline-capable. Classified government environments. Regulated financial institutions. Isolated Cloud Run + Cloud SQL per tenant.</div>
+        <div class="deploy-eyebrow">REGULATED</div>
+        <div class="deploy-name">Air-Gapped</div>
+        <div class="deploy-body">Fully offline-capable. Classified government environments. Regulated financial institutions requiring contractual infrastructure isolation.</div>
         <div class="deploy-list">
           <div class="deploy-item">FedRAMP Moderate (Year 2 roadmap)</div>
           <div class="deploy-item">HIPAA BAA · PCI DSS Level 1</div>
@@ -1126,23 +1082,23 @@
 <!-- PARTNERS -->
 <section class="partners" id="partners">
   <div class="container">
-    <div class="partners-title">GSI PARTNERS · CLOUD PROVIDERS · INTEGRATIONS</div>
-    <div class="partner-logos">
-      <div class="partner-chip active">NTT DATA · BFS</div>
-      <div class="partner-chip active">Wipro · AI-Native</div>
-      <div class="partner-chip">Cognizant</div>
-      <div class="partner-chip">Accenture</div>
-      <div class="partner-chip">Infosys</div>
-      <div class="partner-chip">TCS</div>
-      <div class="partner-chip active">Google Cloud · GCP Marketplace</div>
-      <div class="partner-chip">Amazon Web Services</div>
-      <div class="partner-chip">Microsoft Azure</div>
-      <div class="partner-chip">Oracle Cloud</div>
-      <div class="partner-chip active">AiRo Digital Labs</div>
-      <div class="partner-chip">ServiceNow</div>
-      <div class="partner-chip">SAP</div>
-      <div class="partner-chip">Salesforce</div>
-      <div class="partner-chip">GitHub</div>
+    <div class="partners-label">GSI PARTNERS · CLOUD PROVIDERS · INTEGRATIONS</div>
+    <div class="partner-chips">
+      <div class="pchip active">NTT DATA · BFS</div>
+      <div class="pchip active">Wipro · AI-Native</div>
+      <div class="pchip">Cognizant</div>
+      <div class="pchip">Accenture</div>
+      <div class="pchip">Infosys</div>
+      <div class="pchip">TCS</div>
+      <div class="pchip active">Google Cloud</div>
+      <div class="pchip">Amazon Web Services</div>
+      <div class="pchip">Microsoft Azure</div>
+      <div class="pchip">Oracle Cloud</div>
+      <div class="pchip active">AiRo Digital Labs</div>
+      <div class="pchip">ServiceNow</div>
+      <div class="pchip">SAP</div>
+      <div class="pchip">Salesforce</div>
+      <div class="pchip">GitHub</div>
     </div>
   </div>
 </section>
@@ -1150,48 +1106,48 @@
 <!-- PRICING -->
 <section class="pricing" id="pricing">
   <div class="container">
-    <div class="section-header">
-      <div class="label label-cyan" style="margin-bottom:16px;">◎ PRICING</div>
-      <h2 class="section-title display">Aligned with value delivered.</h2>
+    <div class="section-header center">
+      <span class="section-tag">PRICING</span>
+      <h2 class="section-h">Aligned with value delivered.</h2>
       <p class="section-sub">We only win when you save. Target ARR $250K–$1.5M based on cloud spend under management.</p>
     </div>
     <div class="pricing-grid">
       <div class="pricing-card">
-        <div class="pricing-tier">Foundation</div>
-        <div class="pricing-name display">Growth</div>
+        <div class="pricing-tier">FOUNDATION</div>
+        <div class="pricing-name">Growth</div>
         <div class="pricing-range">$250K – $500K / yr</div>
         <div class="pricing-spend">$10M – $50M cloud spend under management</div>
         <div class="pricing-list">
-          <div class="pricing-item">Multi-cloud ingestion (AWS · Azure · GCP · OCI)</div>
+          <div class="pricing-item">Multi-cloud ingestion — AWS, Azure, GCP, OCI</div>
           <div class="pricing-item">CNRE + DSVF data quality pipeline</div>
-          <div class="pricing-item">CSNL cross-cloud normalization</div>
-          <div class="pricing-item">Forecasting · Budget alerts · Scenario Builder</div>
+          <div class="pricing-item">Cross-cloud semantic normalization</div>
+          <div class="pricing-item">Forecasting, budget alerts, scenario builder</div>
           <div class="pricing-item">14+ optimization recommendations</div>
           <div class="pricing-item">SaaS · SOC 2 Type II</div>
         </div>
-        <a href="#cta" class="btn-pricing btn-pricing-outline">Contact Sales →</a>
+        <a href="#cta" class="btn-pricing btn-outline-p">Contact Sales</a>
       </div>
       <div class="pricing-card featured">
-        <div class="featured-badge">MOST POPULAR</div>
-        <div class="pricing-tier">Intelligence</div>
-        <div class="pricing-name display">Enterprise</div>
+        <div class="featured-label">MOST POPULAR</div>
+        <div class="pricing-tier">INTELLIGENCE</div>
+        <div class="pricing-name">Enterprise</div>
         <div class="pricing-range">$500K – $1M / yr</div>
         <div class="pricing-spend">$50M – $200M cloud spend under management</div>
         <div class="pricing-list">
           <div class="pricing-item">Everything in Foundation</div>
           <div class="pricing-item">AI Agents layer — all 4 convergence panels</div>
           <div class="pricing-item">18 collaborative reasoning engines</div>
-          <div class="pricing-item">Behavior-Cost Correlation + Value Decay</div>
-          <div class="pricing-item">Business Value Attribution + Agent Registry</div>
-          <div class="pricing-item">Executive Brief + ROI Tracker + Digest</div>
+          <div class="pricing-item">Behavior-cost correlation + value decay</div>
+          <div class="pricing-item">Business value attribution + agent registry</div>
+          <div class="pricing-item">Executive brief + ROI tracker + digest</div>
           <div class="pricing-item">BCFE · CCAG · FPRE · PCPO · CCPO</div>
           <div class="pricing-item">VPC or SaaS · Dedicated success engineer</div>
         </div>
-        <a href="#cta" class="btn-pricing btn-pricing-filled">Request Demo →</a>
+        <a href="#cta" class="btn-pricing btn-filled-p">Request Demo</a>
       </div>
       <div class="pricing-card">
-        <div class="pricing-tier">GSI White-Label</div>
-        <div class="pricing-name display">Partner</div>
+        <div class="pricing-tier">GSI WHITE-LABEL</div>
+        <div class="pricing-name">Partner</div>
         <div class="pricing-range">$1M – $1.5M / yr</div>
         <div class="pricing-spend">$200M+ cloud spend · GSI-mediated</div>
         <div class="pricing-list">
@@ -1203,7 +1159,7 @@
           <div class="pricing-item">FedRAMP Moderate roadmap</div>
           <div class="pricing-item">Custom SLA · Dedicated pod</div>
         </div>
-        <a href="#cta" class="btn-pricing btn-pricing-outline">Partner Program →</a>
+        <a href="#cta" class="btn-pricing btn-outline-p">Partner Program</a>
       </div>
     </div>
   </div>
@@ -1212,25 +1168,24 @@
 <!-- CTA -->
 <section class="cta-section" id="cta">
   <div class="container">
-    <div class="gcn-badge" style="margin:0 auto 32px;width:fit-content;">
-      <span>◈</span> Google Cloud Next 2026 · Live Demo · April 22–24
+    <div class="gcn-pill" style="margin:0 auto 28px;width:fit-content;">
+      Google Cloud Next 2026 · Live Demo · April 22–24
     </div>
-    <h2 class="cta-title display">
-      See it live.<br>
-      <span style="background:linear-gradient(90deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Your cloud data.</span>
+    <h2 class="cta-h">
+      See it against<br>your <span class="cyan">real data.</span>
     </h2>
-    <p class="cta-sub">45-minute technical demo. We'll connect to your cloud environment and show you exactly what FintelliOps finds — live — against your real spend.</p>
+    <p class="cta-sub">45-minute technical demo. We connect to your cloud environment and show you exactly what FintelliOps finds — live — against your actual spend.</p>
     <div class="cta-actions">
-      <a href="mailto:vyasa.murthy@venture-vertex.com?subject=FintelliOps Demo Request" class="btn-hero btn-hero-primary" style="font-size:16px;padding:16px 40px;">Request Live Demo →</a>
-      <a href="#platform" class="btn-hero btn-hero-secondary">Explore Platform</a>
+      <a href="mailto:vyasa.murthy@venture-vertex.com?subject=FintelliOps Demo Request" class="btn-lg btn-lg-primary" style="font-size:15px;padding:14px 28px;">Request Live Demo →</a>
+      <a href="#platform" class="btn-lg btn-lg-outline">Explore Platform</a>
     </div>
-    <div class="cta-note">No credit card · 45-min live demo · Connect your cloud in minutes · GCP Marketplace listed</div>
-    <div style="display:flex;gap:48px;justify-content:center;margin-top:60px;flex-wrap:wrap;">
-      <div style="text-align:center;"><div style="font-family:var(--display);font-size:40px;font-weight:800;color:var(--red);">&lt;1%</div><div style="font-family:var(--mono);font-size:11px;color:var(--dim);">ATTRIBUTION ERROR</div></div>
-      <div style="text-align:center;"><div style="font-family:var(--display);font-size:40px;font-weight:800;color:var(--green);">80%</div><div style="font-family:var(--mono);font-size:11px;color:var(--dim);">ANALYST TIME SAVED</div></div>
-      <div style="text-align:center;"><div style="font-family:var(--display);font-size:40px;font-weight:800;color:var(--purple);">11</div><div style="font-family:var(--mono);font-size:11px;color:var(--dim);">PATENTS PENDING</div></div>
-      <div style="text-align:center;"><div style="font-family:var(--display);font-size:40px;font-weight:800;color:var(--cyan);">23</div><div style="font-family:var(--mono);font-size:11px;color:var(--dim);">INTELLIGENCE PANELS</div></div>
-      <div style="text-align:center;"><div style="font-family:var(--display);font-size:40px;font-weight:800;color:var(--amber);">99.2×</div><div style="font-family:var(--mono);font-size:11px;color:var(--dim);">FLEET VALUE/COST RATIO</div></div>
+    <p class="cta-note">No credit card · 45-min live demo · GCP Marketplace listed</p>
+    <div class="bottom-stats">
+      <div><div class="bstat-val" style="color:var(--red);">&lt;1%</div><div class="bstat-label">ATTRIBUTION ERROR</div></div>
+      <div><div class="bstat-val" style="color:var(--green);">80%</div><div class="bstat-label">ANALYST TIME SAVED</div></div>
+      <div><div class="bstat-val">11</div><div class="bstat-label">PATENTS PENDING</div></div>
+      <div><div class="bstat-val" style="color:var(--cyan);">23</div><div class="bstat-label">INTELLIGENCE PANELS</div></div>
+      <div><div class="bstat-val" style="color:var(--cyan);">99.2×</div><div class="bstat-label">FLEET VALUE/COST RATIO</div></div>
     </div>
   </div>
 </section>
@@ -1239,34 +1194,34 @@
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="footer-brand-name display" style="background:linear-gradient(90deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">FintelliOps™</div>
+      <div>
+        <div class="footer-name">FintelliOps<span>™</span></div>
         <div class="footer-tagline">Where FinOps meets AI Observability. 23 intelligence panels. 18 collaborative reasoning engines. The platform that tells you if your AI is worth what it costs.<br><br>by Venture Vertex LLC · Dallas, TX</div>
-        <div class="gcn-badge" style="margin-top:16px;">◈ Google Cloud Next 2026</div>
+        <div class="gcn-pill" style="margin-top:16px;">Google Cloud Next 2026</div>
       </div>
       <div>
-        <div class="footer-col-title">Platform</div>
-        <a href="#platform" class="footer-link">23 Panels</a>
-        <a href="#ai-agents" class="footer-link">AI Agents Layer</a>
-        <a href="#convergence" class="footer-link">Convergence</a>
-        <a href="#patents" class="footer-link">11 Patents</a>
-        <a href="#competitive" class="footer-link">Why FintelliOps</a>
+        <div class="footer-col-h">PLATFORM</div>
+        <a href="#platform" class="flink">23 Panels</a>
+        <a href="#ai-agents" class="flink">AI Agents Layer</a>
+        <a href="#convergence" class="flink">Convergence</a>
+        <a href="#patents" class="flink">11 Patents</a>
+        <a href="#competitive" class="flink">Compare</a>
       </div>
       <div>
-        <div class="footer-col-title">Deploy</div>
-        <a href="#deployment" class="footer-link">SaaS</a>
-        <a href="#deployment" class="footer-link">Private VPC</a>
-        <a href="#deployment" class="footer-link">Air-Gapped</a>
-        <a href="#pricing" class="footer-link">Pricing</a>
-        <a href="#partners" class="footer-link">GSI Partners</a>
+        <div class="footer-col-h">DEPLOY</div>
+        <a href="#deployment" class="flink">SaaS</a>
+        <a href="#deployment" class="flink">Private VPC</a>
+        <a href="#deployment" class="flink">Air-Gapped</a>
+        <a href="#pricing" class="flink">Pricing</a>
+        <a href="#partners" class="flink">GSI Partners</a>
       </div>
       <div>
-        <div class="footer-col-title">Company</div>
-        <a href="mailto:vyasa.murthy@venture-vertex.com" class="footer-link">Contact</a>
-        <a href="#cta" class="footer-link">Request Demo</a>
-        <a href="#" class="footer-link">API Documentation</a>
-        <a href="#" class="footer-link">Security &amp; Compliance</a>
-        <a href="#" class="footer-link">Privacy Policy</a>
+        <div class="footer-col-h">COMPANY</div>
+        <a href="mailto:vyasa.murthy@venture-vertex.com" class="flink">Contact</a>
+        <a href="#cta" class="flink">Request Demo</a>
+        <a href="#" class="flink">API Docs</a>
+        <a href="#" class="flink">Security</a>
+        <a href="#" class="flink">Privacy</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1277,32 +1232,32 @@
 </footer>
 
 <script>
-// Smooth scroll + nav active state
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
 
-// Staggered fade-in on scroll
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+// Staggered scroll reveal
+var io = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry, i) {
     if (entry.isIntersecting) {
-      setTimeout(() => {
+      setTimeout(function() {
         entry.target.style.opacity = '1';
         entry.target.style.transform = 'translateY(0)';
-      }, i * 80);
-      observer.unobserve(entry.target);
+      }, i * 60);
+      io.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.08 });
 
-document.querySelectorAll('.cap-group, .new-panel-card, .proof-card, .ip-card, .deploy-card, .pricing-card').forEach(el => {
+document.querySelectorAll('.group-card, .panel-card, .proof-card, .ip-card, .deploy-card, .pricing-card, .feat').forEach(function(el) {
   el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  observer.observe(el);
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+  io.observe(el);
 });
 </script>
 </body>
